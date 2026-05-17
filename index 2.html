@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>67会员｜买一个 VIP，再买几个 VIP</title>
+<style>
+:root {
+  --bg: #f6f7fb;
+  --card: rgba(255,255,255,.82);
+  --text: #111827;
+  --muted: #667085;
+  --line: rgba(17,24,39,.10);
+  --blue: #007aff;
+  --purple: #7c3aed;
+  --green: #20c997;
+  --orange: #ff9f0a;
+  --shadow: 0 24px 70px rgba(17,24,39,.10);
+  --radius: 30px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC",
+               "Helvetica Neue", Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 12% 10%, rgba(0,122,255,.18), transparent 28%),
+    radial-gradient(circle at 88% 14%, rgba(124,58,237,.14), transparent 28%),
+    radial-gradient(circle at 50% 95%, rgba(32,201,151,.16), transparent 32%),
+    linear-gradient(180deg, #ffffff 0%, var(--bg) 48%, #ffffff 100%);
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(17,24,39,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17,24,39,.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,.45), transparent 70%);
+  z-index: -3;
+}
+
+.ambient {
+  position: fixed;
+  inset: auto auto 8% 6%;
+  width: 420px;
+  height: 420px;
+  border-radius: 999px;
+  background: rgba(0,122,255,.14);
+  filter: blur(70px);
+  animation: ambientMove 12s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: -2;
+}
+
+.ambient.two {
+  inset: 10% 6% auto auto;
+  background: rgba(124,58,237,.14);
+  animation-duration: 14s;
+}
+
+@keyframes ambientMove {
+  from { transform: translate3d(0,0,0) scale(1); }
+  to { transform: translate3d(50px,-28px,0) scale(1.14); }
+}
+
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(22px);
+  background: rgba(255,255,255,.72);
+  border-bottom: 1px solid rgba(17,24,39,.07);
+}
+
+.nav-inner {
+  width: min(1180px, calc(100% - 36px));
+  margin: 0 auto;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 800;
+  letter-spacing: -.03em;
+}
+
+.brand-icon {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ffffff, #eef4ff);
+  border: 1px solid var(--line);
+  box-shadow: 0 10px 24px rgba(0,122,255,.12);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.nav-links a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.nav-btn {
+  border: none;
+  border-radius: 999px;
+  background: #111827;
+  color: white;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.nav-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 26px rgba(17,24,39,.18);
+}
+
+.hero {
+  width: min(1180px, calc(100% - 36px));
+  margin: 0 auto;
+  padding: 88px 0 52px;
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  align-items: center;
+  gap: 42px;
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255,255,255,.72);
+  color: #344054;
+  box-shadow: 0 10px 30px rgba(17,24,39,.06);
+  animation: fadeUp .8s ease both;
+}
+
+h1 {
+  margin-top: 24px;
+  font-size: clamp(46px, 7vw, 86px);
+  line-height: .98;
+  letter-spacing: -.065em;
+  font-weight: 850;
+  animation: fadeUp .8s .08s ease both;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #111827 0%, #007aff 42%, #7c3aed 76%, #111827 100%);
+  -webkit-background-clip: text;
+  color: transparent;
+  background-size: 180% auto;
+  animation: textShine 5s ease-in-out infinite alternate;
+}
+
+@keyframes textShine {
+  from { background-position: 0% center; }
+  to { background-position: 100% center; }
+}
+
+.lead {
+  margin-top: 24px;
+  max-width: 680px;
+  font-size: clamp(17px, 2vw, 22px);
+  line-height: 1.75;
+  color: var(--muted);
+  animation: fadeUp .8s .16s ease both;
+}
+
+.hero-actions {
+  margin-top: 34px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  animation: fadeUp .8s .24s ease both;
+}
+
+.btn {
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  padding: 15px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+}
+
+.btn-primary {
+  color: #fff;
+  background: #111827;
+  box-shadow: 0 18px 32px rgba(17,24,39,.18);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 24px 44px rgba(17,24,39,.22);
+}
+
+.btn-soft {
+  color: #111827;
+  background: rgba(255,255,255,.78);
+  border: 1px solid var(--line);
+}
+
+.btn-soft:hover {
+  transform: translateY(-3px);
+  background: white;
+}
+
+.hero-panel {
+  position: relative;
+  min-height: 520px;
+  border-radius: 42px;
+  background: rgba(255,255,255,.72);
+  border: 1px solid rgba(17,24,39,.08);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  backdrop-filter: blur(22px);
+  animation: panelIn .9s .1s ease both;
+}
+
+.hero-panel::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background:
+    conic-gradient(from 120deg,
+      rgba(0,122,255,.0),
+      rgba(0,122,255,.18),
+      rgba(124,58,237,.18),
+      rgba(32,201,151,.15),
+      rgba(0,122,255,.0));
+  animation: rotateGlow 12s linear infinite;
+}
+
+@keyframes rotateGlow {
+  to { transform: rotate(360deg); }
+}
+
+.phone-card {
+  position: absolute;
+  inset: 34px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 34px;
+  background: rgba(255,255,255,.86);
+  border: 1px solid rgba(17,24,39,.08);
+  overflow: hidden;
+}
+
+.mock-top {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.dots {
+  display: flex;
+  gap: 7px;
+}
+
+.dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d0d5dd;
+}
+
+.mock-body {
+  flex: 1;
+  padding: 28px;
+  display: grid;
+  gap: 18px;
+}
+
+.vip-stack {
+  position: relative;
+  height: 270px;
+}
+
+.float-card {
+  position: absolute;
+  width: 76%;
+  left: 12%;
+  min-height: 92px;
+  padding: 20px;
+  border-radius: 26px;
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: 0 20px 45px rgba(17,24,39,.10);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: floaty 4s ease-in-out infinite;
+}
+
+.float-card:nth-child(1) {
+  top: 0;
+  transform: rotate(-5deg);
+}
+
+.float-card:nth-child(2) {
+  top: 74px;
+  left: 8%;
+  animation-delay: .35s;
+  transform: rotate(3deg);
+}
+
+.float-card:nth-child(3) {
+  top: 148px;
+  left: 16%;
+  animation-delay: .7s;
+  transform: rotate(-1deg);
+}
+
+@keyframes floaty {
+  0%,100% { translate: 0 0; }
+  50% { translate: 0 -12px; }
+}
+
+.big-star {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: #fff7d6;
+  box-shadow: inset 0 0 0 1px rgba(255,159,10,.18);
+}
+
+.float-card strong {
+  display: block;
+  letter-spacing: -.03em;
+}
+
+.float-card small {
+  color: var(--muted);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.stat {
+  padding: 16px;
+  border-radius: 22px;
+  background: #f7f8fb;
+  border: 1px solid var(--line);
+}
+
+.stat b {
+  display: block;
+  font-size: 24px;
+  letter-spacing: -.04em;
+}
+
+.stat span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(36px) scale(.96); }
+  to { opacity: 1; transform: none; }
+}
+
+.section {
+  width: min(1180px, calc(100% - 36px));
+  margin: 0 auto;
+  padding: 82px 0;
+}
+
+.section-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 22px;
+  margin-bottom: 28px;
+}
+
+.section h2 {
+  font-size: clamp(34px, 5vw, 58px);
+  line-height: 1.05;
+  letter-spacing: -.055em;
+}
+
+.section-desc {
+  max-width: 470px;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.plans {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.plan-card {
+  position: relative;
+  padding: 30px;
+  min-height: 430px;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius);
+  background: var(--card);
+  border: 1px solid rgba(17,24,39,.08);
+  box-shadow: 0 18px 45px rgba(17,24,39,.08);
+  backdrop-filter: blur(18px);
+  overflow: hidden;
+  transition: transform .32s ease, box-shadow .32s ease, border-color .32s ease;
+}
+
+.plan-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 16% 0%, rgba(0,122,255,.14), transparent 34%),
+    radial-gradient(circle at 92% 12%, rgba(124,58,237,.10), transparent 38%);
+  opacity: .8;
+  pointer-events: none;
+}
+
+.plan-card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(0,122,255,.25);
+  box-shadow: 0 30px 70px rgba(17,24,39,.13);
+}
+
+.plan-card.featured {
+  background: rgba(255,255,255,.94);
+  border-color: rgba(0,122,255,.22);
+  transform: translateY(-8px);
+}
+
+.plan-card.featured:hover {
+  transform: translateY(-16px);
+}
+
+.ribbon {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #111827;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.plan-top, .plan-price, .features, .plan-card button {
+  position: relative;
+  z-index: 1;
+}
+
+.plan-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.plan-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: #fff7d6;
+  border: 1px solid rgba(255,159,10,.18);
+  font-size: 23px;
+}
+
+.plan-name {
+  font-size: 30px;
+  font-weight: 850;
+  letter-spacing: -.05em;
+}
+
+.plan-note {
+  color: var(--muted);
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+.plan-price {
+  margin-top: 28px;
+}
+
+.plan-price b {
+  font-size: 56px;
+  letter-spacing: -.06em;
+}
+
+.plan-price span {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.features {
+  list-style: none;
+  margin-top: 24px;
+  display: grid;
+  gap: 12px;
+  color: #344054;
+  line-height: 1.5;
+}
+
+.features li {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+}
+
+.check {
+  color: var(--green);
+  font-weight: 900;
+}
+
+.plan-card .btn {
+  margin-top: auto;
+  width: 100%;
+}
+
+.calculator {
+  display: grid;
+  grid-template-columns: .95fr 1.05fr;
+  gap: 22px;
+  align-items: stretch;
+}
+
+.calc-card {
+  border-radius: var(--radius);
+  background: rgba(255,255,255,.86);
+  border: 1px solid rgba(17,24,39,.08);
+  box-shadow: 0 18px 45px rgba(17,24,39,.08);
+  padding: 30px;
+  overflow: hidden;
+}
+
+.calc-card h3 {
+  font-size: 28px;
+  letter-spacing: -.04em;
+  margin-bottom: 12px;
+}
+
+.calc-card p {
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.slider-row {
+  margin-top: 28px;
+}
+
+.slider-row label {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--blue);
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.result {
+  padding: 20px;
+  border-radius: 24px;
+  background: #f7f8fb;
+  border: 1px solid var(--line);
+}
+
+.result b {
+  font-size: 34px;
+  letter-spacing: -.05em;
+}
+
+.result span {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.flow {
+  display: grid;
+  gap: 14px;
+}
+
+.flow-step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 20px;
+  border-radius: 24px;
+  background: rgba(255,255,255,.74);
+  border: 1px solid rgba(17,24,39,.08);
+}
+
+.step-num {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  color: #fff;
+  background: #111827;
+  font-weight: 900;
+}
+
+.flow-step strong {
+  display: block;
+  letter-spacing: -.02em;
+}
+
+.flow-step p {
+  margin-top: 5px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.faq {
+  border-radius: 26px;
+  padding: 24px;
+  background: rgba(255,255,255,.76);
+  border: 1px solid rgba(17,24,39,.08);
+}
+
+.faq strong {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.faq p {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+footer {
+  width: min(1180px, calc(100% - 36px));
+  margin: 0 auto;
+  padding: 44px 0 72px;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity .85s ease, transform .85s ease;
+}
+
+.reveal.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(17,24,39,.32);
+  backdrop-filter: blur(18px);
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-card {
+  width: min(520px, 100%);
+  border-radius: 34px;
+  background: rgba(255,255,255,.96);
+  border: 1px solid rgba(255,255,255,.82);
+  box-shadow: 0 34px 90px rgba(17,24,39,.24);
+  padding: 28px;
+  animation: modalIn .32s ease both;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(22px) scale(.96); }
+  to { opacity: 1; transform: none; }
+}
+
+.modal-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.modal h3 {
+  font-size: 26px;
+  letter-spacing: -.04em;
+}
+
+.modal p {
+  color: var(--muted);
+  line-height: 1.75;
+  margin-top: 10px;
+}
+
+.close {
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  background: #f2f4f7;
+  color: #667085;
+  font-size: 20px;
+}
+
+.progress-wrap {
+  margin: 24px 0 18px;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  color: #344054;
+  font-weight: 800;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.progress {
+  height: 12px;
+  border-radius: 999px;
+  background: #eef2f7;
+  overflow: hidden;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--blue), var(--purple));
+  transition: width .35s ease;
+}
+
+.confirm-copy {
+  min-height: 78px;
+  padding: 18px;
+  border-radius: 22px;
+  background: #f7f8fb;
+  border: 1px solid var(--line);
+  color: #344054;
+}
+
+.modal-actions {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.qr-modal .modal-card {
+  width: min(560px, 100%);
+  text-align: center;
+}
+
+.qr-box {
+  margin-top: 22px;
+  padding: 16px;
+  border-radius: 28px;
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.6);
+}
+
+.qr-box img {
+  display: block;
+  width: min(100%, 420px);
+  margin: 0 auto;
+  border-radius: 18px;
+}
+
+.success-badge {
+  width: 76px;
+  height: 76px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 14px;
+  border-radius: 28px;
+  background: #e9fbf3;
+  color: #12b76a;
+  font-size: 34px;
+  animation: pop .55s cubic-bezier(.2,1.6,.4,1) both;
+}
+
+@keyframes pop {
+  from { transform: scale(.4) rotate(-12deg); opacity: 0; }
+  to { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 120;
+  transform: translateX(-50%) translateY(20px);
+  opacity: 0;
+  pointer-events: none;
+  padding: 13px 16px;
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(17,24,39,.92);
+  box-shadow: 0 16px 35px rgba(17,24,39,.22);
+  transition: opacity .25s ease, transform .25s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+
+.charge-box {
+  margin-top: 22px;
+  padding: 30px 20px;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(0,122,255,.12), transparent 34%),
+    radial-gradient(circle at 90% 20%, rgba(124,58,237,.10), transparent 36%),
+    #ffffff;
+  border: 1px solid var(--line);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.7);
+}
+
+.charge-label {
+  color: #667085;
+  font-weight: 800;
+  letter-spacing: .08em;
+  font-size: 14px;
+}
+
+.charge-amount {
+  margin-top: 10px;
+  font-size: clamp(34px, 7vw, 56px);
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -.06em;
+  background: linear-gradient(90deg, #111827, #007aff, #7c3aed);
+  -webkit-background-clip: text;
+  color: transparent;
+  word-break: break-all;
+}
+
+.charge-note {
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+@media (max-width: 920px) {
+  .nav-links a {
+    display: none;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    padding-top: 58px;
+  }
+
+  .hero-panel {
+    min-height: 440px;
+  }
+
+  .plans,
+  .calculator,
+  .faq-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .plan-card.featured {
+    transform: none;
+  }
+
+  .section-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 560px) {
+  .nav-inner,
+  .hero,
+  .section,
+  footer {
+    width: min(100% - 24px, 1180px);
+  }
+
+  .hero {
+    padding-top: 42px;
+  }
+
+  .hero-panel {
+    min-height: 390px;
+    border-radius: 30px;
+  }
+
+  .phone-card {
+    inset: 16px;
+    border-radius: 26px;
+  }
+
+  .mock-body {
+    padding: 18px;
+  }
+
+  .vip-stack {
+    height: 242px;
+  }
+
+  .float-card {
+    width: 88%;
+    left: 6%;
+    padding: 16px;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .plan-card,
+  .calc-card {
+    padding: 24px;
+    border-radius: 26px;
+  }
+
+  .plan-price b {
+    font-size: 48px;
+  }
+
+  .modal-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: 58px 0;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="ambient"></div>
+<div class="ambient two"></div>
+
+<nav>
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-icon">🌟</div>
+      <span>67会员</span>
+    </div>
+    <div class="nav-links">
+      <a href="#plans">会员方案</a>
+      <a href="#calculator">VIP 计算器</a>
+      <a href="#faq">说明</a>
+      <button class="nav-btn" data-buy="Pro">开始购买</button>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <div>
+      <div class="kicker">🌟 白色主题 · 手机 / 电脑自适配</div>
+      <h1>买一个 <span class="gradient-text">VIP</span><br>再买几个 VIP</h1>
+      <p class="lead">
+        一个围绕“买了 VIP 之后，还能继续买更多 VIP”的会员页面。
+        先购买，再确认，再继续确认；全部确认完成后，页面会显示“已扣款 ¥9999999999999”。
+      </p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" data-buy="Plus">立即购买 VIP</button>
+        <a class="btn btn-soft" href="#calculator" style="text-decoration:none;">看看能再买几个</a>
+      </div>
+    </div>
+
+    <div class="hero-panel">
+      <div class="phone-card">
+        <div class="mock-top">
+          <strong>67 VIP Center</strong>
+          <div class="dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="mock-body">
+          <div class="vip-stack">
+            <div class="float-card">
+              <div>
+                <strong>买 1 个 VIP</strong>
+                <small>获得继续购买资格</small>
+              </div>
+              <div class="big-star">🌟</div>
+            </div>
+            <div class="float-card">
+              <div>
+                <strong>再买 3 个 VIP</strong>
+                <small>叠加更多神奇权益</small>
+              </div>
+              <div class="big-star">🌟</div>
+            </div>
+            <div class="float-card">
+              <div>
+                <strong>最后解锁 Pro</strong>
+                <small>进入无限确认模式</small>
+              </div>
+              <div class="big-star">🌟</div>
+            </div>
+          </div>
+          <div class="stats">
+            <div class="stat"><b>10</b><span>次确认</span></div>
+            <div class="stat"><b>3</b><span>种方案</span></div>
+            <div class="stat"><b>∞</b><span>购买想象力</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="plans">
+    <div class="section-head">
+      <h2>选择一个 VIP，<br>解锁更多 VIP</h2>
+      <p class="section-desc">
+        每个方案都能买 VIP，但能继续买的数量不同。
+        点击任意购买按钮后，需要连续确认 10 次，才会显示扣款信息。
+      </p>
+    </div>
+
+    <div class="plans">
+      <article class="plan-card">
+        <div class="plan-top">
+          <div class="plan-icon">🌟</div>
+          <div>
+            <div class="plan-name">Go</div>
+            <div class="plan-note">入门 VIP 循环</div>
+          </div>
+        </div>
+        <div class="plan-price"><b>¥6.7</b> <span>/ 次</span></div>
+        <ul class="features">
+          <li><span class="check">✓</span><span>买 1 个 VIP 后，可再买 1 个 VIP</span></li>
+          <li><span class="check">✓</span><span>获得基础“继续购买”资格</span></li>
+          <li><span class="check">✓</span><span>适合先体验一下确认流程</span></li>
+        </ul>
+        <button class="btn btn-primary" data-buy="Go">购买 Go</button>
+      </article>
+
+      <article class="plan-card featured">
+        <div class="ribbon">推荐</div>
+        <div class="plan-top">
+          <div class="plan-icon">🌟</div>
+          <div>
+            <div class="plan-name">Plus</div>
+            <div class="plan-note">标准 VIP 复购</div>
+          </div>
+        </div>
+        <div class="plan-price"><b>¥13.13</b> <span>/ 次</span></div>
+        <ul class="features">
+          <li><span class="check">✓</span><span>买 1 个 VIP 后，可再买 3 个 VIP</span></li>
+          <li><span class="check">✓</span><span>获得更强的“因为所以”权益</span></li>
+          <li><span class="check">✓</span><span>确认满 10 次后显示扣款信息</span></li>
+        </ul>
+        <button class="btn btn-primary" data-buy="Plus">购买 Plus</button>
+      </article>
+
+      <article class="plan-card">
+        <div class="plan-top">
+          <div class="plan-icon">🌟</div>
+          <div>
+            <div class="plan-name">Pro</div>
+            <div class="plan-note">高级 VIP 套娃</div>
+          </div>
+        </div>
+        <div class="plan-price"><b>¥91.78</b> <span>/ 次</span></div>
+        <ul class="features">
+          <li><span class="check">✓</span><span>买 1 个 VIP 后，可再买 8 个 VIP</span></li>
+          <li><span class="check">✓</span><span>解锁 SVIP 之汪式购买体验</span></li>
+          <li><span class="check">✓</span><span>适合认真地不明所以</span></li>
+        </ul>
+        <button class="btn btn-primary" data-buy="Pro">购买 Pro</button>
+      </article>
+    </div>
+  </section>
+
+  <section class="section reveal" id="calculator">
+    <div class="section-head">
+      <h2>VIP 复购计算器</h2>
+      <p class="section-desc">
+        拖动数量，看看“买几个 VIP 之后，还能再买几个 VIP”。
+      </p>
+    </div>
+
+    <div class="calculator">
+      <div class="calc-card">
+        <h3>当前要买几个？</h3>
+        <p>这个计算器只是页面效果演示，用来表现“买一个 VIP 能再买几个 VIP”的主题。</p>
+
+        <div class="slider-row">
+          <label>
+            <span>本次购买数量</span>
+            <span><span id="vipCount">1</span> 个</span>
+          </label>
+          <input id="vipSlider" type="range" min="1" max="10" value="1" />
+        </div>
+
+        <div class="result-grid">
+          <div class="result">
+            <b id="againCount">3</b>
+            <span>Plus 可再购买</span>
+          </div>
+          <div class="result">
+            <b id="proCount">8</b>
+            <span>Pro 可再购买</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-card">
+        <h3>购买流程</h3>
+        <div class="flow">
+          <div class="flow-step">
+            <div class="step-num">1</div>
+            <div>
+              <strong>选择方案</strong>
+              <p>Go、Plus、Pro 都可以触发购买确认流程。</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">2</div>
+            <div>
+              <strong>连续确认 10 次</strong>
+              <p>每确认一次，进度条都会前进一点。</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">3</div>
+            <div>
+              <strong>展示最终图片</strong>
+              <p>确认满 10 次后，显示已扣款 ¥9999999999999。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="faq">
+    <div class="section-head">
+      <h2>页面说明</h2>
+      <p class="section-desc">白色主题、轻量动画、响应式布局，手机和电脑都能正常显示。</p>
+    </div>
+
+    <div class="faq-grid">
+      <div class="faq">
+        <strong>这是完整 HTML 文件吗？</strong>
+        <p>是的，CSS、JavaScript 和你提供的图片都已经写入同一个 HTML 文件里。</p>
+      </div>
+      <div class="faq">
+        <strong>会真的扣款吗？</strong>
+        <p>不会。当前是前端演示页面，只展示确认流程和图片，不连接真实支付系统。</p>
+      </div>
+      <div class="faq">
+        <strong>确认次数是多少？</strong>
+        <p>点击购买后，需要连续点击 10 次确认按钮，满 10 次才展示图片。</p>
+      </div>
+      <div class="faq">
+        <strong>能在手机打开吗？</strong>
+        <p>可以。页面已适配手机、平板和电脑屏幕。</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>© 67会员 · 买一个 VIP，再买几个 VIP</span>
+  <span>🌟 Go / Plus / Pro</span>
+</footer>
+
+<div class="modal" id="confirmModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-top">
+      <div>
+        <h3 id="modalTitle">确认购买</h3>
+        <p id="modalDesc">你正在进入 VIP 购买确认流程。</p>
+      </div>
+      <button class="close" id="closeConfirm" aria-label="关闭">×</button>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span>确认进度</span>
+        <span><span id="confirmNow">0</span>/10</span>
+      </div>
+      <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <div class="confirm-copy" id="confirmCopy">
+      请确认：你知道买了 VIP 之后，还可以继续买更多 VIP。
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-soft" id="cancelConfirm">取消</button>
+      <button class="btn btn-primary" id="confirmBtn">确认第 1 次</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal qr-modal" id="qrModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="success-badge">✓</div>
+    <h3>10 次确认已完成</h3>
+    <div class="charge-box">
+      <div class="charge-label">已扣款</div>
+      <div class="charge-amount">¥9999999999999</div>
+      <div class="charge-note">页面演示效果，不会真实扣款。</div>
+    </div>
+    <div class="modal-actions" style="grid-template-columns:1fr;margin-top:22px;">
+      <button class="btn btn-primary" id="closeQr">完成</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">已经取消购买流程</div>
+
+<script>
+const revealEls = document.querySelectorAll(".reveal");
+const confirmModal = document.getElementById("confirmModal");
+const qrModal = document.getElementById("qrModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalDesc = document.getElementById("modalDesc");
+const confirmNow = document.getElementById("confirmNow");
+const progressBar = document.getElementById("progressBar");
+const confirmCopy = document.getElementById("confirmCopy");
+const confirmBtn = document.getElementById("confirmBtn");
+const toast = document.getElementById("toast");
+
+let selectedPlan = "VIP";
+let confirmCount = 0;
+
+const confirmTexts = [
+  "第 1 次确认：确认你要购买 VIP。",
+  "第 2 次确认：确认买了 VIP 之后，还能继续买 VIP。",
+  "第 3 次确认：确认你理解 Go、Plus、Pro 都是 VIP。",
+  "第 4 次确认：确认本页面是白色主题，并且手机电脑都能打开。",
+  "第 5 次确认：确认你已经进入 VIP 套娃体验。",
+  "第 6 次确认：确认因为所以，意义不明但流程继续。",
+  "第 7 次确认：确认 9178 与 1313 已经收到精神层面的认可。",
+  "第 8 次确认：确认 SVIP 之汪正在靠近。",
+  "第 9 次确认：最后再确认一次前的确认。",
+  "第 10 次确认：最终确认，马上显示扣款信息。"
+];
+
+function handleReveal() {
+  revealEls.forEach(el => {
+    const top = el.getBoundingClientRect().top;
+    if (top < window.innerHeight - 80) el.classList.add("show");
+  });
+}
+
+function openConfirm(plan) {
+  selectedPlan = plan;
+  confirmCount = 0;
+  modalTitle.textContent = "确认购买 " + selectedPlan;
+  modalDesc.textContent = "请连续确认 10 次。全部确认后，将显示“已扣款 ¥9999999999999”。";
+  updateConfirm();
+  confirmModal.classList.add("show");
+  confirmModal.setAttribute("aria-hidden", "false");
+}
+
+function closeConfirm(showToast = false) {
+  confirmModal.classList.remove("show");
+  confirmModal.setAttribute("aria-hidden", "true");
+  if (showToast) showToastMessage();
+}
+
+function updateConfirm() {
+  confirmNow.textContent = confirmCount;
+  progressBar.style.width = (confirmCount / 10 * 100) + "%";
+  confirmCopy.textContent = confirmTexts[Math.min(confirmCount, 9)];
+  confirmBtn.textContent = confirmCount < 9
+    ? "确认第 " + (confirmCount + 1) + " 次"
+    : "第 10 次确认并显示扣款";
+}
+
+function showQr() {
+  closeConfirm(false);
+  qrModal.classList.add("show");
+  qrModal.setAttribute("aria-hidden", "false");
+}
+
+function showToastMessage() {
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 1800);
+}
+
+document.querySelectorAll("[data-buy]").forEach(btn => {
+  btn.addEventListener("click", () => openConfirm(btn.dataset.buy));
+});
+
+confirmBtn.addEventListener("click", () => {
+  confirmCount += 1;
+  updateConfirm();
+  if (confirmCount >= 10) {
+    setTimeout(showQr, 260);
+  }
+});
+
+document.getElementById("closeConfirm").addEventListener("click", () => closeConfirm(true));
+document.getElementById("cancelConfirm").addEventListener("click", () => closeConfirm(true));
+document.getElementById("closeQr").addEventListener("click", () => {
+  qrModal.classList.remove("show");
+  qrModal.setAttribute("aria-hidden", "true");
+});
+
+confirmModal.addEventListener("click", e => {
+  if (e.target === confirmModal) closeConfirm(true);
+});
+
+qrModal.addEventListener("click", e => {
+  if (e.target === qrModal) {
+    qrModal.classList.remove("show");
+    qrModal.setAttribute("aria-hidden", "true");
+  }
+});
+
+const vipSlider = document.getElementById("vipSlider");
+const vipCount = document.getElementById("vipCount");
+const againCount = document.getElementById("againCount");
+const proCount = document.getElementById("proCount");
+
+vipSlider.addEventListener("input", () => {
+  const n = Number(vipSlider.value);
+  vipCount.textContent = n;
+  againCount.textContent = n * 3;
+  proCount.textContent = n * 8;
+});
+
+window.addEventListener("scroll", handleReveal);
+window.addEventListener("load", handleReveal);
+handleReveal();
+</script>
+</body>
+</html>
