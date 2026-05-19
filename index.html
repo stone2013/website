@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="67会员 VIP 购买页面：多语言、黑白主题、购物车、支付加载、GitHub Pages 静态部署。" />
+  <title>67会员｜VIP购买</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --bg2: #ffffff;
+      --surface: rgba(255,255,255,.82);
+      --surface2: rgba(255,255,255,.96);
+      --text: #111827;
+      --muted: #667085;
+      --line: rgba(17,24,39,.10);
+      --line2: rgba(17,24,39,.16);
+      --primary: #111827;
+      --primary-text: #ffffff;
+      --blue: #007aff;
+      --purple: #7c3aed;
+      --green: #12b76a;
+      --orange: #ff9f0a;
+      --danger: #ef4444;
+      --shadow: 0 26px 70px rgba(17,24,39,.10);
+      --shadow2: 0 16px 36px rgba(17,24,39,.10);
+      --radius: 30px;
+      color-scheme: light;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #05060a;
+      --bg2: #0b0d13;
+      --surface: rgba(18,20,28,.78);
+      --surface2: rgba(20,23,32,.96);
+      --text: #f7f8fb;
+      --muted: #a5adbb;
+      --line: rgba(255,255,255,.10);
+      --line2: rgba(255,255,255,.16);
+      --primary: #ffffff;
+      --primary-text: #111827;
+      --shadow: 0 28px 80px rgba(0,0,0,.42);
+      --shadow2: 0 18px 44px rgba(0,0,0,.32);
+      color-scheme: dark;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(0,122,255,.18), transparent 28%),
+        radial-gradient(circle at 88% 12%, rgba(124,58,237,.16), transparent 30%),
+        radial-gradient(circle at 50% 96%, rgba(18,183,106,.14), transparent 34%),
+        linear-gradient(180deg, var(--bg2) 0%, var(--bg) 50%, var(--bg2) 100%);
+      overflow-x: hidden;
+      transition: background .35s ease, color .35s ease;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -4;
+      pointer-events: none;
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: .34;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.55), transparent 72%);
+    }
+
+    .orb {
+      position: fixed;
+      width: 420px;
+      height: 420px;
+      border-radius: 999px;
+      filter: blur(74px);
+      opacity: .9;
+      pointer-events: none;
+      z-index: -3;
+      animation: orbMove 12s ease-in-out infinite alternate;
+    }
+
+    .orb-a { left: -110px; top: 100px; background: rgba(0,122,255,.18); }
+    .orb-b { right: -130px; top: 150px; background: rgba(124,58,237,.16); animation-duration: 15s; }
+    .orb-c { left: 30%; bottom: -210px; background: rgba(18,183,106,.13); animation-duration: 17s; }
+
+    @keyframes orbMove {
+      from { transform: translate3d(0,0,0) scale(1); }
+      to { transform: translate3d(58px,-30px,0) scale(1.14); }
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 30%, rgba(255,255,255,.16), transparent 38%),
+        linear-gradient(120deg, rgba(255,255,255,.12), transparent);
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(22px);
+      background: color-mix(in srgb, var(--bg2) 76%, transparent);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      width: min(1180px, calc(100% - 36px));
+      min-height: 70px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 950;
+      letter-spacing: -.035em;
+      white-space: nowrap;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--surface2) 92%, #fff), color-mix(in srgb, var(--blue) 12%, var(--surface2)));
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 24px rgba(0,122,255,.12);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      padding: 9px 8px;
+    }
+
+    .select,
+    .icon-btn,
+    .mini-btn {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--text);
+      background: var(--surface);
+      backdrop-filter: blur(16px);
+      cursor: pointer;
+      transition: transform .22s ease, box-shadow .22s ease, background .22s ease;
+    }
+
+    .select {
+      height: 40px;
+      padding: 0 12px;
+      font-weight: 800;
+      outline: none;
+    }
+
+    .icon-btn {
+      min-width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 0 12px;
+      font-weight: 900;
+      position: relative;
+    }
+
+    .mini-btn {
+      min-height: 40px;
+      padding: 0 16px;
+      color: var(--primary-text);
+      background: var(--primary);
+      border-color: transparent;
+      font-weight: 900;
+    }
+
+    .select:hover,
+    .icon-btn:hover,
+    .mini-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow2);
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--danger);
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .hero {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 86px 0 58px;
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      align-items: center;
+      gap: 44px;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: 0 12px 30px rgba(17,24,39,.06);
+      animation: fadeUp .75s ease both;
+    }
+
+    h1 {
+      margin-top: 24px;
+      font-size: clamp(44px, 7.4vw, 88px);
+      line-height: .98;
+      letter-spacing: -.07em;
+      font-weight: 950;
+      animation: fadeUp .75s .08s ease both;
+    }
+
+    .gradient-text {
+      color: transparent;
+      background: linear-gradient(90deg, var(--text) 0%, var(--blue) 40%, var(--purple) 76%, var(--text) 100%);
+      background-size: 180% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: textShine 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes textShine {
+      from { background-position: 0% center; }
+      to { background-position: 100% center; }
+    }
+
+    .lead {
+      margin-top: 24px;
+      max-width: 700px;
+      color: var(--muted);
+      font-size: clamp(17px, 2vw, 22px);
+      line-height: 1.75;
+      animation: fadeUp .75s .16s ease both;
+    }
+
+    .hero-actions {
+      margin-top: 34px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      animation: fadeUp .75s .24s ease both;
+    }
+
+    .btn {
+      appearance: none;
+      border: none;
+      border-radius: 999px;
+      padding: 15px 24px;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform .24s ease, box-shadow .24s ease, background .24s ease, opacity .24s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      color: var(--primary-text);
+      background: var(--primary);
+      box-shadow: 0 18px 36px rgba(17,24,39,.18);
+    }
+
+    html[data-theme="dark"] .btn-primary { box-shadow: 0 18px 42px rgba(0,0,0,.32); }
+
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.015);
+      box-shadow: 0 24px 48px rgba(17,24,39,.22);
+    }
+
+    .btn-soft {
+      color: var(--text);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 26px rgba(17,24,39,.06);
+    }
+
+    .btn-soft:hover { transform: translateY(-3px); }
+
+    .stage {
+      position: relative;
+      min-height: 540px;
+      border-radius: 42px;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(24px);
+      animation: panelIn .9s .08s ease both;
+    }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: -45%;
+      background: conic-gradient(from 120deg, rgba(0,122,255,0), rgba(0,122,255,.18), rgba(124,58,237,.18), rgba(18,183,106,.13), rgba(0,122,255,0));
+      animation: rotate 13s linear infinite;
+    }
+
+    @keyframes rotate { to { transform: rotate(360deg); } }
+
+    .device {
+      position: absolute;
+      inset: 34px;
+      border-radius: 34px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface2);
+      border: 1px solid var(--line);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.18);
+    }
+
+    .device-top {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .dots { display: flex; gap: 7px; }
+    .dots span { width: 10px; height: 10px; border-radius: 999px; background: color-mix(in srgb, var(--muted) 38%, transparent); }
+
+    .device-body { flex: 1; padding: 28px; display: grid; gap: 18px; }
+
+    .formula-card {
+      min-height: 178px;
+      padding: 26px;
+      border-radius: 30px;
+      color: #fff;
+      background: radial-gradient(circle at 20% 0%, rgba(255,255,255,.22), transparent 35%), linear-gradient(135deg, #111827, #007aff 62%, #7c3aed);
+      box-shadow: 0 22px 46px rgba(0,122,255,.22);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .formula-card::after {
+      content: "";
+      position: absolute;
+      width: 210px;
+      height: 210px;
+      right: -80px;
+      top: -80px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.18);
+      animation: pulse 4.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { transform: scale(1); opacity: .65; }
+      50% { transform: scale(1.16); opacity: .95; }
+    }
+
+    .formula-card small { opacity: .75; font-weight: 800; }
+    .formula-card strong { position: relative; z-index: 1; display: block; margin-top: 12px; font-size: 33px; line-height: 1.12; letter-spacing: -.06em; }
+
+    .mini-prices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+    .mini-price,
+    .preview,
+    .cart-mini {
+      padding: 16px;
+      border-radius: 22px;
+      background: color-mix(in srgb, var(--surface2) 72%, var(--bg));
+      border: 1px solid var(--line);
+    }
+
+    .mini-price b { display: block; font-size: 23px; letter-spacing: -.045em; }
+    .mini-price span { display: block; margin-top: 4px; color: var(--muted); font-size: 13px; }
+
+    .preview-title { color: var(--muted); font-size: 13px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+    .preview-amount { margin-top: 8px; font-size: 40px; font-weight: 950; letter-spacing: -.07em; word-break: break-all; }
+
+    .cart-mini { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .cart-mini strong { font-size: 24px; letter-spacing: -.045em; }
+    .cart-mini span { color: var(--muted); }
+
+    .section {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 82px 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 22px;
+      margin-bottom: 28px;
+    }
+
+    .section h2 {
+      font-size: clamp(34px, 5.2vw, 60px);
+      line-height: 1.05;
+      letter-spacing: -.06em;
+      font-weight: 950;
+    }
+
+    .section-desc { max-width: 540px; color: var(--muted); line-height: 1.75; }
+
+    .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+
+    .plan-card {
+      position: relative;
+      min-height: 560px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      border-radius: var(--radius);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow2);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+      transition: transform .32s ease, box-shadow .32s ease, border-color .32s ease;
+    }
+
+    .plan-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 16% 0%, rgba(0,122,255,.13), transparent 34%), radial-gradient(circle at 92% 12%, rgba(124,58,237,.10), transparent 38%);
+      opacity: .86;
+    }
+
+    .plan-card:hover { transform: translateY(-10px); border-color: rgba(0,122,255,.28); box-shadow: var(--shadow); }
+    .plan-card.featured { background: var(--surface2); border-color: rgba(0,122,255,.24); transform: translateY(-8px); }
+    .plan-card.featured:hover { transform: translateY(-16px); }
+
+    .ribbon {
+      position: absolute;
+      top: 22px;
+      right: 22px;
+      z-index: 2;
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--primary-text);
+      background: var(--primary);
+      font-size: 12px;
+      font-weight: 950;
+    }
+
+    .plan-top,.plan-price,.features,.quantity-box,.computed,.plan-actions { position: relative; z-index: 1; }
+
+    .plan-top { display: flex; align-items: center; gap: 12px; }
+    .plan-icon { width: 50px; height: 50px; display: grid; place-items: center; border-radius: 18px; font-size: 24px; background: #fff7d6; border: 1px solid rgba(255,159,10,.20); }
+    .plan-name { font-size: 31px; font-weight: 950; letter-spacing: -.055em; }
+    .plan-note { margin-top: 3px; color: var(--muted); font-size: 14px; }
+
+    .plan-price { margin-top: 26px; }
+    .plan-price b { font-size: 54px; letter-spacing: -.065em; }
+    .plan-price span { color: var(--muted); font-weight: 800; }
+
+    .features { list-style: none; margin-top: 22px; display: grid; gap: 11px; color: color-mix(in srgb, var(--text) 76%, var(--muted)); line-height: 1.55; }
+    .features li { display: flex; align-items: flex-start; gap: 9px; }
+    .check { color: var(--green); font-weight: 950; }
+
+    .quantity-box {
+      margin-top: 24px;
+      padding: 16px;
+      border-radius: 24px;
+      background: color-mix(in srgb, var(--surface2) 68%, transparent);
+      border: 1px solid var(--line);
+    }
+
+    .quantity-label { display: flex; justify-content: space-between; gap: 12px; color: var(--text); font-size: 14px; font-weight: 900; margin-bottom: 12px; }
+    .qty-controls { display: grid; grid-template-columns: 44px 1fr 44px; gap: 10px; align-items: center; }
+    .qty-btn { width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface2); color: var(--text); font-size: 22px; line-height: 1; font-weight: 950; cursor: pointer; transition: transform .2s ease, background .2s ease; }
+    .qty-btn:hover { transform: translateY(-2px); }
+    .qty-input { width: 100%; height: 44px; border-radius: 16px; border: 1px solid var(--line); background: var(--surface2); color: var(--text); text-align: center; font-size: 18px; font-weight: 950; outline: none; }
+
+    .computed { margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .computed-item { padding: 15px; border-radius: 20px; background: color-mix(in srgb, var(--surface2) 72%, var(--bg)); border: 1px solid var(--line); }
+    .computed-item b { display: block; font-size: 22px; letter-spacing: -.05em; }
+    .computed-item span { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
+
+    .plan-actions { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: auto; padding-top: 20px; }
+    .plan-actions .btn { width: 100%; }
+
+    .rules { display: grid; grid-template-columns: .9fr 1.1fr; gap: 22px; align-items: stretch; }
+    .rule-card { padding: 30px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow2); overflow: hidden; }
+    .rule-card h3 { font-size: 29px; letter-spacing: -.045em; margin-bottom: 12px; }
+    .rule-card p { color: var(--muted); line-height: 1.75; }
+    .formula-list { margin-top: 20px; display: grid; gap: 12px; }
+    .formula-line { display: flex; justify-content: space-between; gap: 14px; align-items: center; padding: 16px; border-radius: 22px; background: color-mix(in srgb, var(--surface2) 72%, var(--bg)); border: 1px solid var(--line); }
+    .formula-line span:first-child { font-weight: 950; }
+    .formula-line span:last-child { color: var(--muted); text-align: right; }
+
+    .deploy-box { display: grid; gap: 14px; }
+    .deploy-step { display: flex; gap: 14px; align-items: flex-start; padding: 19px; border-radius: 24px; background: color-mix(in srgb, var(--surface2) 66%, transparent); border: 1px solid var(--line); }
+    .step-num { flex: 0 0 auto; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 14px; color: var(--primary-text); background: var(--primary); font-weight: 950; }
+    .deploy-step strong { display: block; letter-spacing: -.02em; }
+    .deploy-step p { margin-top: 5px; color: var(--muted); line-height: 1.55; }
+
+    footer { width: min(1180px, calc(100% - 36px)); margin: 0 auto; padding: 44px 0 72px; color: var(--muted); border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity .85s ease, transform .85s ease; }
+    .reveal.show { opacity: 1; transform: translateY(0); }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes panelIn { from { opacity: 0; transform: translateY(36px) scale(.96); } to { opacity: 1; transform: none; } }
+
+    .drawer-mask,
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      background: rgba(17,24,39,.34);
+      backdrop-filter: blur(18px);
+    }
+
+    .drawer-mask.show,
+    .modal.show { display: block; }
+
+    .cart-drawer {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: min(460px, 100%);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface2);
+      border-left: 1px solid var(--line);
+      box-shadow: -24px 0 70px rgba(0,0,0,.20);
+      transform: translateX(100%);
+      animation: drawerIn .32s ease forwards;
+    }
+
+    @keyframes drawerIn { to { transform: translateX(0); } }
+
+    .drawer-head { padding: 22px; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--line); }
+    .drawer-head h3 { font-size: 28px; letter-spacing: -.045em; }
+    .drawer-head p { margin-top: 6px; color: var(--muted); line-height: 1.5; }
+
+    .close { width: 40px; height: 40px; border: none; border-radius: 15px; cursor: pointer; background: color-mix(in srgb, var(--surface2) 60%, var(--bg)); color: var(--muted); font-size: 20px; }
+
+    .cart-list { flex: 1; overflow: auto; padding: 18px 22px; display: grid; gap: 12px; align-content: start; }
+    .cart-empty { height: 100%; min-height: 260px; display: grid; place-items: center; text-align: center; color: var(--muted); line-height: 1.7; }
+
+    .cart-item { padding: 16px; border-radius: 22px; background: color-mix(in srgb, var(--surface2) 72%, var(--bg)); border: 1px solid var(--line); }
+    .cart-item-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .cart-item strong { display: block; font-size: 20px; letter-spacing: -.035em; }
+    .cart-item small { color: var(--muted); }
+    .cart-remove { border: none; color: var(--danger); background: transparent; cursor: pointer; font-weight: 950; padding: 6px; }
+    .cart-item-bottom { margin-top: 14px; display: grid; grid-template-columns: 132px 1fr; gap: 12px; align-items: center; }
+    .mini-qty { display: grid; grid-template-columns: 36px 1fr 36px; gap: 6px; }
+    .mini-qty button { width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface2); color: var(--text); font-weight: 950; cursor: pointer; }
+    .mini-qty input { width: 100%; height: 36px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface2); color: var(--text); text-align: center; font-weight: 950; }
+    .item-total { text-align: right; font-weight: 950; }
+
+    .cart-footer { padding: 18px 22px 22px; border-top: 1px solid var(--line); background: color-mix(in srgb, var(--surface2) 88%, transparent); }
+    .summary-row { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); margin-bottom: 10px; }
+    .summary-row strong { color: var(--text); }
+    .summary-total { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+    .summary-total span { color: var(--muted); }
+    .summary-total strong { font-size: 32px; letter-spacing: -.07em; }
+    .cart-footer .btn { width: 100%; margin-top: 16px; }
+
+    .modal { align-items: center; justify-content: center; padding: 20px; }
+    .modal.show { display: flex; }
+    .modal-card { width: min(590px, 100%); max-height: calc(100vh - 40px); overflow: auto; border-radius: 34px; padding: 28px; background: var(--surface2); border: 1px solid var(--line); box-shadow: 0 34px 90px rgba(17,24,39,.24); animation: modalIn .32s ease both; }
+    @keyframes modalIn { from { opacity: 0; transform: translateY(22px) scale(.96); } to { opacity: 1; transform: none; } }
+    .modal-top { display: flex; justify-content: space-between; gap: 18px; align-items: flex-start; }
+    .modal h3 { font-size: 27px; letter-spacing: -.045em; }
+    .modal p { margin-top: 10px; color: var(--muted); line-height: 1.75; }
+
+    .order-card { margin-top: 20px; padding: 18px; border-radius: 24px; background: color-mix(in srgb, var(--surface2) 72%, var(--bg)); border: 1px solid var(--line); display: grid; gap: 12px; }
+    .order-row { display: flex; justify-content: space-between; gap: 14px; color: var(--muted); }
+    .order-row strong { color: var(--text); text-align: right; }
+    .order-total { margin-top: 2px; padding-top: 12px; border-top: 1px solid var(--line); }
+    .order-total strong { font-size: 26px; letter-spacing: -.06em; }
+
+    .progress-wrap { margin: 24px 0 18px; }
+    .progress-info { display: flex; justify-content: space-between; color: var(--text); font-weight: 950; font-size: 14px; margin-bottom: 10px; }
+    .progress { height: 12px; border-radius: 999px; background: color-mix(in srgb, var(--muted) 14%, transparent); overflow: hidden; }
+    .progress-bar { width: 0%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--blue), var(--purple)); transition: width .35s ease; }
+    .confirm-copy { min-height: 78px; padding: 18px; border-radius: 22px; background: color-mix(in srgb, var(--surface2) 72%, var(--bg)); border: 1px solid var(--line); color: var(--text); line-height: 1.6; }
+    .modal-actions { margin-top: 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .payment-grid { margin-top: 22px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .pay-option { border: 1px solid var(--line); border-radius: 22px; padding: 18px; background: var(--surface2); color: var(--text); cursor: pointer; text-align: left; transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease; }
+    .pay-option:hover { transform: translateY(-3px); border-color: rgba(0,122,255,.30); box-shadow: var(--shadow2); }
+    .pay-icon { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 17px; background: color-mix(in srgb, var(--surface2) 72%, var(--bg)); font-size: 24px; margin-bottom: 12px; }
+    .pay-option strong { display: block; font-size: 17px; letter-spacing: -.02em; }
+    .pay-option span { display: block; margin-top: 5px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+
+    .payment-loading { display: none; margin-top: 22px; padding: 26px; border-radius: 26px; background: color-mix(in srgb, var(--surface2) 72%, var(--bg)); border: 1px solid var(--line); text-align: center; }
+    .payment-loading.show { display: block; }
+    .spinner { width: 48px; height: 48px; margin: 0 auto 16px; border-radius: 50%; border: 4px solid color-mix(in srgb, var(--muted) 20%, transparent); border-top-color: var(--blue); animation: spin .85s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-title { font-weight: 950; letter-spacing: -.02em; }
+    .loading-text { margin-top: 8px; color: var(--muted); line-height: 1.6; font-size: 14px; }
+
+    .success-badge { width: 76px; height: 76px; display: grid; place-items: center; margin: 0 auto 14px; border-radius: 28px; background: color-mix(in srgb, var(--green) 14%, transparent); color: var(--green); font-size: 34px; animation: pop .55s cubic-bezier(.2,1.6,.4,1) both; }
+    @keyframes pop { from { transform: scale(.4) rotate(-12deg); opacity: 0; } to { transform: scale(1) rotate(0); opacity: 1; } }
+    .success-title { text-align: center; }
+    .charge-box { margin-top: 22px; padding: 30px 20px; text-align: center; border-radius: 28px; background: radial-gradient(circle at 20% 10%, rgba(0,122,255,.12), transparent 34%), radial-gradient(circle at 90% 20%, rgba(124,58,237,.10), transparent 36%), var(--surface2); border: 1px solid var(--line); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+    .charge-label { color: var(--muted); font-weight: 950; letter-spacing: .08em; font-size: 14px; }
+    .charge-amount { margin-top: 10px; font-size: clamp(36px, 8vw, 62px); line-height: 1; font-weight: 950; letter-spacing: -.07em; background: linear-gradient(90deg, var(--text), var(--blue), var(--purple)); -webkit-background-clip: text; background-clip: text; color: transparent; word-break: break-all; }
+    .paid-method { margin-top: 12px; color: var(--text); font-weight: 900; }
+    .charge-note { margin-top: 14px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+    .toast { position: fixed; left: 50%; bottom: 24px; z-index: 150; transform: translateX(-50%) translateY(20px); opacity: 0; pointer-events: none; padding: 13px 16px; border-radius: 999px; color: #fff; background: rgba(17,24,39,.92); box-shadow: 0 16px 35px rgba(17,24,39,.22); transition: opacity .25s ease, transform .25s ease; white-space: nowrap; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 980px) {
+      .nav-link { display: none; }
+      .hero { grid-template-columns: 1fr; padding-top: 56px; }
+      .stage { min-height: 470px; }
+      .plans, .rules { grid-template-columns: 1fr; }
+      .plan-card.featured { transform: none; }
+      .section-head { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (max-width: 620px) {
+      .nav-inner, .hero, .section, footer { width: min(100% - 24px, 1180px); }
+      .nav-inner { min-height: 68px; align-items: flex-start; flex-direction: column; padding: 10px 0; gap: 8px; }
+      .nav-actions { width: 100%; justify-content: space-between; }
+      .select { flex: 1; min-width: 0; }
+      .hero { padding-top: 42px; }
+      .stage { min-height: 450px; border-radius: 30px; }
+      .device { inset: 15px; border-radius: 26px; }
+      .device-top { height: 62px; padding: 0 16px; }
+      .device-body { padding: 17px; }
+      .formula-card { min-height: 150px; border-radius: 24px; padding: 22px; }
+      .formula-card strong { font-size: 28px; }
+      .mini-prices { grid-template-columns: 1fr; }
+      .preview-amount { font-size: 32px; }
+      .cart-mini { align-items: flex-start; flex-direction: column; }
+      .plan-card, .rule-card { padding: 24px; border-radius: 26px; }
+      .plan-price b { font-size: 48px; }
+      .computed, .payment-grid, .modal-actions { grid-template-columns: 1fr; }
+      .cart-item-bottom { grid-template-columns: 1fr; }
+      .item-total { text-align: left; }
+      .section { padding: 58px 0; }
+      .toast { max-width: calc(100% - 24px); white-space: normal; text-align: center; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="orb orb-a"></div>
+  <div class="orb orb-b"></div>
+  <div class="orb orb-c"></div>
+  <div class="noise"></div>
+
+  <nav>
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-icon">🌟</div>
+        <span data-i18n="brand">67会员</span>
+      </div>
+      <div class="nav-actions">
+        <a class="nav-link" href="#plans" data-i18n="navPlans">会员方案</a>
+        <a class="nav-link" href="#rules" data-i18n="navRules">价格规则</a>
+        <select class="select" id="languageSelect" aria-label="Language">
+          <option value="zh">中文</option>
+          <option value="en">English</option>
+          <option value="ja">日本語</option>
+        </select>
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Theme">🌙 <span data-i18n="themeDark">黑色</span></button>
+        <button class="icon-btn" id="openCart" type="button" aria-label="Cart">🛒 <span data-i18n="cart">购物车</span><span class="cart-badge" id="cartBadge">0</span></button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div>
+        <div class="kicker" data-i18n="kicker">🌟 多语言 · 黑白主题 · 购物车 · GitHub Pages</div>
+        <h1><span data-i18n="heroTitle1">买几个</span> <span class="gradient-text">VIP</span><br><span data-i18n="heroTitle2">加入购物车再付款</span></h1>
+        <p class="lead" data-i18n="heroLead">
+          选择 Go、Plus、Pro，加入购物车，合并计算总价。支持中文、English、日本語，支持黑白两种风格，支付前仍需连续确认 10 次。
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#plans" data-i18n="chooseVip">选择 VIP</a>
+          <button class="btn btn-soft" id="heroCartBtn" type="button" data-i18n="openCart">打开购物车</button>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="device">
+          <div class="device-top">
+            <strong data-i18n="checkoutTitle">67 VIP Checkout</strong>
+            <div class="dots"><span></span><span></span><span></span></div>
+          </div>
+          <div class="device-body">
+            <div class="formula-card">
+              <small data-i18n="finalRule">FINAL PRICE RULE</small>
+              <strong data-i18n="formulaText">购物车总价 = 所有 VIP 单价 × 数量</strong>
+            </div>
+            <div class="mini-prices">
+              <div class="mini-price"><b>¥6.70</b><span data-i18n="goPrice">Go 单价</span></div>
+              <div class="mini-price"><b>¥13.13</b><span data-i18n="plusPrice">Plus 单价</span></div>
+              <div class="mini-price"><b>¥91.78</b><span data-i18n="proPrice">Pro 单价</span></div>
+            </div>
+            <div class="preview">
+              <div class="preview-title" data-i18n="cartPreview">CART PREVIEW</div>
+              <div class="preview-amount" id="heroPreview">0 items · ¥0.00</div>
+            </div>
+            <div class="cart-mini">
+              <div><strong id="heroCartCount">0</strong><span data-i18n="cartItemsLabel"> 个商品在购物车</span></div>
+              <button class="btn btn-primary" id="heroCheckoutBtn" type="button" data-i18n="checkout">去结算</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="plans">
+      <div class="section-head">
+        <h2 data-i18n="plansTitle">选择 VIP 类型和数量</h2>
+        <p class="section-desc" data-i18n="plansDesc">
+          每个方案都可以选择数量并加入购物车。购物车会合并相同类型的 VIP，并统一计算付款金额。
+        </p>
+      </div>
+
+      <div class="plans">
+        <article class="plan-card" data-plan="Go" data-price-cents="670" data-multiplier="1">
+          <div class="plan-top">
+            <div class="plan-icon">🌟</div>
+            <div>
+              <div class="plan-name">Go</div>
+              <div class="plan-note" data-i18n="goNote">入门 VIP 循环</div>
+            </div>
+          </div>
+          <div class="plan-price"><b>¥6.70</b> <span data-i18n="perItem">/ 个</span></div>
+          <ul class="features">
+            <li><span class="check">✓</span><span data-i18n="goF1">买 1 个 Go，可再买 1 个 VIP</span></li>
+            <li><span class="check">✓</span><span data-i18n="goF2">适合体验 10 次确认流程</span></li>
+            <li><span class="check">✓</span><span data-i18n="goF3">可加入购物车统一付款</span></li>
+          </ul>
+          <div class="quantity-box">
+            <div class="quantity-label"><span data-i18n="qty">购买数量</span><span class="quantity-caption">1</span></div>
+            <div class="qty-controls">
+              <button class="qty-btn" data-qty-minus type="button" aria-label="minus">−</button>
+              <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Go quantity" />
+              <button class="qty-btn" data-qty-plus type="button" aria-label="plus">+</button>
+            </div>
+          </div>
+          <div class="computed">
+            <div class="computed-item"><b class="card-total">¥6.70</b><span data-i18n="currentPrice">本次价格</span></div>
+            <div class="computed-item"><b class="card-more">1</b><span data-i18n="moreVip">可再买 VIP</span></div>
+          </div>
+          <div class="plan-actions">
+            <button class="btn btn-primary add-cart-btn" type="button" data-i18n="addToCart">加入购物车</button>
+            <button class="btn btn-soft buy-now-btn" type="button" data-i18n="buyNow">立即购买</button>
+          </div>
+        </article>
+
+        <article class="plan-card featured" data-plan="Plus" data-price-cents="1313" data-multiplier="3">
+          <div class="ribbon" data-i18n="recommended">推荐</div>
+          <div class="plan-top">
+            <div class="plan-icon">🌟</div>
+            <div>
+              <div class="plan-name">Plus</div>
+              <div class="plan-note" data-i18n="plusNote">标准 VIP 复购</div>
+            </div>
+          </div>
+          <div class="plan-price"><b>¥13.13</b> <span data-i18n="perItem">/ 个</span></div>
+          <ul class="features">
+            <li><span class="check">✓</span><span data-i18n="plusF1">买 1 个 Plus，可再买 3 个 VIP</span></li>
+            <li><span class="check">✓</span><span data-i18n="plusF2">因为所以，意义不明</span></li>
+            <li><span class="check">✓</span><span data-i18n="plusF3">支持购物车批量结算</span></li>
+          </ul>
+          <div class="quantity-box">
+            <div class="quantity-label"><span data-i18n="qty">购买数量</span><span class="quantity-caption">1</span></div>
+            <div class="qty-controls">
+              <button class="qty-btn" data-qty-minus type="button" aria-label="minus">−</button>
+              <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Plus quantity" />
+              <button class="qty-btn" data-qty-plus type="button" aria-label="plus">+</button>
+            </div>
+          </div>
+          <div class="computed">
+            <div class="computed-item"><b class="card-total">¥13.13</b><span data-i18n="currentPrice">本次价格</span></div>
+            <div class="computed-item"><b class="card-more">3</b><span data-i18n="moreVip">可再买 VIP</span></div>
+          </div>
+          <div class="plan-actions">
+            <button class="btn btn-primary add-cart-btn" type="button" data-i18n="addToCart">加入购物车</button>
+            <button class="btn btn-soft buy-now-btn" type="button" data-i18n="buyNow">立即购买</button>
+          </div>
+        </article>
+
+        <article class="plan-card" data-plan="Pro" data-price-cents="9178" data-multiplier="8">
+          <div class="plan-top">
+            <div class="plan-icon">🌟</div>
+            <div>
+              <div class="plan-name">Pro</div>
+              <div class="plan-note" data-i18n="proNote">高级 VIP 套娃</div>
+            </div>
+          </div>
+          <div class="plan-price"><b>¥91.78</b> <span data-i18n="perItem">/ 个</span></div>
+          <ul class="features">
+            <li><span class="check">✓</span><span data-i18n="proF1">买 1 个 Pro，可再买 8 个 VIP</span></li>
+            <li><span class="check">✓</span><span data-i18n="proF2">9178 级别的 SVIP 之汪体验</span></li>
+            <li><span class="check">✓</span><span data-i18n="proF3">适合认真地不明所以</span></li>
+          </ul>
+          <div class="quantity-box">
+            <div class="quantity-label"><span data-i18n="qty">购买数量</span><span class="quantity-caption">1</span></div>
+            <div class="qty-controls">
+              <button class="qty-btn" data-qty-minus type="button" aria-label="minus">−</button>
+              <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Pro quantity" />
+              <button class="qty-btn" data-qty-plus type="button" aria-label="plus">+</button>
+            </div>
+          </div>
+          <div class="computed">
+            <div class="computed-item"><b class="card-total">¥91.78</b><span data-i18n="currentPrice">本次价格</span></div>
+            <div class="computed-item"><b class="card-more">8</b><span data-i18n="moreVip">可再买 VIP</span></div>
+          </div>
+          <div class="plan-actions">
+            <button class="btn btn-primary add-cart-btn" type="button" data-i18n="addToCart">加入购物车</button>
+            <button class="btn btn-soft buy-now-btn" type="button" data-i18n="buyNow">立即购买</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal" id="rules">
+      <div class="section-head">
+        <h2 data-i18n="rulesTitle">新增功能说明</h2>
+        <p class="section-desc" data-i18n="rulesDesc">这个版本增加多语言、黑白主题和购物车。仍然是纯静态页面，适合直接部署到 GitHub Pages。</p>
+      </div>
+
+      <div class="rules">
+        <div class="rule-card">
+          <h3 data-i18n="priceRuleTitle">购物车价格怎么算？</h3>
+          <p data-i18n="priceRuleText">页面使用整数“分”计算，避免小数误差。购物车总价是所有商品的单价乘以数量后相加。</p>
+          <div class="formula-list">
+            <div class="formula-line"><span>Go</span><span>¥6.70 × <span data-i18n="qtyShort">数量</span></span></div>
+            <div class="formula-line"><span>Plus</span><span>¥13.13 × <span data-i18n="qtyShort">数量</span></span></div>
+            <div class="formula-line"><span>Pro</span><span>¥91.78 × <span data-i18n="qtyShort">数量</span></span></div>
+            <div class="formula-line"><span data-i18n="cartTotal">购物车总价</span><span data-i18n="sumAll">全部商品金额相加</span></div>
+          </div>
+        </div>
+
+        <div class="rule-card">
+          <h3 data-i18n="deployTitle">GitHub Pages 用法</h3>
+          <div class="deploy-box">
+            <div class="deploy-step">
+              <div class="step-num">1</div>
+              <div><strong data-i18n="deploy1Title">上传 index.html</strong><p data-i18n="deploy1Text">把 ZIP 解压后，将 index.html 上传到仓库根目录。</p></div>
+            </div>
+            <div class="deploy-step">
+              <div class="step-num">2</div>
+              <div><strong data-i18n="deploy2Title">启用 Pages</strong><p data-i18n="deploy2Text">Settings → Pages → Deploy from a branch → main → / root。</p></div>
+            </div>
+            <div class="deploy-step">
+              <div class="step-num">3</div>
+              <div><strong data-i18n="deploy3Title">纯静态页面</strong><p data-i18n="deploy3Text">不需要服务器、不需要数据库，也不需要真实支付接口。</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span data-i18n="footerLeft">© 67会员 · Go / Plus / Pro</span>
+    <span data-i18n="footerRight">🌟 多语言 · 黑白主题 · 购物车</span>
+  </footer>
+
+  <div class="drawer-mask" id="cartMask" aria-hidden="true">
+    <aside class="cart-drawer" role="dialog" aria-modal="true" aria-label="Shopping cart">
+      <div class="drawer-head">
+        <div><h3 data-i18n="cartTitle">购物车</h3><p data-i18n="cartDesc">检查 VIP 类型和数量，然后进入 10 次确认。</p></div>
+        <button class="close" id="closeCart" type="button" aria-label="Close">×</button>
+      </div>
+      <div class="cart-list" id="cartList"></div>
+      <div class="cart-footer">
+        <div class="summary-row"><span data-i18n="totalItems">商品数量</span><strong id="summaryCount">0</strong></div>
+        <div class="summary-row"><span data-i18n="totalMore">可再买 VIP</span><strong id="summaryMore">0</strong></div>
+        <div class="summary-total"><span data-i18n="totalAmount">总金额</span><strong id="summaryTotal">¥0.00</strong></div>
+        <button class="btn btn-primary" id="checkoutBtn" type="button" data-i18n="checkout">去结算</button>
+        <button class="btn btn-soft" id="clearCartBtn" type="button" data-i18n="clearCart">清空购物车</button>
+      </div>
+    </aside>
+  </div>
+
+  <div class="modal" id="confirmModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-top">
+        <div><h3 id="modalTitle" data-i18n="confirmTitle">确认订单</h3><p id="modalDesc" data-i18n="confirmDesc">请连续确认 10 次。全部确认后，将进入支付方式选择。</p></div>
+        <button class="close" id="closeConfirm" type="button" aria-label="Close">×</button>
+      </div>
+      <div class="order-card" id="orderSummary"></div>
+      <div class="progress-wrap">
+        <div class="progress-info"><span data-i18n="confirmProgress">确认进度</span><span><span id="confirmNow">0</span>/10</span></div>
+        <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+      </div>
+      <div class="confirm-copy" id="confirmCopy">请确认：你知道本次价格会根据购物车自动计算。</div>
+      <div class="modal-actions">
+        <button class="btn btn-soft" id="cancelConfirm" type="button" data-i18n="cancel">取消</button>
+        <button class="btn btn-primary" id="confirmBtn" type="button">确认第 1 次</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="paymentModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-top">
+        <div><h3 data-i18n="paymentTitle">选择支付方式</h3><p data-i18n="paymentDesc">请选择一种支付方式。点击后会进入支付加载状态，完成后显示付款成功和付款金额。</p></div>
+        <button class="close" id="closePayment" type="button" aria-label="Close">×</button>
+      </div>
+      <div class="order-card">
+        <div class="order-row"><span data-i18n="totalItems">商品数量</span><strong id="paymentQty">0</strong></div>
+        <div class="order-row"><span data-i18n="paymentAmount">付款金额</span><strong id="paymentTotal">¥0.00</strong></div>
+      </div>
+      <div class="payment-grid" id="paymentGrid">
+        <button class="pay-option" data-pay-method-key="wechat" type="button"><div class="pay-icon">💬</div><strong data-i18n="payWechat">微信支付</strong><span data-i18n="payWechatDesc">点击后模拟微信支付加载</span></button>
+        <button class="pay-option" data-pay-method-key="alipay" type="button"><div class="pay-icon">🔵</div><strong data-i18n="payAlipay">支付宝</strong><span data-i18n="payAlipayDesc">点击后模拟支付宝付款</span></button>
+        <button class="pay-option" data-pay-method-key="card" type="button"><div class="pay-icon">💳</div><strong data-i18n="payCard">银行卡</strong><span data-i18n="payCardDesc">点击后模拟银行卡扣款</span></button>
+        <button class="pay-option" data-pay-method-key="unionpay" type="button"><div class="pay-icon">⚡</div><strong data-i18n="payUnion">云闪付</strong><span data-i18n="payUnionDesc">点击后模拟快速支付</span></button>
+      </div>
+      <div class="payment-loading" id="paymentLoading">
+        <div class="spinner"></div>
+        <div class="loading-title" data-i18n="loadingTitle">支付加载中...</div>
+        <div class="loading-text" id="loadingText">正在处理付款，请稍候。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="successModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="success-badge">✓</div>
+      <h3 class="success-title" data-i18n="successTitle">付款成功</h3>
+      <div class="charge-box">
+        <div class="charge-label" data-i18n="paymentAmount">付款金额</div>
+        <div class="charge-amount" id="successAmount">¥0.00</div>
+        <div class="paid-method" id="successMethod">支付方式：微信支付</div>
+        <div class="charge-note" id="successNote">页面演示效果，不会真实扣款。</div>
+      </div>
+      <div class="modal-actions" style="grid-template-columns:1fr;margin-top:22px;">
+        <button class="btn btn-primary" id="closeSuccess" type="button" data-i18n="done">完成</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">已加入购物车</div>
+
+  <script>
+    const translations = {
+      zh: {
+        brand: "67会员", navPlans: "会员方案", navRules: "价格规则", cart: "购物车", themeDark: "黑色", themeLight: "白色",
+        kicker: "🌟 多语言 · 黑白主题 · 购物车 · GitHub Pages", heroTitle1: "买几个", heroTitle2: "加入购物车再付款",
+        heroLead: "选择 Go、Plus、Pro，加入购物车，合并计算总价。支持中文、English、日本語，支持黑白两种风格，支付前仍需连续确认 10 次。",
+        chooseVip: "选择 VIP", openCart: "打开购物车", checkoutTitle: "67 VIP Checkout", finalRule: "FINAL PRICE RULE", formulaText: "购物车总价 = 所有 VIP 单价 × 数量",
+        goPrice: "Go 单价", plusPrice: "Plus 单价", proPrice: "Pro 单价", cartPreview: "CART PREVIEW", cartItemsLabel: " 个商品在购物车", checkout: "去结算",
+        plansTitle: "选择 VIP 类型和数量", plansDesc: "每个方案都可以选择数量并加入购物车。购物车会合并相同类型的 VIP，并统一计算付款金额。",
+        goNote: "入门 VIP 循环", plusNote: "标准 VIP 复购", proNote: "高级 VIP 套娃", perItem: "/ 个", qty: "购买数量", qtyShort: "数量",
+        goF1: "买 1 个 Go，可再买 1 个 VIP", goF2: "适合体验 10 次确认流程", goF3: "可加入购物车统一付款",
+        plusF1: "买 1 个 Plus，可再买 3 个 VIP", plusF2: "因为所以，意义不明", plusF3: "支持购物车批量结算",
+        proF1: "买 1 个 Pro，可再买 8 个 VIP", proF2: "9178 级别的 SVIP 之汪体验", proF3: "适合认真地不明所以",
+        currentPrice: "本次价格", moreVip: "可再买 VIP", addToCart: "加入购物车", buyNow: "立即购买", recommended: "推荐",
+        rulesTitle: "新增功能说明", rulesDesc: "这个版本增加多语言、黑白主题和购物车。仍然是纯静态页面，适合直接部署到 GitHub Pages。",
+        priceRuleTitle: "购物车价格怎么算？", priceRuleText: "页面使用整数“分”计算，避免小数误差。购物车总价是所有商品的单价乘以数量后相加。",
+        cartTotal: "购物车总价", sumAll: "全部商品金额相加", deployTitle: "GitHub Pages 用法", deploy1Title: "上传 index.html", deploy1Text: "把 ZIP 解压后，将 index.html 上传到仓库根目录。", deploy2Title: "启用 Pages", deploy2Text: "Settings → Pages → Deploy from a branch → main → / root。", deploy3Title: "纯静态页面", deploy3Text: "不需要服务器、不需要数据库，也不需要真实支付接口。",
+        footerLeft: "© 67会员 · Go / Plus / Pro", footerRight: "🌟 多语言 · 黑白主题 · 购物车", cartTitle: "购物车", cartDesc: "检查 VIP 类型和数量，然后进入 10 次确认。", totalItems: "商品数量", totalMore: "可再买 VIP", totalAmount: "总金额", clearCart: "清空购物车", emptyCart: "购物车是空的\n先选择一个 VIP 加入购物车。", remove: "删除",
+        confirmTitle: "确认订单", confirmDesc: "请连续确认 10 次。全部确认后，将进入支付方式选择。", confirmProgress: "确认进度", cancel: "取消", confirmButton: "确认第 {n} 次", finalConfirmButton: "第 10 次确认并选择支付", confirmTexts: ["第 1 次确认：确认你要购买购物车里的 VIP。","第 2 次确认：确认最终价格会按购物车总价计算。","第 3 次确认：确认 Go、Plus、Pro 的单价不同。","第 4 次确认：确认数量越多，付款显示金额越大。","第 5 次确认：确认你已进入 67 会员购物车流程。","第 6 次确认：确认因为所以，意义不明但价格明确。","第 7 次确认：确认 9178 与 1313 已经参与计算。","第 8 次确认：确认 SVIP 之汪正在旁观订单。","第 9 次确认：最后再确认一次前的确认。","第 10 次确认：最终确认，马上进入支付方式选择。"],
+        paymentTitle: "选择支付方式", paymentDesc: "请选择一种支付方式。点击后会进入支付加载状态，完成后显示付款成功和付款金额。", paymentAmount: "付款金额", payWechat: "微信支付", payWechatDesc: "点击后模拟微信支付加载", payAlipay: "支付宝", payAlipayDesc: "点击后模拟支付宝付款", payCard: "银行卡", payCardDesc: "点击后模拟银行卡扣款", payUnion: "云闪付", payUnionDesc: "点击后模拟快速支付", loadingTitle: "支付加载中...", loadingWith: "正在使用 {method} 支付 {amount}。", loadingText: "正在处理付款，请稍候。", successTitle: "付款成功", methodLabel: "支付方式", demoNote: "页面演示效果，不会真实扣款。", successDetail: "本次购买 {count} 个商品，可再买 {more} 个 VIP。页面演示效果，不会真实扣款。", done: "完成", added: "已加入购物车", cartCleared: "购物车已清空", emptyToast: "购物车为空", cancelled: "已取消", buyNowToast: "已加入购物车并打开结算"
+      },
+      en: {
+        brand: "67 Membership", navPlans: "Plans", navRules: "Rules", cart: "Cart", themeDark: "Dark", themeLight: "Light",
+        kicker: "🌟 Multilingual · Light/Dark · Cart · GitHub Pages", heroTitle1: "Buy VIPs", heroTitle2: "add to cart, then pay",
+        heroLead: "Choose Go, Plus, or Pro, add items to the cart, and calculate the total automatically. Supports Chinese, English, Japanese, light/dark themes, and a 10-step confirmation flow before payment.",
+        chooseVip: "Choose VIP", openCart: "Open Cart", checkoutTitle: "67 VIP Checkout", finalRule: "FINAL PRICE RULE", formulaText: "Cart total = every VIP price × quantity",
+        goPrice: "Go price", plusPrice: "Plus price", proPrice: "Pro price", cartPreview: "CART PREVIEW", cartItemsLabel: " items in cart", checkout: "Checkout",
+        plansTitle: "Choose VIP type and quantity", plansDesc: "Set the quantity for each plan and add it to the cart. Same VIP types are merged and paid together.",
+        goNote: "Starter VIP loop", plusNote: "Standard VIP repurchase", proNote: "Premium VIP stack", perItem: "/ item", qty: "Quantity", qtyShort: "quantity",
+        goF1: "Buy 1 Go, buy 1 more VIP", goF2: "Try the 10-step confirmation flow", goF3: "Add to cart and pay together",
+        plusF1: "Buy 1 Plus, buy 3 more VIPs", plusF2: "Because therefore, unclear but fun", plusF3: "Batch checkout with cart",
+        proF1: "Buy 1 Pro, buy 8 more VIPs", proF2: "9178-level SVIP dog experience", proF3: "For serious nonsense enjoyers",
+        currentPrice: "Current price", moreVip: "More VIPs", addToCart: "Add to Cart", buyNow: "Buy Now", recommended: "Popular",
+        rulesTitle: "New features", rulesDesc: "This version adds multilingual text, light/dark themes, and a shopping cart. It is still a static page ready for GitHub Pages.",
+        priceRuleTitle: "How is cart price calculated?", priceRuleText: "The page uses cents as integers to avoid decimal errors. The cart total is the sum of every item price multiplied by quantity.",
+        cartTotal: "Cart total", sumAll: "Sum of all items", deployTitle: "GitHub Pages usage", deploy1Title: "Upload index.html", deploy1Text: "Extract the ZIP and upload index.html to the repository root.", deploy2Title: "Enable Pages", deploy2Text: "Settings → Pages → Deploy from a branch → main → / root.", deploy3Title: "Static page", deploy3Text: "No server, database, or real payment API is required.",
+        footerLeft: "© 67 Membership · Go / Plus / Pro", footerRight: "🌟 Multilingual · Light/Dark · Cart", cartTitle: "Cart", cartDesc: "Review VIP types and quantities, then enter 10 confirmations.", totalItems: "Items", totalMore: "More VIPs", totalAmount: "Total", clearCart: "Clear Cart", emptyCart: "Your cart is empty\nChoose a VIP first.", remove: "Remove",
+        confirmTitle: "Confirm Order", confirmDesc: "Please confirm 10 times. Then choose a payment method.", confirmProgress: "Progress", cancel: "Cancel", confirmButton: "Confirm #{n}", finalConfirmButton: "Confirm #10 and Pay", confirmTexts: ["#1: Confirm you want to buy the VIPs in the cart.","#2: Confirm the final price is based on the cart total.","#3: Confirm Go, Plus, and Pro have different prices.","#4: Confirm more quantity means a larger displayed payment amount.","#5: Confirm you have entered the 67 cart flow.","#6: Confirm the meaning is unclear but the price is clear.","#7: Confirm 9178 and 1313 joined the calculation.","#8: Confirm the SVIP dog is watching the order.","#9: Confirm the confirmation before the final confirmation.","#10: Final confirmation. Payment method selection starts now."],
+        paymentTitle: "Choose Payment Method", paymentDesc: "Choose a payment method. A loading state will appear before the success amount is shown.", paymentAmount: "Payment Amount", payWechat: "WeChat Pay", payWechatDesc: "Simulate WeChat payment loading", payAlipay: "Alipay", payAlipayDesc: "Simulate Alipay payment", payCard: "Bank Card", payCardDesc: "Simulate card payment", payUnion: "UnionPay", payUnionDesc: "Simulate quick payment", loadingTitle: "Payment loading...", loadingWith: "Paying {amount} with {method}.", loadingText: "Processing payment, please wait.", successTitle: "Payment Successful", methodLabel: "Method", demoNote: "Demo only. No real payment is made.", successDetail: "Purchased {count} item(s), unlocking {more} more VIP purchase slots. Demo only. No real payment is made.", done: "Done", added: "Added to cart", cartCleared: "Cart cleared", emptyToast: "Cart is empty", cancelled: "Cancelled", buyNowToast: "Added to cart and opened checkout"
+      },
+      ja: {
+        brand: "67会員", navPlans: "プラン", navRules: "ルール", cart: "カート", themeDark: "黒", themeLight: "白",
+        kicker: "🌟 多言語 · 白/黒テーマ · カート · GitHub Pages", heroTitle1: "VIPを選んで", heroTitle2: "カートに入れて支払い",
+        heroLead: "Go、Plus、Proを選び、カートで合計金額を自動計算します。中文、English、日本語、白/黒テーマ、支払い前の10回確認に対応します。",
+        chooseVip: "VIPを選ぶ", openCart: "カートを開く", checkoutTitle: "67 VIP Checkout", finalRule: "FINAL PRICE RULE", formulaText: "カート合計 = VIP単価 × 数量の合計",
+        goPrice: "Go 単価", plusPrice: "Plus 単価", proPrice: "Pro 単価", cartPreview: "CART PREVIEW", cartItemsLabel: " 個の商品がカートにあります", checkout: "レジへ",
+        plansTitle: "VIPタイプと数量を選択", plansDesc: "各プランの数量を選んでカートに追加できます。同じVIPタイプはまとめて計算されます。",
+        goNote: "入門VIP", plusNote: "標準VIP", proNote: "上級VIP", perItem: "/ 個", qty: "数量", qtyShort: "数量",
+        goF1: "Goを1個買うとVIPを1個追加購入可能", goF2: "10回確認フローを体験", goF3: "カートでまとめて支払い",
+        plusF1: "Plusを1個買うとVIPを3個追加購入可能", plusF2: "だからつまり、意味不明", plusF3: "カートで一括決済対応",
+        proF1: "Proを1個買うとVIPを8個追加購入可能", proF2: "9178級SVIPの犬体験", proF3: "本気で意味不明を楽しむ方向け",
+        currentPrice: "今回の価格", moreVip: "追加VIP", addToCart: "カートに追加", buyNow: "今すぐ購入", recommended: "おすすめ",
+        rulesTitle: "新機能", rulesDesc: "このバージョンでは多言語、白/黒テーマ、ショッピングカートを追加しました。GitHub Pages向けの静的ページです。",
+        priceRuleTitle: "カート価格の計算方法", priceRuleText: "小数誤差を避けるため、金額は整数の分で計算します。カート合計はすべての商品の単価×数量の合計です。",
+        cartTotal: "カート合計", sumAll: "全商品の合計", deployTitle: "GitHub Pagesの使い方", deploy1Title: "index.htmlをアップロード", deploy1Text: "ZIPを解凍し、index.htmlをリポジトリのルートに置きます。", deploy2Title: "Pagesを有効化", deploy2Text: "Settings → Pages → Deploy from a branch → main → / root。", deploy3Title: "静的ページ", deploy3Text: "サーバー、DB、実決済APIは不要です。",
+        footerLeft: "© 67会員 · Go / Plus / Pro", footerRight: "🌟 多言語 · 白/黒テーマ · カート", cartTitle: "カート", cartDesc: "VIPタイプと数量を確認し、10回確認に進みます。", totalItems: "商品数", totalMore: "追加VIP", totalAmount: "合計", clearCart: "カートを空にする", emptyCart: "カートは空です\nまずVIPを選んでください。", remove: "削除",
+        confirmTitle: "注文確認", confirmDesc: "10回確認してください。その後、支払い方法を選びます。", confirmProgress: "確認進度", cancel: "キャンセル", confirmButton: "{n}回目を確認", finalConfirmButton: "10回目を確認して支払い", confirmTexts: ["1回目：カート内のVIPを購入することを確認。","2回目：最終価格はカート合計で計算されます。","3回目：Go、Plus、Proの単価は異なります。","4回目：数量が多いほど表示金額も大きくなります。","5回目：67会員カートフローに入りました。","6回目：意味は不明ですが価格は明確です。","7回目：9178と1313が計算に参加しました。","8回目：SVIPの犬が注文を見守っています。","9回目：最後の確認前の確認です。","10回目：最終確認。支払い方法選択へ進みます。"],
+        paymentTitle: "支払い方法を選択", paymentDesc: "支払い方法を選んでください。読み込み後、支払い成功と金額が表示されます。", paymentAmount: "支払い金額", payWechat: "WeChat Pay", payWechatDesc: "WeChat支払いをシミュレート", payAlipay: "Alipay", payAlipayDesc: "Alipay支払いをシミュレート", payCard: "銀行カード", payCardDesc: "カード支払いをシミュレート", payUnion: "UnionPay", payUnionDesc: "高速支払いをシミュレート", loadingTitle: "支払い処理中...", loadingWith: "{method}で{amount}を支払い中。", loadingText: "処理中です。しばらくお待ちください。", successTitle: "支払い成功", methodLabel: "支払い方法", demoNote: "デモ表示のみです。実際の支払いは発生しません。", successDetail: "今回の商品数は{count}個、追加購入可能VIPは{more}個です。デモ表示のみです。実際の支払いは発生しません。", done: "完了", added: "カートに追加しました", cartCleared: "カートを空にしました", emptyToast: "カートは空です", cancelled: "キャンセルしました", buyNowToast: "カートに追加して決済を開きました"
+      }
+    };
+
+    const planData = {
+      Go: { priceCents: 670, multiplier: 1 },
+      Plus: { priceCents: 1313, multiplier: 3 },
+      Pro: { priceCents: 9178, multiplier: 8 }
+    };
+
+    const state = {
+      lang: localStorage.getItem("vip_lang") || "zh",
+      theme: localStorage.getItem("vip_theme") || "light",
+      cart: JSON.parse(localStorage.getItem("vip_cart") || "[]"),
+      confirmCount: 0,
+      currentOrder: null,
+      payMethodKey: "wechat"
+    };
+
+    const $ = selector => document.querySelector(selector);
+    const $$ = selector => Array.from(document.querySelectorAll(selector));
+
+    const els = {
+      languageSelect: $("#languageSelect"), themeToggle: $("#themeToggle"), openCart: $("#openCart"), heroCartBtn: $("#heroCartBtn"), heroCheckoutBtn: $("#heroCheckoutBtn"),
+      cartMask: $("#cartMask"), closeCart: $("#closeCart"), cartList: $("#cartList"), cartBadge: $("#cartBadge"), summaryCount: $("#summaryCount"), summaryMore: $("#summaryMore"), summaryTotal: $("#summaryTotal"), checkoutBtn: $("#checkoutBtn"), clearCartBtn: $("#clearCartBtn"), heroPreview: $("#heroPreview"), heroCartCount: $("#heroCartCount"),
+      confirmModal: $("#confirmModal"), closeConfirm: $("#closeConfirm"), cancelConfirm: $("#cancelConfirm"), orderSummary: $("#orderSummary"), confirmNow: $("#confirmNow"), progressBar: $("#progressBar"), confirmCopy: $("#confirmCopy"), confirmBtn: $("#confirmBtn"),
+      paymentModal: $("#paymentModal"), closePayment: $("#closePayment"), paymentQty: $("#paymentQty"), paymentTotal: $("#paymentTotal"), paymentGrid: $("#paymentGrid"), paymentLoading: $("#paymentLoading"), loadingText: $("#loadingText"),
+      successModal: $("#successModal"), closeSuccess: $("#closeSuccess"), successAmount: $("#successAmount"), successMethod: $("#successMethod"), successNote: $("#successNote"), toast: $("#toast")
+    };
+
+    function t(key) { return translations[state.lang][key] || translations.zh[key] || key; }
+    function formatMoney(cents) { return "¥" + (cents / 100).toLocaleString("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+    function clampQuantity(value) { const n = Number.parseInt(value, 10); return Number.isNaN(n) ? 1 : Math.min(99, Math.max(1, n)); }
+    function saveCart() { localStorage.setItem("vip_cart", JSON.stringify(state.cart)); }
+    function getCartTotals() {
+      return state.cart.reduce((acc, item) => {
+        const data = planData[item.plan];
+        acc.count += item.qty;
+        acc.totalCents += data.priceCents * item.qty;
+        acc.more += data.multiplier * item.qty;
+        return acc;
+      }, { count: 0, totalCents: 0, more: 0 });
+    }
+
+    function applyTheme() {
+      document.documentElement.dataset.theme = state.theme;
+      localStorage.setItem("vip_theme", state.theme);
+      const label = state.theme === "light" ? t("themeDark") : t("themeLight");
+      els.themeToggle.innerHTML = state.theme === "light" ? "🌙 <span>" + label + "</span>" : "☀️ <span>" + label + "</span>";
+    }
+
+    function applyLanguage() {
+      document.documentElement.lang = state.lang === "zh" ? "zh-CN" : state.lang === "ja" ? "ja" : "en";
+      els.languageSelect.value = state.lang;
+      $$('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+      localStorage.setItem("vip_lang", state.lang);
+      applyTheme();
+      updateAllPlanCards();
+      renderCart();
+      if (state.currentOrder) renderOrderSummary();
+    }
+
+    function readCardOrder(card) {
+      const plan = card.dataset.plan;
+      const unitCents = Number(card.dataset.priceCents);
+      const multiplier = Number(card.dataset.multiplier);
+      const input = card.querySelector(".qty-input");
+      const qty = clampQuantity(input.value);
+      input.value = qty;
+      return { plan, qty, unitCents, multiplier, totalCents: unitCents * qty, moreCount: multiplier * qty };
+    }
+
+    function updatePlanCard(card) {
+      const order = readCardOrder(card);
+      card.querySelector(".quantity-caption").textContent = order.qty;
+      card.querySelector(".card-total").textContent = formatMoney(order.totalCents);
+      card.querySelector(".card-more").textContent = order.moreCount;
+    }
+
+    function updateAllPlanCards() { $$(".plan-card").forEach(updatePlanCard); }
+
+    function addToCart(plan, qty, showCart = false) {
+      const safeQty = clampQuantity(qty);
+      const found = state.cart.find(item => item.plan === plan);
+      if (found) found.qty = clampQuantity(found.qty + safeQty);
+      else state.cart.push({ plan, qty: safeQty });
+      saveCart();
+      renderCart();
+      showToast(showCart ? t("buyNowToast") : t("added"));
+      if (showCart) openCart();
+    }
+
+    function setCartQty(plan, qty) {
+      const item = state.cart.find(i => i.plan === plan);
+      if (!item) return;
+      item.qty = clampQuantity(qty);
+      saveCart();
+      renderCart();
+    }
+
+    function removeFromCart(plan) {
+      state.cart = state.cart.filter(item => item.plan !== plan);
+      saveCart();
+      renderCart();
+    }
+
+    function renderCart() {
+      const totals = getCartTotals();
+      els.cartBadge.textContent = totals.count;
+      els.summaryCount.textContent = totals.count;
+      els.summaryMore.textContent = totals.more;
+      els.summaryTotal.textContent = formatMoney(totals.totalCents);
+      els.heroCartCount.textContent = totals.count;
+      els.heroPreview.textContent = totals.count + " " + (state.lang === "zh" ? "items" : "items") + " · " + formatMoney(totals.totalCents);
+      els.checkoutBtn.disabled = totals.count === 0;
+      els.checkoutBtn.style.opacity = totals.count === 0 ? ".55" : "1";
+
+      if (state.cart.length === 0) {
+        els.cartList.innerHTML = '<div class="cart-empty">' + t("emptyCart").replace(/\n/g, "<br>") + '</div>';
+        return;
+      }
+
+      els.cartList.innerHTML = state.cart.map(item => {
+        const data = planData[item.plan];
+        return '<div class="cart-item" data-cart-plan="' + item.plan + '">' +
+          '<div class="cart-item-top"><div><strong>🌟 ' + item.plan + '</strong><small>' + formatMoney(data.priceCents) + ' × ' + item.qty + '</small></div><button class="cart-remove" data-remove-plan="' + item.plan + '">' + t("remove") + '</button></div>' +
+          '<div class="cart-item-bottom"><div class="mini-qty"><button data-cart-minus="' + item.plan + '">−</button><input data-cart-input="' + item.plan + '" value="' + item.qty + '" inputmode="numeric" type="number" min="1" max="99"><button data-cart-plus="' + item.plan + '">+</button></div><div class="item-total">' + formatMoney(data.priceCents * item.qty) + '</div></div>' +
+        '</div>';
+      }).join("");
+
+      $$('[data-remove-plan]').forEach(btn => btn.addEventListener("click", () => removeFromCart(btn.dataset.removePlan)));
+      $$('[data-cart-minus]').forEach(btn => btn.addEventListener("click", () => {
+        const item = state.cart.find(i => i.plan === btn.dataset.cartMinus);
+        if (item) setCartQty(item.plan, item.qty - 1);
+      }));
+      $$('[data-cart-plus]').forEach(btn => btn.addEventListener("click", () => {
+        const item = state.cart.find(i => i.plan === btn.dataset.cartPlus);
+        if (item) setCartQty(item.plan, item.qty + 1);
+      }));
+      $$('[data-cart-input]').forEach(input => input.addEventListener("input", () => setCartQty(input.dataset.cartInput, input.value)));
+    }
+
+    function openCart() { els.cartMask.classList.add("show"); els.cartMask.setAttribute("aria-hidden", "false"); }
+    function closeCart() { els.cartMask.classList.remove("show"); els.cartMask.setAttribute("aria-hidden", "true"); }
+
+    function buildOrderFromCart() {
+      const totals = getCartTotals();
+      return { items: state.cart.map(item => ({ ...item })), count: totals.count, totalCents: totals.totalCents, more: totals.more };
+    }
+
+    function renderOrderSummary() {
+      if (!state.currentOrder) return;
+      const itemRows = state.currentOrder.items.map(item => {
+        const data = planData[item.plan];
+        return '<div class="order-row"><span>' + item.plan + ' × ' + item.qty + '</span><strong>' + formatMoney(data.priceCents * item.qty) + '</strong></div>';
+      }).join("");
+      els.orderSummary.innerHTML = itemRows +
+        '<div class="order-row"><span>' + t("totalItems") + '</span><strong>' + state.currentOrder.count + '</strong></div>' +
+        '<div class="order-row"><span>' + t("totalMore") + '</span><strong>' + state.currentOrder.more + '</strong></div>' +
+        '<div class="order-row order-total"><span>' + t("totalAmount") + '</span><strong>' + formatMoney(state.currentOrder.totalCents) + '</strong></div>';
+    }
+
+    function startCheckout() {
+      if (state.cart.length === 0) { showToast(t("emptyToast")); return; }
+      state.currentOrder = buildOrderFromCart();
+      state.confirmCount = 0;
+      closeCart();
+      renderOrderSummary();
+      updateConfirm();
+      els.confirmModal.classList.add("show");
+      els.confirmModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeConfirm(show = true) {
+      els.confirmModal.classList.remove("show");
+      els.confirmModal.setAttribute("aria-hidden", "true");
+      if (show) showToast(t("cancelled"));
+    }
+
+    function updateConfirm() {
+      const index = Math.min(state.confirmCount, 9);
+      els.confirmNow.textContent = state.confirmCount;
+      els.progressBar.style.width = (state.confirmCount / 10 * 100) + "%";
+      els.confirmCopy.textContent = t("confirmTexts")[index];
+      els.confirmBtn.textContent = state.confirmCount < 9 ? t("confirmButton").replace("{n}", state.confirmCount + 1) : t("finalConfirmButton");
+    }
+
+    function openPayment() {
+      closeConfirm(false);
+      els.paymentQty.textContent = state.currentOrder.count;
+      els.paymentTotal.textContent = formatMoney(state.currentOrder.totalCents);
+      els.paymentGrid.style.display = "grid";
+      els.paymentLoading.classList.remove("show");
+      els.loadingText.textContent = t("loadingText");
+      els.paymentModal.classList.add("show");
+      els.paymentModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closePayment(show = true) {
+      els.paymentModal.classList.remove("show");
+      els.paymentModal.setAttribute("aria-hidden", "true");
+      els.paymentGrid.style.display = "grid";
+      els.paymentLoading.classList.remove("show");
+      if (show) showToast(t("cancelled"));
+    }
+
+    function getMethodName(key) {
+      const map = { wechat: "payWechat", alipay: "payAlipay", card: "payCard", unionpay: "payUnion" };
+      return t(map[key] || "payWechat");
+    }
+
+    function startPayment(methodKey) {
+      if (!state.currentOrder) return;
+      state.payMethodKey = methodKey;
+      const method = getMethodName(methodKey);
+      els.paymentGrid.style.display = "none";
+      els.paymentLoading.classList.add("show");
+      els.loadingText.textContent = t("loadingWith").replace("{method}", method).replace("{amount}", formatMoney(state.currentOrder.totalCents));
+      setTimeout(() => showSuccess(), 1600);
+    }
+
+    function showSuccess() {
+      const method = getMethodName(state.payMethodKey);
+      els.paymentModal.classList.remove("show");
+      els.paymentModal.setAttribute("aria-hidden", "true");
+      els.successAmount.textContent = formatMoney(state.currentOrder.totalCents);
+      els.successMethod.textContent = t("methodLabel") + "：" + method;
+      els.successNote.textContent = t("successDetail").replace("{count}", state.currentOrder.count).replace("{more}", state.currentOrder.more);
+      els.successModal.classList.add("show");
+      els.successModal.setAttribute("aria-hidden", "false");
+      state.cart = [];
+      saveCart();
+      renderCart();
+    }
+
+    function closeSuccess() {
+      els.successModal.classList.remove("show");
+      els.successModal.setAttribute("aria-hidden", "true");
+    }
+
+    function showToast(text) {
+      els.toast.textContent = text;
+      els.toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => els.toast.classList.remove("show"), 1800);
+    }
+
+    function handleReveal() {
+      $$(".reveal").forEach(el => {
+        const top = el.getBoundingClientRect().top;
+        if (top < window.innerHeight - 80) el.classList.add("show");
+      });
+    }
+
+    $$(".plan-card").forEach(card => {
+      const input = card.querySelector(".qty-input");
+      card.querySelector("[data-qty-minus]").addEventListener("click", () => { input.value = clampQuantity(Number(input.value) - 1); updatePlanCard(card); });
+      card.querySelector("[data-qty-plus]").addEventListener("click", () => { input.value = clampQuantity(Number(input.value) + 1); updatePlanCard(card); });
+      input.addEventListener("input", () => updatePlanCard(card));
+      input.addEventListener("blur", () => updatePlanCard(card));
+      card.querySelector(".add-cart-btn").addEventListener("click", () => { const order = readCardOrder(card); addToCart(order.plan, order.qty, false); });
+      card.querySelector(".buy-now-btn").addEventListener("click", () => { const order = readCardOrder(card); addToCart(order.plan, order.qty, true); });
+    });
+
+    els.languageSelect.addEventListener("change", () => { state.lang = els.languageSelect.value; applyLanguage(); });
+    els.themeToggle.addEventListener("click", () => { state.theme = state.theme === "light" ? "dark" : "light"; applyTheme(); });
+    els.openCart.addEventListener("click", openCart);
+    els.heroCartBtn.addEventListener("click", openCart);
+    els.closeCart.addEventListener("click", closeCart);
+    els.cartMask.addEventListener("click", e => { if (e.target === els.cartMask) closeCart(); });
+    els.checkoutBtn.addEventListener("click", startCheckout);
+    els.heroCheckoutBtn.addEventListener("click", startCheckout);
+    els.clearCartBtn.addEventListener("click", () => { state.cart = []; saveCart(); renderCart(); showToast(t("cartCleared")); });
+
+    els.closeConfirm.addEventListener("click", () => closeConfirm(true));
+    els.cancelConfirm.addEventListener("click", () => closeConfirm(true));
+    els.confirmBtn.addEventListener("click", () => { state.confirmCount += 1; updateConfirm(); if (state.confirmCount >= 10) setTimeout(openPayment, 260); });
+    els.confirmModal.addEventListener("click", e => { if (e.target === els.confirmModal) closeConfirm(true); });
+
+    els.closePayment.addEventListener("click", () => closePayment(true));
+    $$('[data-pay-method-key]').forEach(button => button.addEventListener("click", () => startPayment(button.dataset.payMethodKey)));
+    els.paymentModal.addEventListener("click", e => { if (e.target === els.paymentModal && !els.paymentLoading.classList.contains("show")) closePayment(true); });
+
+    els.closeSuccess.addEventListener("click", closeSuccess);
+    els.successModal.addEventListener("click", e => { if (e.target === els.successModal) closeSuccess(); });
+
+    window.addEventListener("scroll", handleReveal);
+    window.addEventListener("load", () => { applyLanguage(); handleReveal(); });
+
+    state.lang = translations[state.lang] ? state.lang : "zh";
+    state.theme = state.theme === "dark" ? "dark" : "light";
+    applyLanguage();
+    renderCart();
+    handleReveal();
+  </script>
+</body>
+</html>
