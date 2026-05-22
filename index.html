@@ -1,1179 +1,348 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="light">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="67会员 VIP 购买演示页面：多语言、黑白主题、购物车、会员卡生成器、订单记录、等级进化动画、支付成功烟花，适合 GitHub Pages 静态部署。" />
-  <title>67会员｜VIP购买系统</title>
-  <style>
-    :root {
-      --bg: #f6f7fb;
-      --bg2: #ffffff;
-      --surface: rgba(255,255,255,.82);
-      --surface2: rgba(255,255,255,.96);
-      --text: #111827;
-      --muted: #667085;
-      --line: rgba(17,24,39,.10);
-      --line2: rgba(17,24,39,.16);
-      --primary: #111827;
-      --primaryText: #ffffff;
-      --blue: #007aff;
-      --purple: #7c3aed;
-      --green: #12b76a;
-      --orange: #ff9f0a;
-      --red: #ef4444;
-      --gold1: #fff7d6;
-      --gold2: #ffc83d;
-      --shadow: 0 26px 70px rgba(17,24,39,.10);
-      --shadow2: 0 16px 36px rgba(17,24,39,.10);
-      --radius: 30px;
-      color-scheme: light;
-    }
-
-    html[data-theme="dark"] {
-      --bg: #05060a;
-      --bg2: #0b0d13;
-      --surface: rgba(18,20,28,.78);
-      --surface2: rgba(20,23,32,.96);
-      --text: #f7f8fb;
-      --muted: #a5adbb;
-      --line: rgba(255,255,255,.10);
-      --line2: rgba(255,255,255,.16);
-      --primary: #ffffff;
-      --primaryText: #111827;
-      --gold1: rgba(255,200,61,.12);
-      --shadow: 0 28px 80px rgba(0,0,0,.42);
-      --shadow2: 0 18px 44px rgba(0,0,0,.32);
-      color-scheme: dark;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Helvetica Neue", Arial, sans-serif; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 12% 8%, rgba(0,122,255,.18), transparent 28%),
-        radial-gradient(circle at 88% 10%, rgba(124,58,237,.16), transparent 30%),
-        radial-gradient(circle at 48% 96%, rgba(18,183,106,.14), transparent 34%),
-        linear-gradient(180deg, var(--bg2) 0%, var(--bg) 48%, var(--bg2) 100%);
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -4;
-      pointer-events: none;
-      background-image:
-        linear-gradient(rgba(17,24,39,.034) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(17,24,39,.034) 1px, transparent 1px);
-      background-size: 48px 48px;
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,.5), transparent 72%);
-    }
-
-    html[data-theme="dark"] body::before {
-      background-image:
-        linear-gradient(rgba(255,255,255,.034) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.034) 1px, transparent 1px);
-    }
-
-    .orb { position: fixed; width: 420px; height: 420px; border-radius: 999px; filter: blur(72px); opacity: .88; pointer-events: none; z-index: -3; animation: orbMove 12s ease-in-out infinite alternate; }
-    .orb-a { left: -90px; top: 110px; background: rgba(0,122,255,.17); }
-    .orb-b { right: -120px; top: 160px; background: rgba(124,58,237,.16); animation-duration: 15s; }
-    .orb-c { left: 28%; bottom: -190px; background: rgba(18,183,106,.13); animation-duration: 17s; }
-    @keyframes orbMove { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(56px,-28px,0) scale(1.15); } }
-
-    .noise { position: fixed; inset: 0; z-index: -2; pointer-events: none; background: radial-gradient(circle at 50% 30%, rgba(255,255,255,.45), transparent 38%), linear-gradient(120deg, rgba(255,255,255,.3), transparent); }
-    html[data-theme="dark"] .noise { background: radial-gradient(circle at 50% 30%, rgba(255,255,255,.05), transparent 38%); }
-
-    nav { position: sticky; top: 0; z-index: 40; backdrop-filter: blur(22px); background: color-mix(in srgb, var(--bg2) 72%, transparent); border-bottom: 1px solid var(--line); }
-    .nav-inner { width: min(1180px, calc(100% - 36px)); min-height: 70px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
-    .brand { display: flex; align-items: center; gap: 12px; font-weight: 950; letter-spacing: -.035em; white-space: nowrap; }
-    .brand-icon { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 16px; background: linear-gradient(135deg, var(--bg2), color-mix(in srgb, var(--blue) 12%, var(--bg2))); border: 1px solid var(--line); box-shadow: 0 10px 24px rgba(0,122,255,.12); }
-    .nav-actions { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
-    .nav-link { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 800; }
-    .select, .icon-btn { min-height: 42px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface); color: var(--text); padding: 0 12px; font-weight: 850; cursor: pointer; }
-    .icon-btn { display: inline-flex; align-items: center; gap: 7px; }
-    .cart-badge { min-width: 22px; height: 22px; display: inline-grid; place-items: center; border-radius: 999px; background: var(--red); color: white; font-size: 12px; padding: 0 6px; }
-
-    .hero { width: min(1180px, calc(100% - 36px)); margin: 0 auto; padding: 86px 0 58px; display: grid; grid-template-columns: 1.04fr .96fr; align-items: center; gap: 44px; }
-    .kicker { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px; color: var(--text); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow2); animation: fadeUp .75s ease both; }
-    h1 { margin-top: 24px; font-size: clamp(42px, 7.4vw, 88px); line-height: .98; letter-spacing: -.07em; font-weight: 950; animation: fadeUp .75s .08s ease both; }
-    .gradient-text { color: transparent; background: linear-gradient(90deg, var(--text) 0%, var(--blue) 40%, var(--purple) 76%, var(--text) 100%); background-size: 180% auto; -webkit-background-clip: text; background-clip: text; animation: textShine 5s ease-in-out infinite alternate; }
-    @keyframes textShine { from { background-position: 0% center; } to { background-position: 100% center; } }
-    .lead { margin-top: 24px; max-width: 700px; color: var(--muted); font-size: clamp(17px, 2vw, 22px); line-height: 1.75; animation: fadeUp .75s .16s ease both; }
-    .hero-actions { margin-top: 34px; display: flex; flex-wrap: wrap; gap: 14px; animation: fadeUp .75s .24s ease both; }
-    .btn { appearance: none; border: none; border-radius: 999px; padding: 15px 24px; font-size: 16px; font-weight: 900; cursor: pointer; transition: transform .24s ease, box-shadow .24s ease, background .24s ease, opacity .24s ease; text-decoration: none; text-align: center; }
-    .btn-primary { color: var(--primaryText); background: var(--primary); box-shadow: 0 18px 36px rgba(17,24,39,.18); }
-    .btn-primary:hover { transform: translateY(-3px) scale(1.015); box-shadow: 0 24px 48px rgba(17,24,39,.22); }
-    .btn-soft { color: var(--text); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow2); }
-    .btn-soft:hover { transform: translateY(-3px); background: var(--surface2); }
-    .btn-danger { color: white; background: var(--red); }
-
-    .stage { position: relative; min-height: 540px; border-radius: 42px; overflow: hidden; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); backdrop-filter: blur(24px); animation: panelIn .9s .08s ease both; }
-    .stage::before { content: ""; position: absolute; inset: -45%; background: conic-gradient(from 120deg, rgba(0,122,255,0), rgba(0,122,255,.18), rgba(124,58,237,.18), rgba(18,183,106,.13), rgba(0,122,255,0)); animation: rotate 13s linear infinite; }
-    @keyframes rotate { to { transform: rotate(360deg); } }
-    .device { position: absolute; inset: 34px; border-radius: 34px; overflow: hidden; display: flex; flex-direction: column; background: color-mix(in srgb, var(--surface2) 92%, transparent); border: 1px solid var(--line); box-shadow: inset 0 0 0 1px rgba(255,255,255,.06); }
-    .device-top { height: 72px; display: flex; align-items: center; justify-content: space-between; padding: 0 22px; border-bottom: 1px solid var(--line); }
-    .dots { display: flex; gap: 7px; }
-    .dots span { width: 10px; height: 10px; border-radius: 999px; background: color-mix(in srgb, var(--muted) 34%, transparent); }
-    .device-body { flex: 1; padding: 28px; display: grid; gap: 18px; }
-    .formula-card { min-height: 160px; padding: 26px; border-radius: 30px; color: #fff; background: radial-gradient(circle at 20% 0%, rgba(255,255,255,.22), transparent 35%), linear-gradient(135deg, #111827, #007aff 62%, #7c3aed); box-shadow: 0 22px 46px rgba(0,122,255,.22); position: relative; overflow: hidden; }
-    .formula-card::after { content: ""; position: absolute; width: 210px; height: 210px; right: -80px; top: -80px; border-radius: 999px; background: rgba(255,255,255,.18); animation: pulse 4.2s ease-in-out infinite; }
-    @keyframes pulse { 0%,100% { transform: scale(1); opacity: .65; } 50% { transform: scale(1.16); opacity: .95; } }
-    .formula-card small { opacity: .75; font-weight: 800; }
-    .formula-card strong { position: relative; z-index: 1; display: block; margin-top: 12px; font-size: 31px; line-height: 1.12; letter-spacing: -.06em; }
-    .mini-prices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    .mini-price { padding: 16px; border-radius: 22px; background: color-mix(in srgb, var(--surface2) 72%, var(--bg)); border: 1px solid var(--line); }
-    .mini-price b { display: block; font-size: 23px; letter-spacing: -.045em; }
-    .mini-price span { display: block; margin-top: 4px; color: var(--muted); font-size: 13px; }
-    .preview { padding: 20px; border-radius: 24px; background: var(--surface); border: 1px solid var(--line); }
-    .preview-title { color: var(--muted); font-size: 13px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
-    .preview-amount { margin-top: 8px; font-size: 36px; font-weight: 950; letter-spacing: -.07em; word-break: break-all; }
-    .cart-mini { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
-    .cart-mini strong { font-size: 24px; letter-spacing: -.045em; }
-    .cart-mini span { color: var(--muted); }
-
-    .section { width: min(1180px, calc(100% - 36px)); margin: 0 auto; padding: 82px 0; }
-    .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 22px; margin-bottom: 28px; }
-    .section h2 { font-size: clamp(34px, 5.2vw, 60px); line-height: 1.05; letter-spacing: -.06em; font-weight: 950; }
-    .section-desc { max-width: 560px; color: var(--muted); line-height: 1.75; }
-    .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
-    .plan-card { position: relative; min-height: 548px; padding: 30px; display: flex; flex-direction: column; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow2); backdrop-filter: blur(18px); overflow: hidden; transition: transform .32s ease, box-shadow .32s ease, border-color .32s ease; }
-    .plan-card::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at 16% 0%, rgba(0,122,255,.13), transparent 34%), radial-gradient(circle at 92% 12%, rgba(124,58,237,.10), transparent 38%); opacity: .86; }
-    .plan-card:hover { transform: translateY(-10px); border-color: rgba(0,122,255,.25); box-shadow: var(--shadow); }
-    .plan-card.featured { background: color-mix(in srgb, var(--surface2) 95%, transparent); border-color: rgba(0,122,255,.24); transform: translateY(-8px); }
-    .plan-card.featured:hover { transform: translateY(-16px); }
-    .ribbon { position: absolute; top: 22px; right: 22px; z-index: 2; padding: 8px 12px; border-radius: 999px; color: var(--primaryText); background: var(--primary); font-size: 12px; font-weight: 950; }
-    .plan-card > * { position: relative; z-index: 1; }
-    .plan-top { display: flex; align-items: center; gap: 12px; }
-    .plan-icon { width: 52px; height: 52px; display: grid; place-items: center; border-radius: 19px; font-size: 25px; background: var(--gold1); border: 1px solid rgba(255,159,10,.20); }
-    .plan-name { font-size: 31px; font-weight: 950; letter-spacing: -.055em; }
-    .plan-note { margin-top: 3px; color: var(--muted); font-size: 14px; }
-    .plan-price { margin-top: 26px; }
-    .plan-price b { font-size: 54px; letter-spacing: -.065em; }
-    .plan-price span { color: var(--muted); font-weight: 800; }
-    .features { list-style: none; margin-top: 22px; display: grid; gap: 11px; color: var(--text); line-height: 1.55; }
-    .features li { display: flex; align-items: flex-start; gap: 9px; }
-    .check { color: var(--green); font-weight: 950; }
-    .quantity-box { margin-top: 24px; padding: 16px; border-radius: 24px; background: color-mix(in srgb, var(--surface2) 68%, transparent); border: 1px solid var(--line); }
-    .quantity-label { display: flex; justify-content: space-between; gap: 12px; color: var(--text); font-size: 14px; font-weight: 900; margin-bottom: 12px; }
-    .qty-controls { display: grid; grid-template-columns: 44px 1fr 44px; gap: 10px; align-items: center; }
-    .qty-btn { width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface2); color: var(--text); font-size: 22px; line-height: 1; font-weight: 950; cursor: pointer; transition: transform .2s ease; }
-    .qty-btn:hover { transform: translateY(-2px); }
-    .qty-input { width: 100%; height: 44px; border-radius: 16px; border: 1px solid var(--line); background: var(--surface2); color: var(--text); text-align: center; font-size: 18px; font-weight: 950; outline: none; }
-    .computed { margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .computed-item { padding: 15px; border-radius: 20px; background: color-mix(in srgb, var(--surface2) 72%, var(--bg)); border: 1px solid var(--line); }
-    .computed-item b { display: block; font-size: 22px; letter-spacing: -.05em; }
-    .computed-item span { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
-    .plan-actions { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: auto; padding-top: 20px; }
-    .plan-actions .btn { width: 100%; }
-
-    .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: start; }
-    .dash-card { padding: 28px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow2); overflow: hidden; }
-    .dash-card h3 { font-size: 29px; letter-spacing: -.045em; margin-bottom: 12px; }
-    .dash-card p { color: var(--muted); line-height: 1.7; }
-
-    .evolution-card { position: relative; }
-    .level-track { margin-top: 20px; height: 14px; border-radius: 999px; background: color-mix(in srgb, var(--muted) 16%, transparent); overflow: hidden; }
-    .level-bar { width: 0%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--blue), var(--purple), var(--orange)); transition: width 1.2s cubic-bezier(.2,.9,.2,1); }
-    .level-info { display: flex; justify-content: space-between; gap: 14px; margin-top: 12px; color: var(--muted); font-weight: 850; }
-    .level-name { font-size: 34px; font-weight: 950; letter-spacing: -.055em; margin-top: 18px; }
-    .level-bubbles { display: flex; justify-content: space-between; gap: 8px; margin-top: 18px; }
-    .level-dot { flex: 1; min-width: 0; padding: 12px 8px; border-radius: 18px; text-align: center; border: 1px solid var(--line); background: color-mix(in srgb, var(--surface2) 70%, transparent); color: var(--muted); font-size: 12px; font-weight: 850; transition: transform .35s ease, background .35s ease, color .35s ease; }
-    .level-dot.active { transform: translateY(-5px); background: linear-gradient(135deg, rgba(0,122,255,.18), rgba(124,58,237,.16)); color: var(--text); border-color: rgba(0,122,255,.28); }
-    .evolution-burst { position: absolute; right: 22px; top: 22px; width: 70px; height: 70px; border-radius: 999px; display: grid; place-items: center; font-size: 30px; background: var(--gold1); border: 1px solid rgba(255,159,10,.24); animation: starFloat 3.2s ease-in-out infinite; }
-    @keyframes starFloat { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-8px) rotate(8deg); } }
-
-    .member-card-wrap { perspective: 1200px; }
-    .member-card { margin-top: 20px; min-height: 246px; border-radius: 30px; padding: 24px; color: #fff; background: radial-gradient(circle at 18% 5%, rgba(255,255,255,.3), transparent 30%), linear-gradient(135deg, #111827, #007aff 50%, #7c3aed 100%); position: relative; overflow: hidden; box-shadow: 0 26px 60px rgba(0,122,255,.22); transform-style: preserve-3d; animation: cardIn .8s cubic-bezier(.2,1,.2,1) both; }
-    .member-card::before { content: ""; position: absolute; width: 260px; height: 260px; right: -110px; top: -110px; border-radius: 999px; background: rgba(255,255,255,.16); }
-    .member-card::after { content: "67"; position: absolute; right: 24px; bottom: -28px; font-size: 116px; font-weight: 950; opacity: .10; letter-spacing: -.08em; }
-    @keyframes cardIn { from { opacity: 0; transform: rotateX(16deg) translateY(28px); } to { opacity: 1; transform: rotateX(0) translateY(0); } }
-    .card-head { display: flex; justify-content: space-between; gap: 18px; align-items: flex-start; position: relative; z-index: 1; }
-    .card-logo { width: 52px; height: 52px; display: grid; place-items: center; border-radius: 18px; background: rgba(255,255,255,.18); font-size: 26px; }
-    .card-title { font-size: 26px; font-weight: 950; letter-spacing: -.04em; }
-    .card-sub { margin-top: 5px; color: rgba(255,255,255,.76); font-size: 13px; }
-    .card-id { margin-top: 28px; font-size: clamp(23px, 4vw, 34px); font-weight: 950; letter-spacing: -.04em; word-break: break-all; position: relative; z-index: 1; }
-    .card-meta { margin-top: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; position: relative; z-index: 1; }
-    .card-meta div { padding: 12px; border-radius: 18px; background: rgba(255,255,255,.13); }
-    .card-meta span { display: block; color: rgba(255,255,255,.68); font-size: 12px; }
-    .card-meta b { display: block; margin-top: 3px; font-size: 15px; word-break: break-word; }
-    .member-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
-
-    .order-history { margin-top: 0; }
-    .orders-list { margin-top: 18px; display: grid; gap: 12px; max-height: 430px; overflow: auto; padding-right: 4px; }
-    .order-empty { min-height: 180px; display: grid; place-items: center; text-align: center; color: var(--muted); border: 1px dashed var(--line2); border-radius: 24px; padding: 20px; line-height: 1.7; }
-    .order-item { padding: 16px; border-radius: 22px; background: color-mix(in srgb, var(--surface2) 72%, var(--bg)); border: 1px solid var(--line); animation: fadeUp .42s ease both; }
-    .order-top { display: flex; justify-content: space-between; gap: 14px; align-items: flex-start; }
-    .order-id { font-weight: 950; letter-spacing: -.035em; }
-    .order-date { color: var(--muted); font-size: 13px; margin-top: 3px; }
-    .order-amount { font-size: 22px; font-weight: 950; letter-spacing: -.045em; text-align: right; }
-    .order-detail { margin-top: 12px; color: var(--muted); line-height: 1.6; font-size: 14px; }
-    .history-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
-
-    .rules { display: grid; grid-template-columns: .9fr 1.1fr; gap: 22px; align-items: stretch; }
-    .rule-card { padding: 30px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow2); overflow: hidden; }
-    .rule-card h3 { font-size: 29px; letter-spacing: -.045em; margin-bottom: 12px; }
-    .rule-card p { color: var(--muted); line-height: 1.75; }
-    .formula-list { margin-top: 20px; display: grid; gap: 12px; }
-    .formula-line { display: flex; justify-content: space-between; gap: 14px; align-items: center; padding: 16px; border-radius: 22px; background: color-mix(in srgb, var(--surface2) 72%, var(--bg)); border: 1px solid var(--line); }
-    .formula-line span:first-child { font-weight: 950; }
-    .formula-line span:last-child { color: var(--muted); text-align: right; }
-    .deploy-box { display: grid; gap: 14px; }
-    .deploy-step { display: flex; gap: 14px; align-items: flex-start; padding: 19px; border-radius: 24px; background: color-mix(in srgb, var(--surface2) 66%, transparent); border: 1px solid var(--line); }
-    .step-num { flex: 0 0 auto; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 14px; color: var(--primaryText); background: var(--primary); font-weight: 950; }
-    .deploy-step strong { display: block; letter-spacing: -.02em; }
-    .deploy-step p { margin-top: 5px; color: var(--muted); line-height: 1.55; }
-
-    footer { width: min(1180px, calc(100% - 36px)); margin: 0 auto; padding: 44px 0 72px; color: var(--muted); border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-    .reveal { opacity: 0; transform: translateY(36px); transition: opacity .85s ease, transform .85s ease; }
-    .reveal.show { opacity: 1; transform: translateY(0); }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes panelIn { from { opacity: 0; transform: translateY(36px) scale(.96); } to { opacity: 1; transform: none; } }
-
-    .drawer-mask, .modal { position: fixed; inset: 0; z-index: 100; display: none; background: rgba(17,24,39,.34); backdrop-filter: blur(18px); }
-    .drawer-mask.show, .modal.show { display: block; }
-    .cart-drawer { position: absolute; top: 0; right: 0; width: min(460px, 100%); height: 100%; display: flex; flex-direction: column; background: var(--surface2); border-left: 1px solid var(--line); box-shadow: -24px 0 70px rgba(0,0,0,.20); transform: translateX(100%); animation: drawerIn .32s ease forwards; }
-    @keyframes drawerIn { to { transform: translateX(0); } }
-    .drawer-head { padding: 22px; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--line); }
-    .drawer-head h3 { font-size: 28px; letter-spacing: -.045em; }
-    .drawer-head p { margin-top: 6px; color: var(--muted); line-height: 1.5; }
-    .close { width: 40px; height: 40px; border: none; border-radius: 15px; cursor: pointer; background: color-mix(in srgb, var(--surface2) 60%, var(--bg)); color: var(--muted); font-size: 20px; }
-    .cart-list { flex: 1; overflow: auto; padding: 18px 22px; display: grid; gap: 12px; align-content: start; }
-    .cart-empty { height: 100%; min-height: 260px; display: grid; place-items: center; text-align: center; color: var(--muted); line-height: 1.7; }
-    .cart-item { padding: 16px; border-radius: 22px; background: color-mix(in srgb, var(--surface2) 72%, var(--bg)); border: 1px solid var(--line); }
-    .cart-item-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-    .cart-item strong { display: block; font-size: 20px; letter-spacing: -.035em; }
-    .cart-item small { color: var(--muted); }
-    .cart-remove { border: none; color: var(--red); background: transparent; cursor: pointer; font-weight: 950; padding: 6px; }
-    .cart-item-bottom { margin-top: 14px; display: grid; grid-template-columns: 132px 1fr; gap: 12px; align-items: center; }
-    .mini-qty { display: grid; grid-template-columns: 36px 1fr 36px; gap: 6px; }
-    .mini-qty button { width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface2); color: var(--text); font-weight: 950; cursor: pointer; }
-    .mini-qty input { width: 100%; height: 36px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface2); color: var(--text); text-align: center; font-weight: 950; }
-    .item-total { text-align: right; font-weight: 950; }
-    .cart-footer { padding: 18px 22px 22px; border-top: 1px solid var(--line); background: color-mix(in srgb, var(--surface2) 88%, transparent); }
-    .summary-row { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); margin-bottom: 10px; }
-    .summary-row strong { color: var(--text); }
-    .summary-total { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
-    .summary-total span { color: var(--muted); }
-    .summary-total strong { font-size: 32px; letter-spacing: -.07em; }
-    .cart-footer .btn { width: 100%; margin-top: 16px; }
-
-    .modal { align-items: center; justify-content: center; padding: 20px; }
-    .modal.show { display: flex; }
-    .modal-card { width: min(620px, 100%); max-height: calc(100vh - 40px); overflow: auto; border-radius: 34px; padding: 28px; background: var(--surface2); border: 1px solid var(--line); box-shadow: 0 34px 90px rgba(17,24,39,.24); animation: modalIn .32s ease both; }
-    .modal-card.wide { width: min(760px, 100%); }
-    @keyframes modalIn { from { opacity: 0; transform: translateY(22px) scale(.96); } to { opacity: 1; transform: none; } }
-    .modal-top { display: flex; justify-content: space-between; gap: 18px; align-items: flex-start; }
-    .modal h3 { font-size: 27px; letter-spacing: -.045em; }
-    .modal p { margin-top: 10px; color: var(--muted); line-height: 1.75; }
-    .order-card { margin-top: 20px; padding: 18px; border-radius: 24px; background: color-mix(in srgb, var(--surface2) 72%, var(--bg)); border: 1px solid var(--line); display: grid; gap: 12px; }
-    .order-row { display: flex; justify-content: space-between; gap: 14px; color: var(--muted); }
-    .order-row strong { color: var(--text); text-align: right; }
-    .order-total { margin-top: 2px; padding-top: 12px; border-top: 1px solid var(--line); }
-    .order-total strong { font-size: 26px; letter-spacing: -.06em; }
-    .progress-wrap { margin: 24px 0 18px; }
-    .progress-info { display: flex; justify-content: space-between; color: var(--text); font-weight: 950; font-size: 14px; margin-bottom: 10px; }
-    .progress { height: 12px; border-radius: 999px; background: color-mix(in srgb, var(--muted) 14%, transparent); overflow: hidden; }
-    .progress-bar { width: 0%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--blue), var(--purple)); transition: width .35s ease; }
-    .confirm-copy { min-height: 78px; padding: 18px; border-radius: 22px; background: color-mix(in srgb, var(--surface2) 72%, var(--bg)); border: 1px solid var(--line); color: var(--text); line-height: 1.6; }
-    .modal-actions { margin-top: 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .payment-grid { margin-top: 22px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .pay-option { border: 1px solid var(--line); border-radius: 22px; padding: 18px; background: var(--surface2); color: var(--text); cursor: pointer; text-align: left; transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease; }
-    .pay-option:hover { transform: translateY(-3px); border-color: rgba(0,122,255,.30); box-shadow: var(--shadow2); }
-    .pay-icon { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 17px; background: color-mix(in srgb, var(--surface2) 72%, var(--bg)); font-size: 24px; margin-bottom: 12px; }
-    .pay-option strong { display: block; font-size: 17px; letter-spacing: -.02em; }
-    .pay-option span { display: block; margin-top: 5px; color: var(--muted); font-size: 13px; line-height: 1.5; }
-    .payment-loading { display: none; margin-top: 22px; padding: 26px; border-radius: 26px; background: color-mix(in srgb, var(--surface2) 72%, var(--bg)); border: 1px solid var(--line); text-align: center; }
-    .payment-loading.show { display: block; }
-    .spinner { width: 48px; height: 48px; margin: 0 auto 16px; border-radius: 50%; border: 4px solid color-mix(in srgb, var(--muted) 20%, transparent); border-top-color: var(--blue); animation: spin .85s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .loading-title { font-weight: 950; letter-spacing: -.02em; }
-    .loading-text { margin-top: 8px; color: var(--muted); line-height: 1.6; font-size: 14px; }
-    .success-badge { width: 76px; height: 76px; display: grid; place-items: center; margin: 0 auto 14px; border-radius: 28px; background: color-mix(in srgb, var(--green) 14%, transparent); color: var(--green); font-size: 34px; animation: pop .55s cubic-bezier(.2,1.6,.4,1) both; }
-    @keyframes pop { from { transform: scale(.4) rotate(-12deg); opacity: 0; } to { transform: scale(1) rotate(0); opacity: 1; } }
-    .success-title { text-align: center; }
-    .charge-box { margin-top: 22px; padding: 30px 20px; text-align: center; border-radius: 28px; background: radial-gradient(circle at 20% 10%, rgba(0,122,255,.12), transparent 34%), radial-gradient(circle at 90% 20%, rgba(124,58,237,.10), transparent 36%), var(--surface2); border: 1px solid var(--line); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
-    .charge-label { color: var(--muted); font-weight: 950; letter-spacing: .08em; font-size: 14px; }
-    .charge-amount { margin-top: 10px; font-size: clamp(36px, 8vw, 62px); line-height: 1; font-weight: 950; letter-spacing: -.07em; background: linear-gradient(90deg, var(--text), var(--blue), var(--purple)); -webkit-background-clip: text; background-clip: text; color: transparent; word-break: break-all; }
-    .paid-method { margin-top: 12px; color: var(--text); font-weight: 900; }
-    .charge-note { margin-top: 14px; color: var(--muted); font-size: 14px; line-height: 1.6; }
-    .success-card-area { margin-top: 18px; }
-
-    .fireworks-canvas { position: fixed; inset: 0; z-index: 180; pointer-events: none; opacity: 0; transition: opacity .25s ease; }
-    .fireworks-canvas.show { opacity: 1; }
-    .toast { position: fixed; left: 50%; bottom: 24px; z-index: 190; transform: translateX(-50%) translateY(20px); opacity: 0; pointer-events: none; padding: 13px 16px; border-radius: 999px; color: #fff; background: rgba(17,24,39,.92); box-shadow: 0 16px 35px rgba(17,24,39,.22); transition: opacity .25s ease, transform .25s ease; white-space: nowrap; }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-    @media (max-width: 980px) {
-      .nav-link { display: none; }
-      .hero { grid-template-columns: 1fr; padding-top: 56px; }
-      .stage { min-height: 470px; }
-      .plans, .rules, .dashboard-grid { grid-template-columns: 1fr; }
-      .plan-card.featured { transform: none; }
-      .section-head { align-items: flex-start; flex-direction: column; }
-    }
-
-    @media (max-width: 620px) {
-      .nav-inner, .hero, .section, footer { width: min(100% - 24px, 1180px); }
-      .nav-inner { min-height: 68px; align-items: flex-start; flex-direction: column; padding: 10px 0; gap: 8px; }
-      .nav-actions { width: 100%; justify-content: space-between; }
-      .select { flex: 1; min-width: 0; }
-      .hero { padding-top: 42px; }
-      .stage { min-height: 450px; border-radius: 30px; }
-      .device { inset: 15px; border-radius: 26px; }
-      .device-top { height: 62px; padding: 0 16px; }
-      .device-body { padding: 17px; }
-      .formula-card { min-height: 150px; border-radius: 24px; padding: 22px; }
-      .formula-card strong { font-size: 28px; }
-      .mini-prices { grid-template-columns: 1fr; }
-      .preview-amount { font-size: 32px; }
-      .cart-mini { align-items: flex-start; flex-direction: column; }
-      .plan-card, .rule-card, .dash-card { padding: 24px; border-radius: 26px; }
-      .plan-price b { font-size: 48px; }
-      .computed, .payment-grid, .modal-actions, .member-actions, .card-meta { grid-template-columns: 1fr; }
-      .cart-item-bottom { grid-template-columns: 1fr; }
-      .item-total { text-align: left; }
-      .level-bubbles { overflow: auto; padding-bottom: 4px; }
-      .level-dot { min-width: 94px; }
-      .section { padding: 58px 0; }
-      .toast { max-width: calc(100% - 24px); white-space: normal; text-align: center; }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>67VIP Pro System</title>
+<style>
+:root{
+  --bg:#f6f7fb;--card:rgba(255,255,255,.86);--text:#111827;--muted:#667085;
+  --line:rgba(17,24,39,.1);--blue:#007aff;--purple:#7c3aed;--green:#12b76a;
+  --shadow:0 24px 70px rgba(17,24,39,.12);--radius:28px;
+}
+[data-theme="dark"]{
+  --bg:#07090f;--card:rgba(20,24,34,.88);--text:#f9fafb;--muted:#98a2b3;
+  --line:rgba(255,255,255,.12);--shadow:0 24px 80px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC",Arial,sans-serif}
+body{
+  min-height:100vh;color:var(--text);background:
+  radial-gradient(circle at 15% 8%,rgba(0,122,255,.18),transparent 30%),
+  radial-gradient(circle at 86% 12%,rgba(124,58,237,.16),transparent 32%),
+  linear-gradient(180deg,#fff,var(--bg));transition:.35s;background-color:var(--bg);
+}
+[data-theme="dark"] body{background:
+  radial-gradient(circle at 15% 8%,rgba(0,122,255,.22),transparent 30%),
+  radial-gradient(circle at 86% 12%,rgba(124,58,237,.22),transparent 32%),
+  linear-gradient(180deg,#0b1020,var(--bg));}
+button,input,select{font:inherit}
+nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.72);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
+[data-theme="dark"] nav{background:rgba(7,9,15,.72)}
+.nav{width:min(1180px,calc(100% - 28px));height:70px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:20px}.logo{width:42px;height:42px;border-radius:16px;background:linear-gradient(135deg,#fff,#eef4ff);display:grid;place-items:center;box-shadow:var(--shadow)}
+.nav-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.chip,.btn{border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--text);padding:10px 14px;cursor:pointer;transition:.25s}
+.btn.primary{background:#111827;color:#fff;border-color:#111827}.btn:hover,.chip:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(17,24,39,.12)}
+.wrap{width:min(1180px,calc(100% - 28px));margin:auto}.hero{padding:70px 0 36px;display:grid;grid-template-columns:1.05fr .95fr;gap:32px;align-items:center}
+.kicker{display:inline-flex;padding:9px 13px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted)}
+h1{font-size:clamp(42px,7vw,82px);line-height:.98;letter-spacing:-.07em;margin-top:22px}.grad{background:linear-gradient(90deg,#111827,#007aff,#7c3aed);-webkit-background-clip:text;color:transparent}
+[data-theme="dark"] .grad{background:linear-gradient(90deg,#fff,#60a5fa,#c084fc);-webkit-background-clip:text;color:transparent}
+.lead{margin-top:22px;color:var(--muted);font-size:20px;line-height:1.75}.hero-actions{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap}
+.panel{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:38px;padding:26px;backdrop-filter:blur(22px)}
+.card-title{font-size:26px;font-weight:900;letter-spacing:-.04em}.muted{color:var(--muted);line-height:1.65}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.section{padding:56px 0}.section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:22px}
+h2{font-size:clamp(30px,5vw,54px);letter-spacing:-.06em}.plan{position:relative;min-height:440px;padding:26px;border-radius:var(--radius);background:var(--card);border:1px solid var(--line);box-shadow:0 16px 40px rgba(17,24,39,.08);display:flex;flex-direction:column;gap:18px;transition:.28s;overflow:hidden}
+.plan:hover{transform:translateY(-8px);box-shadow:var(--shadow)}.plan-icon{width:54px;height:54px;border-radius:20px;display:grid;place-items:center;background:#fff7d6;font-size:25px}
+.plan h3{font-size:32px}.price{font-size:44px;font-weight:950;letter-spacing:-.05em}.price span{font-size:16px;color:var(--muted)}
+.qty{display:grid;grid-template-columns:46px 1fr 46px;gap:10px}.qty button{height:46px;border-radius:16px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer;font-size:22px;font-weight:900}.qty input{height:46px;border-radius:16px;border:1px solid var(--line);background:var(--card);color:var(--text);text-align:center;font-weight:900}
+.totalbox{display:grid;grid-template-columns:1fr 1fr;gap:10px}.smallbox{padding:14px;border-radius:18px;background:rgba(127,127,127,.06);border:1px solid var(--line)}.smallbox b{display:block;font-size:20px}
+.plan .btn{margin-top:auto;width:100%}.layout2{display:grid;grid-template-columns:1fr 1fr;gap:18px}.list{display:grid;gap:12px}.item{padding:16px;border-radius:20px;background:rgba(127,127,127,.06);border:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center}
+.cart-line{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center}.tag{font-size:12px;padding:5px 9px;border-radius:999px;background:rgba(0,122,255,.12);color:var(--blue);font-weight:800}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(17,24,39,.34);backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;padding:18px}.modal.show{display:flex}
+.modal-card{width:min(560px,100%);max-height:calc(100vh - 36px);overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:32px;padding:26px;box-shadow:0 30px 90px rgba(0,0,0,.25)}
+.modal-top{display:flex;justify-content:space-between;gap:12px}.close{width:38px;height:38px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer}.form{display:grid;gap:12px;margin-top:20px}.form input,.form select{width:100%;padding:14px;border-radius:18px;border:1px solid var(--line);background:var(--card);color:var(--text);outline:none}
+.progress{height:12px;border-radius:999px;background:rgba(127,127,127,.15);overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--purple));transition:.3s}
+.paygrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}.pay{padding:16px;border-radius:20px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer;text-align:left}
+.spinner{width:50px;height:50px;border-radius:50%;border:4px solid rgba(127,127,127,.25);border-top-color:var(--blue);animation:spin .8s linear infinite;margin:20px auto}@keyframes spin{to{transform:rotate(360deg)}}
+.firework{position:fixed;width:8px;height:8px;border-radius:50%;pointer-events:none;z-index:80;animation:boom 900ms ease-out forwards}@keyframes boom{to{transform:translate(var(--x),var(--y)) scale(.2);opacity:0}}
+.member-card{margin-top:18px;padding:22px;border-radius:28px;background:linear-gradient(135deg,#111827,#007aff,#7c3aed);color:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}.member-card:before{content:"";position:absolute;width:220px;height:220px;border-radius:50%;right:-80px;top:-80px;background:rgba(255,255,255,.14)}
+.member-card b{font-size:28px}.repo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}.repo-card{padding:16px;border:1px solid var(--line);border-radius:20px;background:rgba(127,127,127,.06)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);opacity:0;background:#111827;color:#fff;border-radius:999px;padding:12px 16px;z-index:90;transition:.25s}.toast.show{opacity:1;transform:translateX(-50%)}
+@media(max-width:900px){.hero,.layout2,.grid3{grid-template-columns:1fr}.section-head{align-items:start;flex-direction:column}.paygrid,.repo-grid{grid-template-columns:1fr}.nav{height:auto;padding:12px 0;align-items:start;flex-direction:column}.nav-actions{width:100%}}
+@media(max-width:560px){.wrap{width:min(100% - 20px,1180px)}.panel,.plan{border-radius:24px;padding:20px}.hero{padding-top:38px}.cart-line{grid-template-columns:1fr}.totalbox{grid-template-columns:1fr}h1{font-size:43px}}
+</style>
 </head>
-
 <body>
-  <div class="orb orb-a"></div>
-  <div class="orb orb-b"></div>
-  <div class="orb orb-c"></div>
-  <div class="noise"></div>
-  <canvas id="fireworksCanvas" class="fireworks-canvas"></canvas>
+<nav><div class="nav">
+  <div class="brand"><div class="logo">🌟</div><span data-i18n="brand">67会员</span></div>
+  <div class="nav-actions">
+    <button class="chip" id="langBtn">中文</button>
+    <button class="chip" id="themeBtn">黑色主题</button>
+    <button class="chip" id="loginBtn">登录</button>
+    <button class="chip" id="repoBtn">个人仓库</button>
+    <button class="chip" id="couponBtn">优惠券</button>
+    <button class="btn primary" id="cartBtn">购物车 0</button>
+  </div>
+</div></nav>
 
-  <nav>
-    <div class="nav-inner">
-      <div class="brand">
-        <div class="brand-icon">🌟</div>
-        <span data-i18n="brand">67会员</span>
-      </div>
-      <div class="nav-actions">
-        <a class="nav-link" href="#plans" data-i18n="navPlans">会员方案</a>
-        <a class="nav-link" href="#dashboard" data-i18n="navDashboard">会员中心</a>
-        <a class="nav-link" href="#rules" data-i18n="navRules">功能说明</a>
-        <select class="select" id="languageSelect" aria-label="Language">
-          <option value="zh">中文</option>
-          <option value="en">English</option>
-          <option value="ja">日本語</option>
-        </select>
-        <button class="icon-btn" id="themeToggle" type="button" aria-label="Theme">🌙 <span data-i18n="themeDark">黑色</span></button>
-        <button class="icon-btn" id="openCart" type="button" aria-label="Cart">🛒 <span data-i18n="cart">购物车</span><span class="cart-badge" id="cartBadge">0</span></button>
+<main class="wrap">
+<section class="hero">
+  <div>
+    <div class="kicker">🌐 多语言 · 🌓 黑白主题 · 🛒 购物车 · 👤 浏览器登录</div>
+    <h1>67VIP <span class="grad">会员系统</span><br>再升级</h1>
+    <p class="lead">新增浏览器本地登录、个人仓库、优惠券系统。所有数据保存在当前浏览器，适合 GitHub Pages 静态部署。</p>
+    <div class="hero-actions">
+      <button class="btn primary" onclick="document.getElementById('plans').scrollIntoView()">选择 VIP</button>
+      <button class="btn" id="openLoginHero">浏览器登录</button>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="card-title">我的 67VIP 状态</div>
+    <p class="muted" id="userStatus">未登录，登录后可查看个人仓库和订单。</p>
+    <div class="member-card">
+      <b id="memberLevel">游客会员</b>
+      <p id="memberNo">会员编号：未生成</p>
+      <p id="memberXp">XP：0</p>
+    </div>
+    <div style="margin-top:18px" class="progress"><div class="bar" id="xpBar"></div></div>
+  </div>
+</section>
+
+<section class="section" id="plans">
+  <div class="section-head"><h2>选择 VIP</h2><p class="muted">选择类型和数量，加入购物车后可使用优惠券结算。</p></div>
+  <div class="grid3" id="planGrid"></div>
+</section>
+
+<section class="section">
+  <div class="section-head"><h2>新增功能</h2><p class="muted">浏览器登录、个人仓库、优惠券都无需后端，直接可部署。</p></div>
+  <div class="layout2">
+    <div class="panel">
+      <div class="card-title">个人仓库</div>
+      <p class="muted">保存订单、会员卡、优惠券和等级信息。</p>
+      <div class="repo-grid">
+        <div class="repo-card"><b id="repoOrders">0</b><p class="muted">订单数量</p></div>
+        <div class="repo-card"><b id="repoSpent">¥0.00</b><p class="muted">累计付款</p></div>
+        <div class="repo-card"><b id="repoCoupons">0</b><p class="muted">优惠券</p></div>
+        <div class="repo-card"><b id="repoLevel">游客</b><p class="muted">当前等级</p></div>
       </div>
     </div>
-  </nav>
-
-  <main>
-    <section class="hero">
-      <div>
-        <div class="kicker" data-i18n="kicker">🌟 多语言 · 黑白主题 · 购物车 · 会员系统</div>
-        <h1><span data-i18n="heroTitle1">买几个</span> <span class="gradient-text">VIP</span><br><span data-i18n="heroTitle2">进化成高级会员</span></h1>
-        <p class="lead" data-i18n="heroLead">选择 Go、Plus、Pro，加入购物车并付款。付款成功后会生成会员卡、保存订单记录、推进等级进化，并播放烟花动画。</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#plans" data-i18n="chooseVip">选择 VIP</a>
-          <a class="btn btn-soft" href="#dashboard" data-i18n="openDashboard">查看会员中心</a>
-          <button class="btn btn-soft" id="heroCartBtn" type="button" data-i18n="openCart">打开购物车</button>
-        </div>
-      </div>
-
-      <div class="stage">
-        <div class="device">
-          <div class="device-top">
-            <strong data-i18n="checkoutTitle">67 VIP Checkout</strong>
-            <div class="dots"><span></span><span></span><span></span></div>
-          </div>
-          <div class="device-body">
-            <div class="formula-card">
-              <small data-i18n="finalRule">NEW SYSTEM</small>
-              <strong data-i18n="formulaText">付款成功 = 会员卡 + 订单记录 + 等级进化 + 烟花</strong>
-            </div>
-            <div class="mini-prices">
-              <div class="mini-price"><b>¥6.70</b><span data-i18n="goPrice">Go 单价</span></div>
-              <div class="mini-price"><b>¥13.13</b><span data-i18n="plusPrice">Plus 单价</span></div>
-              <div class="mini-price"><b>¥91.78</b><span data-i18n="proPrice">Pro 单价</span></div>
-            </div>
-            <div class="preview">
-              <div class="preview-title" data-i18n="memberPreview">MEMBER PREVIEW</div>
-              <div class="preview-amount" id="heroPreview">VIP-67-0000 · 游客</div>
-            </div>
-            <div class="cart-mini">
-              <div><strong id="heroCartCount">0</strong><span data-i18n="cartItemsLabel"> 个商品在购物车</span></div>
-              <button class="btn btn-primary" id="heroCheckoutBtn" type="button" data-i18n="checkout">去结算</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section reveal" id="plans">
-      <div class="section-head">
-        <h2 data-i18n="plansTitle">选择 VIP 类型和数量</h2>
-        <p class="section-desc" data-i18n="plansDesc">每个方案都可以选择数量并加入购物车。购物车会合并相同类型的 VIP，并统一计算付款金额。</p>
-      </div>
-
-      <div class="plans">
-        <article class="plan-card" data-plan="Go">
-          <div class="plan-top"><div class="plan-icon">🚀</div><div><div class="plan-name">Go</div><div class="plan-note" data-i18n="goNote">入门 VIP 循环</div></div></div>
-          <div class="plan-price"><b>¥6.70</b> <span data-i18n="perItem">/ 个</span></div>
-          <ul class="features">
-            <li><span class="check">✓</span><span data-i18n="goF1">买 1 个 Go，可再买 1 个 VIP</span></li>
-            <li><span class="check">✓</span><span data-i18n="goF2">适合体验 10 次确认流程</span></li>
-            <li><span class="check">✓</span><span data-i18n="goF3">付款成功后生成会员卡</span></li>
-          </ul>
-          <div class="quantity-box"><div class="quantity-label"><span data-i18n="qty">购买数量</span><span class="quantity-caption">1</span></div><div class="qty-controls"><button class="qty-btn" data-qty-minus type="button">−</button><input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" /><button class="qty-btn" data-qty-plus type="button">+</button></div></div>
-          <div class="computed"><div class="computed-item"><b class="card-total">¥6.70</b><span data-i18n="currentPrice">本次价格</span></div><div class="computed-item"><b class="card-more">1</b><span data-i18n="moreVip">可再买 VIP</span></div></div>
-          <div class="plan-actions"><button class="btn btn-primary add-cart-btn" type="button" data-i18n="addToCart">加入购物车</button><button class="btn btn-soft buy-now-btn" type="button" data-i18n="buyNow">立即购买</button></div>
-        </article>
-
-        <article class="plan-card featured" data-plan="Plus">
-          <div class="ribbon" data-i18n="recommended">推荐</div>
-          <div class="plan-top"><div class="plan-icon">⭐</div><div><div class="plan-name">Plus</div><div class="plan-note" data-i18n="plusNote">标准 VIP 复购</div></div></div>
-          <div class="plan-price"><b>¥13.13</b> <span data-i18n="perItem">/ 个</span></div>
-          <ul class="features">
-            <li><span class="check">✓</span><span data-i18n="plusF1">买 1 个 Plus，可再买 3 个 VIP</span></li>
-            <li><span class="check">✓</span><span data-i18n="plusF2">订单记录会自动保存</span></li>
-            <li><span class="check">✓</span><span data-i18n="plusF3">支持购物车批量结算</span></li>
-          </ul>
-          <div class="quantity-box"><div class="quantity-label"><span data-i18n="qty">购买数量</span><span class="quantity-caption">1</span></div><div class="qty-controls"><button class="qty-btn" data-qty-minus type="button">−</button><input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" /><button class="qty-btn" data-qty-plus type="button">+</button></div></div>
-          <div class="computed"><div class="computed-item"><b class="card-total">¥13.13</b><span data-i18n="currentPrice">本次价格</span></div><div class="computed-item"><b class="card-more">3</b><span data-i18n="moreVip">可再买 VIP</span></div></div>
-          <div class="plan-actions"><button class="btn btn-primary add-cart-btn" type="button" data-i18n="addToCart">加入购物车</button><button class="btn btn-soft buy-now-btn" type="button" data-i18n="buyNow">立即购买</button></div>
-        </article>
-
-        <article class="plan-card" data-plan="Pro">
-          <div class="plan-top"><div class="plan-icon">👑</div><div><div class="plan-name">Pro</div><div class="plan-note" data-i18n="proNote">高级 VIP 套娃</div></div></div>
-          <div class="plan-price"><b>¥91.78</b> <span data-i18n="perItem">/ 个</span></div>
-          <ul class="features">
-            <li><span class="check">✓</span><span data-i18n="proF1">买 1 个 Pro，可再买 8 个 VIP</span></li>
-            <li><span class="check">✓</span><span data-i18n="proF2">等级进化速度最快</span></li>
-            <li><span class="check">✓</span><span data-i18n="proF3">付款成功播放烟花动画</span></li>
-          </ul>
-          <div class="quantity-box"><div class="quantity-label"><span data-i18n="qty">购买数量</span><span class="quantity-caption">1</span></div><div class="qty-controls"><button class="qty-btn" data-qty-minus type="button">−</button><input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" /><button class="qty-btn" data-qty-plus type="button">+</button></div></div>
-          <div class="computed"><div class="computed-item"><b class="card-total">¥91.78</b><span data-i18n="currentPrice">本次价格</span></div><div class="computed-item"><b class="card-more">8</b><span data-i18n="moreVip">可再买 VIP</span></div></div>
-          <div class="plan-actions"><button class="btn btn-primary add-cart-btn" type="button" data-i18n="addToCart">加入购物车</button><button class="btn btn-soft buy-now-btn" type="button" data-i18n="buyNow">立即购买</button></div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section reveal" id="dashboard">
-      <div class="section-head">
-        <h2 data-i18n="dashboardTitle">会员中心</h2>
-        <p class="section-desc" data-i18n="dashboardDesc">这里会显示会员卡、等级进化和订单记录。所有数据保存在浏览器本地，刷新页面也会保留。</p>
-      </div>
-
-      <div class="dashboard-grid">
-        <div class="dash-card evolution-card">
-          <div class="evolution-burst">🌟</div>
-          <h3 data-i18n="evolutionTitle">VIP 等级进化</h3>
-          <p data-i18n="evolutionDesc">每次付款成功都会增加经验值，推动等级从游客进化到终极 67 会员。</p>
-          <div class="level-name" id="levelName">游客</div>
-          <div class="level-track"><div class="level-bar" id="levelBar"></div></div>
-          <div class="level-info"><span id="levelXp">0 XP</span><span id="levelNext">Next 20 XP</span></div>
-          <div class="level-bubbles" id="levelBubbles"></div>
-          <div class="member-card-wrap" id="dashboardMemberCard"></div>
-          <div class="member-actions">
-            <button class="btn btn-soft" id="copyMemberId" type="button" data-i18n="copyMemberId">复制会员编号</button>
-            <button class="btn btn-soft" id="refreshCard" type="button" data-i18n="refreshCard">刷新会员卡</button>
-          </div>
-        </div>
-
-        <div class="dash-card order-history">
-          <h3 data-i18n="orderHistoryTitle">订单记录</h3>
-          <p data-i18n="orderHistoryDesc">付款成功后自动保存订单，可查看订单号、金额、支付方式和购买内容。</p>
-          <div class="history-actions">
-            <button class="btn btn-soft" id="exportOrders" type="button" data-i18n="exportOrders">复制订单摘要</button>
-            <button class="btn btn-danger" id="clearOrders" type="button" data-i18n="clearOrders">清空记录</button>
-          </div>
-          <div class="orders-list" id="ordersList"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section reveal" id="rules">
-      <div class="section-head">
-        <h2 data-i18n="rulesTitle">新增功能说明</h2>
-        <p class="section-desc" data-i18n="rulesDesc">这个版本加入会员卡生成器、订单记录系统、VIP 等级进化动画和支付成功烟花。仍然是纯静态页面，适合 GitHub Pages。</p>
-      </div>
-
-      <div class="rules">
-        <div class="rule-card">
-          <h3 data-i18n="priceRuleTitle">系统怎么计算？</h3>
-          <p data-i18n="priceRuleText">页面使用整数“分”计算价格，订单成功后根据商品数量和可再买 VIP 数量生成经验值。</p>
-          <div class="formula-list">
-            <div class="formula-line"><span>Go</span><span>¥6.70 × <span data-i18n="qtyShort">数量</span></span></div>
-            <div class="formula-line"><span>Plus</span><span>¥13.13 × <span data-i18n="qtyShort">数量</span></span></div>
-            <div class="formula-line"><span>Pro</span><span>¥91.78 × <span data-i18n="qtyShort">数量</span></span></div>
-            <div class="formula-line"><span data-i18n="xpRule">经验值</span><span data-i18n="xpRuleText">商品数量 × 12 + 可再买 VIP + 订单数 × 8</span></div>
-          </div>
-        </div>
-
-        <div class="rule-card">
-          <h3 data-i18n="deployTitle">GitHub Pages 用法</h3>
-          <div class="deploy-box">
-            <div class="deploy-step"><div class="step-num">1</div><div><strong data-i18n="deploy1Title">上传 index.html</strong><p data-i18n="deploy1Text">把 ZIP 解压后，将 index.html 上传到仓库根目录。</p></div></div>
-            <div class="deploy-step"><div class="step-num">2</div><div><strong data-i18n="deploy2Title">启用 Pages</strong><p data-i18n="deploy2Text">Settings → Pages → Deploy from a branch → main → / root。</p></div></div>
-            <div class="deploy-step"><div class="step-num">3</div><div><strong data-i18n="deploy3Title">纯静态页面</strong><p data-i18n="deploy3Text">不需要服务器、不需要数据库，也不需要真实支付接口。</p></div></div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <span data-i18n="footerLeft">© 67会员 · Go / Plus / Pro</span>
-    <span data-i18n="footerRight">🌟 会员卡 · 订单记录 · 等级进化 · 烟花</span>
-  </footer>
-
-  <div class="drawer-mask" id="cartMask" aria-hidden="true">
-    <aside class="cart-drawer" role="dialog" aria-modal="true" aria-label="Shopping cart">
-      <div class="drawer-head">
-        <div><h3 data-i18n="cartTitle">购物车</h3><p data-i18n="cartDesc">检查 VIP 类型和数量，然后进入 10 次确认。</p></div>
-        <button class="close" id="closeCart" type="button" aria-label="Close">×</button>
-      </div>
-      <div class="cart-list" id="cartList"></div>
-      <div class="cart-footer">
-        <div class="summary-row"><span data-i18n="totalItems">商品数量</span><strong id="summaryCount">0</strong></div>
-        <div class="summary-row"><span data-i18n="totalMore">可再买 VIP</span><strong id="summaryMore">0</strong></div>
-        <div class="summary-total"><span data-i18n="totalAmount">总金额</span><strong id="summaryTotal">¥0.00</strong></div>
-        <button class="btn btn-primary" id="checkoutBtn" type="button" data-i18n="checkout">去结算</button>
-        <button class="btn btn-soft" id="clearCartBtn" type="button" data-i18n="clearCart">清空购物车</button>
-      </div>
-    </aside>
-  </div>
-
-  <div class="modal" id="confirmModal" aria-hidden="true">
-    <div class="modal-card">
-      <div class="modal-top">
-        <div><h3 data-i18n="confirmTitle">确认订单</h3><p data-i18n="confirmDesc">请连续确认 10 次。全部确认后，将进入支付方式选择。</p></div>
-        <button class="close" id="closeConfirm" type="button" aria-label="Close">×</button>
-      </div>
-      <div class="order-card" id="orderSummary"></div>
-      <div class="progress-wrap">
-        <div class="progress-info"><span data-i18n="confirmProgress">确认进度</span><span><span id="confirmNow">0</span>/10</span></div>
-        <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
-      </div>
-      <div class="confirm-copy" id="confirmCopy">请确认：你知道本次价格会根据购物车自动计算。</div>
-      <div class="modal-actions">
-        <button class="btn btn-soft" id="cancelConfirm" type="button" data-i18n="cancel">取消</button>
-        <button class="btn btn-primary" id="confirmBtn" type="button">确认第 1 次</button>
+    <div class="panel">
+      <div class="card-title">优惠券示例</div>
+      <div class="list" style="margin-top:16px">
+        <div class="item"><span>WELCOME67：立减 ¥6.70</span><button class="btn" onclick="saveCoupon('WELCOME67')">领取</button></div>
+        <div class="item"><span>SVIPWANG：8.8 折</span><button class="btn" onclick="saveCoupon('SVIPWANG')">领取</button></div>
+        <div class="item"><span>9178：Pro 专属立减 ¥9.18</span><button class="btn" onclick="saveCoupon('9178')">领取</button></div>
       </div>
     </div>
   </div>
+</section>
+</main>
 
-  <div class="modal" id="paymentModal" aria-hidden="true">
-    <div class="modal-card">
-      <div class="modal-top">
-        <div><h3 data-i18n="paymentTitle">选择支付方式</h3><p data-i18n="paymentDesc">请选择一种支付方式。点击后会进入支付加载状态，完成后显示付款成功和付款金额。</p></div>
-        <button class="close" id="closePayment" type="button" aria-label="Close">×</button>
-      </div>
-      <div class="order-card">
-        <div class="order-row"><span data-i18n="totalItems">商品数量</span><strong id="paymentQty">0</strong></div>
-        <div class="order-row"><span data-i18n="paymentAmount">付款金额</span><strong id="paymentTotal">¥0.00</strong></div>
-      </div>
-      <div class="payment-grid" id="paymentGrid">
-        <button class="pay-option" data-pay-method-key="wechat" type="button"><div class="pay-icon">💬</div><strong data-i18n="payWechat">微信支付</strong><span data-i18n="payWechatDesc">点击后模拟微信支付加载</span></button>
-        <button class="pay-option" data-pay-method-key="alipay" type="button"><div class="pay-icon">🔵</div><strong data-i18n="payAlipay">支付宝</strong><span data-i18n="payAlipayDesc">点击后模拟支付宝付款</span></button>
-        <button class="pay-option" data-pay-method-key="card" type="button"><div class="pay-icon">💳</div><strong data-i18n="payCard">银行卡</strong><span data-i18n="payCardDesc">点击后模拟银行卡扣款</span></button>
-        <button class="pay-option" data-pay-method-key="unionpay" type="button"><div class="pay-icon">⚡</div><strong data-i18n="payUnion">云闪付</strong><span data-i18n="payUnionDesc">点击后模拟快速支付</span></button>
-      </div>
-      <div class="payment-loading" id="paymentLoading">
-        <div class="spinner"></div>
-        <div class="loading-title" data-i18n="loadingTitle">支付加载中...</div>
-        <div class="loading-text" id="loadingText">正在处理付款，请稍候。</div>
-      </div>
-    </div>
+<div class="modal" id="loginModal"><div class="modal-card">
+  <div class="modal-top"><div><h2>浏览器登录</h2><p class="muted">这是本地模拟登录，账号信息只保存在当前浏览器。</p></div><button class="close" onclick="closeModal('loginModal')">×</button></div>
+  <div class="form">
+    <input id="loginName" placeholder="输入昵称，例如 stone2013" />
+    <input id="loginEmail" placeholder="输入邮箱，可不填" />
+    <button class="btn primary" id="doLogin">登录 / 创建本地账号</button>
+    <button class="btn" id="logoutBtn">退出登录</button>
   </div>
+</div></div>
 
-  <div class="modal" id="successModal" aria-hidden="true">
-    <div class="modal-card wide">
-      <div class="success-badge">✓</div>
-      <h3 class="success-title" data-i18n="successTitle">付款成功</h3>
-      <div class="charge-box">
-        <div class="charge-label" data-i18n="paymentAmount">付款金额</div>
-        <div class="charge-amount" id="successAmount">¥0.00</div>
-        <div class="paid-method" id="successMethod">支付方式：微信支付</div>
-        <div class="charge-note" id="successNote">页面演示效果，不会真实扣款。</div>
-      </div>
-      <div class="success-card-area" id="successCardArea"></div>
-      <div class="modal-actions" style="grid-template-columns:1fr 1fr;margin-top:22px;">
-        <button class="btn btn-soft" id="successDashboard" type="button" data-i18n="viewDashboard">查看会员中心</button>
-        <button class="btn btn-primary" id="closeSuccess" type="button" data-i18n="done">完成</button>
-      </div>
-    </div>
+<div class="modal" id="cartModal"><div class="modal-card">
+  <div class="modal-top"><div><h2>购物车</h2><p class="muted">可输入或选择优惠券后结算。</p></div><button class="close" onclick="closeModal('cartModal')">×</button></div>
+  <div class="list" id="cartList" style="margin-top:18px"></div>
+  <div class="form">
+    <select id="couponSelect"><option value="">不使用优惠券</option></select>
+    <input id="couponInput" placeholder="或输入优惠码：WELCOME67 / SVIPWANG / 9178" />
+    <div class="item"><b>原价</b><b id="cartSubtotal">¥0.00</b></div>
+    <div class="item"><b>优惠</b><b id="cartDiscount">-¥0.00</b></div>
+    <div class="item"><b>应付</b><b id="cartTotal">¥0.00</b></div>
+    <button class="btn primary" id="checkoutBtn">结算</button>
   </div>
+</div></div>
 
-  <div class="toast" id="toast">已加入购物车</div>
+<div class="modal" id="confirmModal"><div class="modal-card">
+  <div class="modal-top"><div><h2>确认订单</h2><p class="muted" id="confirmText">请确认订单。</p></div><button class="close" onclick="closeModal('confirmModal')">×</button></div>
+  <div style="margin:20px 0" class="progress"><div class="bar" id="confirmBar"></div></div>
+  <button class="btn primary" id="confirmBtn">确认第 1 次</button>
+</div></div>
 
-  <script>
-    const translations = {
-      zh: {
-        brand: "67会员", navPlans: "会员方案", navDashboard: "会员中心", navRules: "功能说明", cart: "购物车", themeDark: "黑色", themeLight: "白色",
-        kicker: "🌟 多语言 · 黑白主题 · 购物车 · 会员系统", heroTitle1: "买几个", heroTitle2: "进化成高级会员", heroLead: "选择 Go、Plus、Pro，加入购物车并付款。付款成功后会生成会员卡、保存订单记录、推进等级进化，并播放烟花动画。",
-        chooseVip: "选择 VIP", openDashboard: "查看会员中心", openCart: "打开购物车", checkoutTitle: "67 VIP Checkout", finalRule: "NEW SYSTEM", formulaText: "付款成功 = 会员卡 + 订单记录 + 等级进化 + 烟花", memberPreview: "MEMBER PREVIEW",
-        goPrice: "Go 单价", plusPrice: "Plus 单价", proPrice: "Pro 单价", cartItemsLabel: " 个商品在购物车", checkout: "去结算", plansTitle: "选择 VIP 类型和数量", plansDesc: "每个方案都可以选择数量并加入购物车。购物车会合并相同类型的 VIP，并统一计算付款金额。",
-        goNote: "入门 VIP 循环", plusNote: "标准 VIP 复购", proNote: "高级 VIP 套娃", perItem: "/ 个", qty: "购买数量", qtyShort: "数量", goF1: "买 1 个 Go，可再买 1 个 VIP", goF2: "适合体验 10 次确认流程", goF3: "付款成功后生成会员卡", plusF1: "买 1 个 Plus，可再买 3 个 VIP", plusF2: "订单记录会自动保存", plusF3: "支持购物车批量结算", proF1: "买 1 个 Pro，可再买 8 个 VIP", proF2: "等级进化速度最快", proF3: "付款成功播放烟花动画", currentPrice: "本次价格", moreVip: "可再买 VIP", addToCart: "加入购物车", buyNow: "立即购买", recommended: "推荐",
-        dashboardTitle: "会员中心", dashboardDesc: "这里会显示会员卡、等级进化和订单记录。所有数据保存在浏览器本地，刷新页面也会保留。", evolutionTitle: "VIP 等级进化", evolutionDesc: "每次付款成功都会增加经验值，推动等级从游客进化到终极 67 会员。", copyMemberId: "复制会员编号", refreshCard: "刷新会员卡", orderHistoryTitle: "订单记录", orderHistoryDesc: "付款成功后自动保存订单，可查看订单号、金额、支付方式和购买内容。", exportOrders: "复制订单摘要", clearOrders: "清空记录", orderEmpty: "暂无订单记录\n完成一次付款后，这里会显示订单。", memberId: "会员编号", level: "等级", orders: "订单", totalPaid: "累计付款", latestOrder: "最新订单", createdAt: "生成时间", noOrders: "暂无订单", next: "下一级", maxLevel: "已满级", copied: "已复制", refreshed: "会员卡已刷新", ordersCopied: "订单摘要已复制", ordersCleared: "订单记录已清空",
-        rulesTitle: "新增功能说明", rulesDesc: "这个版本加入会员卡生成器、订单记录系统、VIP 等级进化动画和支付成功烟花。仍然是纯静态页面，适合 GitHub Pages。", priceRuleTitle: "系统怎么计算？", priceRuleText: "页面使用整数“分”计算价格，订单成功后根据商品数量和可再买 VIP 数量生成经验值。", xpRule: "经验值", xpRuleText: "商品数量 × 12 + 可再买 VIP + 订单数 × 8", deployTitle: "GitHub Pages 用法", deploy1Title: "上传 index.html", deploy1Text: "把 ZIP 解压后，将 index.html 上传到仓库根目录。", deploy2Title: "启用 Pages", deploy2Text: "Settings → Pages → Deploy from a branch → main → / root。", deploy3Title: "纯静态页面", deploy3Text: "不需要服务器、不需要数据库，也不需要真实支付接口。",
-        footerLeft: "© 67会员 · Go / Plus / Pro", footerRight: "🌟 会员卡 · 订单记录 · 等级进化 · 烟花", cartTitle: "购物车", cartDesc: "检查 VIP 类型和数量，然后进入 10 次确认。", totalItems: "商品数量", totalMore: "可再买 VIP", totalAmount: "总金额", clearCart: "清空购物车", emptyCart: "购物车是空的\n先选择一个 VIP 加入购物车。", remove: "删除",
-        confirmTitle: "确认订单", confirmDesc: "请连续确认 10 次。全部确认后，将进入支付方式选择。", confirmProgress: "确认进度", cancel: "取消", confirmButton: "确认第 {n} 次", finalConfirmButton: "第 10 次确认并选择支付", confirmTexts: ["第 1 次确认：确认你要购买购物车里的 VIP。","第 2 次确认：确认最终价格会按购物车总价计算。","第 3 次确认：确认 Go、Plus、Pro 的单价不同。","第 4 次确认：确认数量越多，付款显示金额越大。","第 5 次确认：确认订单成功后会生成会员卡。","第 6 次确认：确认订单记录会保存到本地浏览器。","第 7 次确认：确认等级会根据订单自动进化。","第 8 次确认：确认付款成功会播放烟花。","第 9 次确认：最后再确认一次前的确认。","第 10 次确认：最终确认，马上进入支付方式选择。"],
-        paymentTitle: "选择支付方式", paymentDesc: "请选择一种支付方式。点击后会进入支付加载状态，完成后显示付款成功和付款金额。", paymentAmount: "付款金额", payWechat: "微信支付", payWechatDesc: "点击后模拟微信支付加载", payAlipay: "支付宝", payAlipayDesc: "点击后模拟支付宝付款", payCard: "银行卡", payCardDesc: "点击后模拟银行卡扣款", payUnion: "云闪付", payUnionDesc: "点击后模拟快速支付", loadingTitle: "支付加载中...", loadingWith: "正在使用 {method} 支付 {amount}。", loadingText: "正在处理付款，请稍候。", successTitle: "付款成功", methodLabel: "支付方式", successDetail: "本次购买 {count} 个商品，可再买 {more} 个 VIP。订单已保存，会员等级已更新。页面演示效果，不会真实扣款。", done: "完成", viewDashboard: "查看会员中心", added: "已加入购物车", cartCleared: "购物车已清空", emptyToast: "购物车为空", cancelled: "已取消", buyNowToast: "已加入购物车并打开结算", cardGenerated: "会员卡已生成",
-        levels: ["游客", "Go 新星", "Plus 玩家", "Pro 大师", "SVIP之汪", "终极67会员"]
-      },
-      en: {
-        brand: "67 Membership", navPlans: "Plans", navDashboard: "Member Center", navRules: "Features", cart: "Cart", themeDark: "Dark", themeLight: "Light",
-        kicker: "🌟 Multilingual · Theme · Cart · Member System", heroTitle1: "Buy VIPs", heroTitle2: "evolve your membership", heroLead: "Choose Go, Plus, or Pro, add to cart, and pay. After success, the page generates a member card, saves order records, evolves your level, and plays fireworks.",
-        chooseVip: "Choose VIP", openDashboard: "Member Center", openCart: "Open Cart", checkoutTitle: "67 VIP Checkout", finalRule: "NEW SYSTEM", formulaText: "Success = Card + Orders + Level Evolution + Fireworks", memberPreview: "MEMBER PREVIEW",
-        goPrice: "Go price", plusPrice: "Plus price", proPrice: "Pro price", cartItemsLabel: " items in cart", checkout: "Checkout", plansTitle: "Choose VIP type and quantity", plansDesc: "Select quantities and add to cart. Same VIP types are merged and paid together.",
-        goNote: "Starter VIP loop", plusNote: "Standard VIP repurchase", proNote: "Premium VIP stack", perItem: "/ item", qty: "Quantity", qtyShort: "quantity", goF1: "Buy 1 Go, unlock 1 more VIP", goF2: "Try the 10-step confirmation", goF3: "Member card after payment", plusF1: "Buy 1 Plus, unlock 3 more VIPs", plusF2: "Order records are saved", plusF3: "Batch checkout with cart", proF1: "Buy 1 Pro, unlock 8 more VIPs", proF2: "Fastest level evolution", proF3: "Fireworks after payment", currentPrice: "Current price", moreVip: "More VIPs", addToCart: "Add to Cart", buyNow: "Buy Now", recommended: "Popular",
-        dashboardTitle: "Member Center", dashboardDesc: "Member card, level evolution, and order history are stored locally in your browser.", evolutionTitle: "VIP Level Evolution", evolutionDesc: "Every successful payment adds XP and evolves your level toward Ultimate 67 Member.", copyMemberId: "Copy Member ID", refreshCard: "Refresh Card", orderHistoryTitle: "Order History", orderHistoryDesc: "Successful payments are saved with order ID, amount, method, and items.", exportOrders: "Copy Summary", clearOrders: "Clear Records", orderEmpty: "No order records yet\nComplete one payment to see records here.", memberId: "Member ID", level: "Level", orders: "Orders", totalPaid: "Total paid", latestOrder: "Latest order", createdAt: "Created", noOrders: "No orders", next: "Next", maxLevel: "Max level", copied: "Copied", refreshed: "Card refreshed", ordersCopied: "Order summary copied", ordersCleared: "Order records cleared",
-        rulesTitle: "New Features", rulesDesc: "This version adds a member card generator, order records, VIP evolution animation, and payment-success fireworks. It is still static and GitHub Pages-ready.", priceRuleTitle: "How does it calculate?", priceRuleText: "Prices are calculated in integer cents. Successful orders add XP based on item count and unlock slots.", xpRule: "XP", xpRuleText: "Items × 12 + more VIPs + orders × 8", deployTitle: "GitHub Pages Usage", deploy1Title: "Upload index.html", deploy1Text: "Extract the ZIP and upload index.html to the repository root.", deploy2Title: "Enable Pages", deploy2Text: "Settings → Pages → Deploy from a branch → main → / root.", deploy3Title: "Static Page", deploy3Text: "No server, database, or real payment API is required.",
-        footerLeft: "© 67 Membership · Go / Plus / Pro", footerRight: "🌟 Card · Orders · Evolution · Fireworks", cartTitle: "Cart", cartDesc: "Review VIP types and quantities, then enter 10 confirmations.", totalItems: "Items", totalMore: "More VIPs", totalAmount: "Total", clearCart: "Clear Cart", emptyCart: "Your cart is empty\nChoose a VIP first.", remove: "Remove",
-        confirmTitle: "Confirm Order", confirmDesc: "Please confirm 10 times. Then choose a payment method.", confirmProgress: "Progress", cancel: "Cancel", confirmButton: "Confirm #{n}", finalConfirmButton: "Confirm #10 and Pay", confirmTexts: ["#1: Confirm you want to buy the VIPs in the cart.","#2: Confirm the final price is based on the cart total.","#3: Confirm Go, Plus, and Pro have different prices.","#4: Confirm more quantity means a larger displayed payment amount.","#5: Confirm a member card will be generated.","#6: Confirm orders will be saved locally.","#7: Confirm levels evolve automatically.","#8: Confirm fireworks will play after success.","#9: Confirm the confirmation before the final confirmation.","#10: Final confirmation. Payment method selection starts now."],
-        paymentTitle: "Choose Payment Method", paymentDesc: "Choose a payment method. A loading state will appear before success and amount are shown.", paymentAmount: "Payment Amount", payWechat: "WeChat Pay", payWechatDesc: "Simulate WeChat payment loading", payAlipay: "Alipay", payAlipayDesc: "Simulate Alipay payment", payCard: "Bank Card", payCardDesc: "Simulate card payment", payUnion: "UnionPay", payUnionDesc: "Simulate quick payment", loadingTitle: "Payment loading...", loadingWith: "Paying {amount} with {method}.", loadingText: "Processing payment, please wait.", successTitle: "Payment Successful", methodLabel: "Method", successDetail: "Purchased {count} item(s), unlocking {more} more VIP slots. Order saved and level updated. Demo only, no real payment is made.", done: "Done", viewDashboard: "Member Center", added: "Added to cart", cartCleared: "Cart cleared", emptyToast: "Cart is empty", cancelled: "Cancelled", buyNowToast: "Added to cart and opened checkout", cardGenerated: "Member card generated",
-        levels: ["Visitor", "Go Rookie", "Plus Player", "Pro Master", "SVIP Dog", "Ultimate 67"]
-      },
-      ja: {
-        brand: "67会員", navPlans: "プラン", navDashboard: "会員センター", navRules: "機能", cart: "カート", themeDark: "黒", themeLight: "白",
-        kicker: "🌟 多言語 · テーマ · カート · 会員システム", heroTitle1: "VIPを購入", heroTitle2: "会員レベルを進化", heroLead: "Go、Plus、Proを選び、カートで支払い。成功後、会員カード、注文履歴、レベル進化、花火演出が表示されます。",
-        chooseVip: "VIPを選ぶ", openDashboard: "会員センター", openCart: "カートを開く", checkoutTitle: "67 VIP Checkout", finalRule: "NEW SYSTEM", formulaText: "支払い成功 = カード + 注文履歴 + レベル進化 + 花火", memberPreview: "MEMBER PREVIEW",
-        goPrice: "Go 単価", plusPrice: "Plus 単価", proPrice: "Pro 単価", cartItemsLabel: " 個の商品がカートにあります", checkout: "レジへ", plansTitle: "VIPタイプと数量を選択", plansDesc: "数量を選んでカートに追加。同じVIPタイプはまとめて計算されます。",
-        goNote: "入門VIP", plusNote: "標準VIP", proNote: "上級VIP", perItem: "/ 個", qty: "数量", qtyShort: "数量", goF1: "Goを1個買うとVIPを1個追加購入可能", goF2: "10回確認フローを体験", goF3: "支払い成功後カード生成", plusF1: "Plusを1個買うとVIPを3個追加購入可能", plusF2: "注文履歴を保存", plusF3: "カートで一括決済", proF1: "Proを1個買うとVIPを8個追加購入可能", proF2: "最速でレベル進化", proF3: "支払い成功で花火", currentPrice: "今回の価格", moreVip: "追加VIP", addToCart: "カートに追加", buyNow: "今すぐ購入", recommended: "おすすめ",
-        dashboardTitle: "会員センター", dashboardDesc: "会員カード、レベル進化、注文履歴はブラウザに保存されます。", evolutionTitle: "VIPレベル進化", evolutionDesc: "支払い成功ごとにXPが増え、究極67会員へ進化します。", copyMemberId: "会員番号をコピー", refreshCard: "カード更新", orderHistoryTitle: "注文履歴", orderHistoryDesc: "支払い成功後、注文番号、金額、方法、内容を保存します。", exportOrders: "概要をコピー", clearOrders: "履歴を削除", orderEmpty: "注文履歴はまだありません\n支払い後ここに表示されます。", memberId: "会員番号", level: "レベル", orders: "注文", totalPaid: "累計支払い", latestOrder: "最新注文", createdAt: "生成時間", noOrders: "注文なし", next: "次", maxLevel: "最大レベル", copied: "コピーしました", refreshed: "カード更新済み", ordersCopied: "注文概要をコピーしました", ordersCleared: "注文履歴を削除しました",
-        rulesTitle: "新機能", rulesDesc: "会員カード生成、注文履歴、VIP進化アニメーション、成功時の花火を追加。GitHub Pages対応の静的ページです。", priceRuleTitle: "計算方法", priceRuleText: "価格は整数の分で計算。注文成功後、数量と追加VIP数からXPを生成します。", xpRule: "XP", xpRuleText: "商品数 × 12 + 追加VIP + 注文数 × 8", deployTitle: "GitHub Pagesの使い方", deploy1Title: "index.htmlをアップロード", deploy1Text: "ZIPを解凍し、index.htmlをリポジトリのルートに置きます。", deploy2Title: "Pagesを有効化", deploy2Text: "Settings → Pages → Deploy from a branch → main → / root。", deploy3Title: "静的ページ", deploy3Text: "サーバー、DB、実決済APIは不要です。",
-        footerLeft: "© 67会員 · Go / Plus / Pro", footerRight: "🌟 カード · 注文履歴 · 進化 · 花火", cartTitle: "カート", cartDesc: "VIPタイプと数量を確認し、10回確認に進みます。", totalItems: "商品数", totalMore: "追加VIP", totalAmount: "合計", clearCart: "カートを空にする", emptyCart: "カートは空です\nまずVIPを選んでください。", remove: "削除",
-        confirmTitle: "注文確認", confirmDesc: "10回確認してください。その後、支払い方法を選びます。", confirmProgress: "確認進度", cancel: "キャンセル", confirmButton: "{n}回目を確認", finalConfirmButton: "10回目を確認して支払い", confirmTexts: ["1回目：カート内のVIPを購入することを確認。","2回目：最終価格はカート合計で計算されます。","3回目：Go、Plus、Proの単価は異なります。","4回目：数量が多いほど表示金額も大きくなります。","5回目：会員カードが生成されます。","6回目：注文履歴がローカル保存されます。","7回目：レベルが自動進化します。","8回目：成功後に花火が表示されます。","9回目：最後の確認前の確認です。","10回目：最終確認。支払い方法選択へ進みます。"],
-        paymentTitle: "支払い方法を選択", paymentDesc: "支払い方法を選んでください。読み込み後、成功と金額が表示されます。", paymentAmount: "支払い金額", payWechat: "WeChat Pay", payWechatDesc: "WeChat支払いをシミュレート", payAlipay: "Alipay", payAlipayDesc: "Alipay支払いをシミュレート", payCard: "銀行カード", payCardDesc: "カード支払いをシミュレート", payUnion: "UnionPay", payUnionDesc: "高速支払いをシミュレート", loadingTitle: "支払い処理中...", loadingWith: "{method}で{amount}を支払い中。", loadingText: "処理中です。しばらくお待ちください。", successTitle: "支払い成功", methodLabel: "支払い方法", successDetail: "今回の商品数は{count}個、追加購入可能VIPは{more}個です。注文保存とレベル更新が完了しました。実際の支払いは発生しません。", done: "完了", viewDashboard: "会員センター", added: "カートに追加しました", cartCleared: "カートを空にしました", emptyToast: "カートは空です", cancelled: "キャンセルしました", buyNowToast: "カートに追加して決済を開きました", cardGenerated: "会員カード生成済み",
-        levels: ["游客", "Go 新星", "Plus プレイヤー", "Pro マスター", "SVIP之汪", "究極67会員"]
-      }
-    };
+<div class="modal" id="payModal"><div class="modal-card">
+  <div class="modal-top"><div><h2>选择支付方式</h2><p class="muted">点击后会模拟支付加载。</p></div><button class="close" onclick="closeModal('payModal')">×</button></div>
+  <div class="paygrid">
+    <button class="pay" data-pay="微信支付">💬<br><b>微信支付</b></button>
+    <button class="pay" data-pay="支付宝">🔵<br><b>支付宝</b></button>
+    <button class="pay" data-pay="银行卡">💳<br><b>银行卡</b></button>
+    <button class="pay" data-pay="云闪付">⚡<br><b>云闪付</b></button>
+  </div>
+  <div id="loadingBox" style="display:none"><div class="spinner"></div><p class="muted" style="text-align:center">支付加载中...</p></div>
+</div></div>
 
-    const planData = {
-      Go: { priceCents: 670, multiplier: 1, icon: "🚀" },
-      Plus: { priceCents: 1313, multiplier: 3, icon: "⭐" },
-      Pro: { priceCents: 9178, multiplier: 8, icon: "👑" }
-    };
+<div class="modal" id="successModal"><div class="modal-card">
+  <div style="text-align:center;font-size:56px">✅</div>
+  <h2 style="text-align:center">付款成功</h2>
+  <div class="member-card">
+    <b id="successLevel">67VIP</b>
+    <p id="successAmount">付款金额：¥0.00</p>
+    <p id="successCoupon">优惠券：未使用</p>
+    <p id="successOrder">订单号：-</p>
+  </div>
+  <button class="btn primary" style="width:100%;margin-top:18px" onclick="closeModal('successModal')">完成</button>
+</div></div>
 
-    const XP_THRESHOLDS = [0, 20, 60, 130, 250, 420];
-    const STORAGE = { lang: "vip_lang", theme: "vip_theme", cart: "vip_cart_v2", orders: "vip_orders_v2", memberId: "vip_member_id_v2" };
+<div class="modal" id="repoModal"><div class="modal-card">
+  <div class="modal-top"><div><h2>个人仓库</h2><p class="muted" id="repoUser">未登录</p></div><button class="close" onclick="closeModal('repoModal')">×</button></div>
+  <div class="repo-grid">
+    <div class="repo-card"><b id="repoModalOrders">0</b><p class="muted">订单</p></div>
+    <div class="repo-card"><b id="repoModalSpent">¥0.00</b><p class="muted">累计付款</p></div>
+  </div>
+  <h3 style="margin-top:20px">订单记录</h3>
+  <div class="list" id="orderHistory" style="margin-top:12px"></div>
+  <button class="btn" style="width:100%;margin-top:14px" id="clearOrders">清空订单记录</button>
+</div></div>
 
-    const $ = selector => document.querySelector(selector);
-    const $$ = selector => Array.from(document.querySelectorAll(selector));
+<div class="modal" id="couponModal"><div class="modal-card">
+  <div class="modal-top"><div><h2>我的优惠券</h2><p class="muted">领取后可在购物车结算时使用。</p></div><button class="close" onclick="closeModal('couponModal')">×</button></div>
+  <div class="list" id="myCoupons" style="margin-top:16px"></div>
+</div></div>
 
-    const state = {
-      lang: localStorage.getItem(STORAGE.lang) || "zh",
-      theme: localStorage.getItem(STORAGE.theme) || "light",
-      cart: safeParse(localStorage.getItem(STORAGE.cart), []),
-      orders: safeParse(localStorage.getItem(STORAGE.orders), []),
-      memberId: localStorage.getItem(STORAGE.memberId) || createMemberId(),
-      confirmCount: 0,
-      currentOrder: null,
-      payMethodKey: "wechat",
-      lastOrder: null
-    };
+<div class="toast" id="toast">已完成</div>
 
-    localStorage.setItem(STORAGE.memberId, state.memberId);
-
-    const els = {
-      languageSelect: $("#languageSelect"), themeToggle: $("#themeToggle"), openCart: $("#openCart"), heroCartBtn: $("#heroCartBtn"), heroCheckoutBtn: $("#heroCheckoutBtn"), heroPreview: $("#heroPreview"), heroCartCount: $("#heroCartCount"),
-      cartMask: $("#cartMask"), closeCart: $("#closeCart"), cartList: $("#cartList"), cartBadge: $("#cartBadge"), summaryCount: $("#summaryCount"), summaryMore: $("#summaryMore"), summaryTotal: $("#summaryTotal"), checkoutBtn: $("#checkoutBtn"), clearCartBtn: $("#clearCartBtn"),
-      confirmModal: $("#confirmModal"), closeConfirm: $("#closeConfirm"), cancelConfirm: $("#cancelConfirm"), orderSummary: $("#orderSummary"), confirmNow: $("#confirmNow"), progressBar: $("#progressBar"), confirmCopy: $("#confirmCopy"), confirmBtn: $("#confirmBtn"),
-      paymentModal: $("#paymentModal"), closePayment: $("#closePayment"), paymentQty: $("#paymentQty"), paymentTotal: $("#paymentTotal"), paymentGrid: $("#paymentGrid"), paymentLoading: $("#paymentLoading"), loadingText: $("#loadingText"),
-      successModal: $("#successModal"), closeSuccess: $("#closeSuccess"), successDashboard: $("#successDashboard"), successAmount: $("#successAmount"), successMethod: $("#successMethod"), successNote: $("#successNote"), successCardArea: $("#successCardArea"),
-      dashboardMemberCard: $("#dashboardMemberCard"), levelName: $("#levelName"), levelBar: $("#levelBar"), levelXp: $("#levelXp"), levelNext: $("#levelNext"), levelBubbles: $("#levelBubbles"), ordersList: $("#ordersList"), copyMemberId: $("#copyMemberId"), refreshCard: $("#refreshCard"), exportOrders: $("#exportOrders"), clearOrders: $("#clearOrders"),
-      toast: $("#toast"), fireworksCanvas: $("#fireworksCanvas")
-    };
-
-    function safeParse(value, fallback) {
-      try { return value ? JSON.parse(value) : fallback; } catch { return fallback; }
+<script>
+const plans=[
+  {name:"Go",price:670,more:1,icon:"🚀",desc:"入门 VIP"},
+  {name:"Plus",price:1313,more:3,icon:"⭐",desc:"推荐 VIP"},
+  {name:"Pro",price:9178,more:8,icon:"👑",desc:"高级 VIP"}
+];
+const couponRules={
+  WELCOME67:{title:"WELCOME67",type:"fixed",amount:670,desc:"立减 ¥6.70"},
+  SVIPWANG:{title:"SVIPWANG",type:"percent",amount:.12,desc:"8.8 折"},
+  9178:{title:"9178",type:"profixed",amount:918,desc:"Pro 专属立减 ¥9.18"}
+};
+let state=JSON.parse(localStorage.getItem("vip67_state")||"{}");
+state.user=state.user||null;state.cart=state.cart||[];state.orders=state.orders||[];state.coupons=state.coupons||[];state.theme=state.theme||"light";state.lang=state.lang||"zh";state.xp=state.xp||0;
+let confirmCount=0;let pendingOrder=null;
+document.documentElement.dataset.theme=state.theme;
+function save(){localStorage.setItem("vip67_state",JSON.stringify(state));renderAll()}
+function money(c){return "¥"+(c/100).toLocaleString("zh-CN",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function toast(t){const el=document.getElementById("toast");el.textContent=t;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),1600)}
+function openModal(id){document.getElementById(id).classList.add("show")}
+function closeModal(id){document.getElementById(id).classList.remove("show")}
+function level(){
+  const x=state.xp;
+  if(x>=3000)return ["终极 67 会员",100];
+  if(x>=1500)return ["Svip之汪",Math.min(100,(x-1500)/1500*100)];
+  if(x>=700)return ["Pro 传说会员",Math.min(100,(x-700)/800*100)];
+  if(x>=250)return ["Plus 进阶会员",Math.min(100,(x-250)/450*100)];
+  if(x>=80)return ["Go 初级会员",Math.min(100,(x-80)/170*100)];
+  return ["游客会员",Math.min(100,x/80*100)];
+}
+function renderPlans(){
+  const box=document.getElementById("planGrid");box.innerHTML="";
+  plans.forEach(p=>{
+    const div=document.createElement("article");div.className="plan";
+    div.innerHTML=`<div class="plan-icon">${p.icon}</div><h3>${p.name}</h3><p class="muted">${p.desc} · 买 1 个可再买 ${p.more} 个 VIP</p><div class="price">${money(p.price)} <span>/ 个</span></div>
+    <div class="qty"><button>-</button><input value="1" min="1" max="99" type="number"><button>+</button></div>
+    <div class="totalbox"><div class="smallbox"><b>${money(p.price)}</b><span class="muted">本次价格</span></div><div class="smallbox"><b>${p.more}</b><span class="muted">可再买</span></div></div>
+    <button class="btn primary">加入购物车</button>`;
+    const input=div.querySelector("input"), minus=div.querySelectorAll("button")[0], plus=div.querySelectorAll("button")[1], add=div.querySelectorAll("button")[2];
+    const update=()=>{let q=Math.max(1,Math.min(99,parseInt(input.value)||1));input.value=q;div.querySelector(".smallbox b").textContent=money(p.price*q);div.querySelectorAll(".smallbox b")[1].textContent=p.more*q}
+    minus.onclick=()=>{input.value=(parseInt(input.value)||1)-1;update()};plus.onclick=()=>{input.value=(parseInt(input.value)||1)+1;update()};input.oninput=update;
+    add.onclick=()=>addCart(p.name,parseInt(input.value)||1);
+    box.appendChild(div);
+  })
+}
+function addCart(name,qty){
+  qty=Math.max(1,Math.min(99,qty));const p=plans.find(x=>x.name===name);let item=state.cart.find(x=>x.name===name);
+  if(item)item.qty+=qty;else state.cart.push({name,qty,price:p.price,more:p.more});
+  save();toast("已加入购物车");
+}
+function calcCart(){
+  const subtotal=state.cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const code=(document.getElementById("couponInput")?.value||document.getElementById("couponSelect")?.value||"").trim().toUpperCase();
+  let discount=0, label="未使用";
+  const rule=couponRules[code];
+  if(rule){
+    label=code;
+    if(rule.type==="fixed")discount=rule.amount;
+    if(rule.type==="percent")discount=Math.round(subtotal*rule.amount);
+    if(rule.type==="profixed"){
+      const pro=state.cart.find(i=>i.name==="Pro");
+      discount=pro?rule.amount:0;
     }
-
-    function t(key) {
-      const pack = translations[state.lang] || translations.zh;
-      return pack[key] ?? translations.zh[key] ?? key;
-    }
-
-    function formatMoney(cents) {
-      return "¥" + (cents / 100).toLocaleString("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-
-    function clampQuantity(value) {
-      const n = Number.parseInt(value, 10);
-      return Number.isNaN(n) ? 1 : Math.min(99, Math.max(1, n));
-    }
-
-    function createMemberId() {
-      const a = Math.floor(1000 + Math.random() * 9000);
-      const b = Date.now().toString().slice(-4);
-      return "VIP-67-" + a + "-" + b;
-    }
-
-    function createOrderId() {
-      const d = new Date();
-      const date = [d.getFullYear(), String(d.getMonth() + 1).padStart(2, "0"), String(d.getDate()).padStart(2, "0")].join("");
-      const tail = Math.floor(1000 + Math.random() * 9000);
-      return "67-" + date + "-" + tail;
-    }
-
-    function saveCart() { localStorage.setItem(STORAGE.cart, JSON.stringify(state.cart)); }
-    function saveOrders() { localStorage.setItem(STORAGE.orders, JSON.stringify(state.orders)); }
-
-    function applyTheme() {
-      document.documentElement.dataset.theme = state.theme;
-      localStorage.setItem(STORAGE.theme, state.theme);
-      els.themeToggle.innerHTML = state.theme === "light" ? "🌙 <span>" + t("themeDark") + "</span>" : "☀️ <span>" + t("themeLight") + "</span>";
-    }
-
-    function applyLanguage() {
-      document.documentElement.lang = state.lang === "zh" ? "zh-CN" : state.lang;
-      els.languageSelect.value = state.lang;
-      $$('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
-      localStorage.setItem(STORAGE.lang, state.lang);
-      applyTheme();
-      updateAllPlanCards();
-      renderCart();
-      renderDashboard();
-    }
-
-    function readCardOrder(card) {
-      const plan = card.dataset.plan;
-      const qty = clampQuantity(card.querySelector(".qty-input").value);
-      const data = planData[plan];
-      card.querySelector(".qty-input").value = qty;
-      return { plan, qty, priceCents: data.priceCents, totalCents: data.priceCents * qty, more: data.multiplier * qty };
-    }
-
-    function updatePlanCard(card) {
-      const order = readCardOrder(card);
-      card.querySelector(".quantity-caption").textContent = order.qty;
-      card.querySelector(".card-total").textContent = formatMoney(order.totalCents);
-      card.querySelector(".card-more").textContent = order.more;
-    }
-
-    function updateAllPlanCards() { $$(".plan-card").forEach(updatePlanCard); }
-
-    function getCartTotals() {
-      return state.cart.reduce((acc, item) => {
-        const data = planData[item.plan];
-        acc.count += item.qty;
-        acc.totalCents += data.priceCents * item.qty;
-        acc.more += data.multiplier * item.qty;
-        return acc;
-      }, { count: 0, totalCents: 0, more: 0 });
-    }
-
-    function addToCart(plan, qty, checkoutNow) {
-      const safeQty = clampQuantity(qty);
-      const found = state.cart.find(item => item.plan === plan);
-      if (found) found.qty = clampQuantity(found.qty + safeQty);
-      else state.cart.push({ plan, qty: safeQty });
-      saveCart();
-      renderCart();
-      showToast(checkoutNow ? t("buyNowToast") : t("added"));
-      if (checkoutNow) {
-        openCart();
-        setTimeout(startCheckout, 220);
-      }
-    }
-
-    function setCartQty(plan, qty) {
-      const item = state.cart.find(i => i.plan === plan);
-      if (!item) return;
-      item.qty = clampQuantity(qty);
-      saveCart();
-      renderCart();
-    }
-
-    function removeFromCart(plan) {
-      state.cart = state.cart.filter(item => item.plan !== plan);
-      saveCart();
-      renderCart();
-    }
-
-    function renderCart() {
-      const totals = getCartTotals();
-      els.cartBadge.textContent = totals.count;
-      els.summaryCount.textContent = totals.count;
-      els.summaryMore.textContent = totals.more;
-      els.summaryTotal.textContent = formatMoney(totals.totalCents);
-      els.heroCartCount.textContent = totals.count;
-      const stats = getMemberStats();
-      els.heroPreview.textContent = state.memberId + " · " + stats.levelName;
-      els.checkoutBtn.disabled = totals.count === 0;
-      els.checkoutBtn.style.opacity = totals.count === 0 ? ".55" : "1";
-
-      if (state.cart.length === 0) {
-        els.cartList.innerHTML = '<div class="cart-empty">' + t("emptyCart").replace(/\n/g, "<br>") + '</div>';
-        return;
-      }
-
-      els.cartList.innerHTML = state.cart.map(item => {
-        const data = planData[item.plan];
-        return '<div class="cart-item" data-cart-plan="' + item.plan + '">' +
-          '<div class="cart-item-top"><div><strong>' + data.icon + ' ' + item.plan + '</strong><small>' + formatMoney(data.priceCents) + ' × ' + item.qty + '</small></div><button class="cart-remove" data-remove-plan="' + item.plan + '">' + t("remove") + '</button></div>' +
-          '<div class="cart-item-bottom"><div class="mini-qty"><button data-cart-minus="' + item.plan + '">−</button><input data-cart-input="' + item.plan + '" value="' + item.qty + '" inputmode="numeric" type="number" min="1" max="99"><button data-cart-plus="' + item.plan + '">+</button></div><div class="item-total">' + formatMoney(data.priceCents * item.qty) + '</div></div>' +
-        '</div>';
-      }).join("");
-
-      $$('[data-remove-plan]').forEach(btn => btn.addEventListener("click", () => removeFromCart(btn.dataset.removePlan)));
-      $$('[data-cart-minus]').forEach(btn => btn.addEventListener("click", () => {
-        const item = state.cart.find(i => i.plan === btn.dataset.cartMinus);
-        if (item) setCartQty(item.plan, item.qty - 1);
-      }));
-      $$('[data-cart-plus]').forEach(btn => btn.addEventListener("click", () => {
-        const item = state.cart.find(i => i.plan === btn.dataset.cartPlus);
-        if (item) setCartQty(item.plan, item.qty + 1);
-      }));
-      $$('[data-cart-input]').forEach(input => input.addEventListener("input", () => setCartQty(input.dataset.cartInput, input.value)));
-    }
-
-    function openCart() { els.cartMask.classList.add("show"); els.cartMask.setAttribute("aria-hidden", "false"); }
-    function closeCart() { els.cartMask.classList.remove("show"); els.cartMask.setAttribute("aria-hidden", "true"); }
-
-    function buildOrderFromCart() {
-      const totals = getCartTotals();
-      return { items: state.cart.map(item => ({ ...item })), count: totals.count, totalCents: totals.totalCents, more: totals.more };
-    }
-
-    function renderOrderSummary() {
-      if (!state.currentOrder) return;
-      const itemRows = state.currentOrder.items.map(item => {
-        const data = planData[item.plan];
-        return '<div class="order-row"><span>' + data.icon + ' ' + item.plan + ' × ' + item.qty + '</span><strong>' + formatMoney(data.priceCents * item.qty) + '</strong></div>';
-      }).join("");
-      els.orderSummary.innerHTML = itemRows +
-        '<div class="order-row"><span>' + t("totalItems") + '</span><strong>' + state.currentOrder.count + '</strong></div>' +
-        '<div class="order-row"><span>' + t("totalMore") + '</span><strong>' + state.currentOrder.more + '</strong></div>' +
-        '<div class="order-row order-total"><span>' + t("totalAmount") + '</span><strong>' + formatMoney(state.currentOrder.totalCents) + '</strong></div>';
-    }
-
-    function startCheckout() {
-      if (state.cart.length === 0) { showToast(t("emptyToast")); return; }
-      state.currentOrder = buildOrderFromCart();
-      state.confirmCount = 0;
-      closeCart();
-      renderOrderSummary();
-      updateConfirm();
-      els.confirmModal.classList.add("show");
-      els.confirmModal.setAttribute("aria-hidden", "false");
-    }
-
-    function closeConfirm(show = true) {
-      els.confirmModal.classList.remove("show");
-      els.confirmModal.setAttribute("aria-hidden", "true");
-      if (show) showToast(t("cancelled"));
-    }
-
-    function updateConfirm() {
-      const index = Math.min(state.confirmCount, 9);
-      els.confirmNow.textContent = state.confirmCount;
-      els.progressBar.style.width = (state.confirmCount / 10 * 100) + "%";
-      els.confirmCopy.textContent = t("confirmTexts")[index];
-      els.confirmBtn.textContent = state.confirmCount < 9 ? t("confirmButton").replace("{n}", state.confirmCount + 1) : t("finalConfirmButton");
-    }
-
-    function openPayment() {
-      closeConfirm(false);
-      els.paymentQty.textContent = state.currentOrder.count;
-      els.paymentTotal.textContent = formatMoney(state.currentOrder.totalCents);
-      els.paymentGrid.style.display = "grid";
-      els.paymentLoading.classList.remove("show");
-      els.loadingText.textContent = t("loadingText");
-      els.paymentModal.classList.add("show");
-      els.paymentModal.setAttribute("aria-hidden", "false");
-    }
-
-    function closePayment(show = true) {
-      els.paymentModal.classList.remove("show");
-      els.paymentModal.setAttribute("aria-hidden", "true");
-      els.paymentGrid.style.display = "grid";
-      els.paymentLoading.classList.remove("show");
-      if (show) showToast(t("cancelled"));
-    }
-
-    function getMethodName(key) {
-      const map = { wechat: "payWechat", alipay: "payAlipay", card: "payCard", unionpay: "payUnion" };
-      return t(map[key] || "payWechat");
-    }
-
-    function startPayment(methodKey) {
-      if (!state.currentOrder) return;
-      state.payMethodKey = methodKey;
-      const method = getMethodName(methodKey);
-      els.paymentGrid.style.display = "none";
-      els.paymentLoading.classList.add("show");
-      els.loadingText.textContent = t("loadingWith").replace("{method}", method).replace("{amount}", formatMoney(state.currentOrder.totalCents));
-      setTimeout(() => showSuccess(), 1700);
-    }
-
-    function showSuccess() {
-      const method = getMethodName(state.payMethodKey);
-      const order = {
-        id: createOrderId(),
-        memberId: state.memberId,
-        items: state.currentOrder.items.map(item => ({ ...item })),
-        count: state.currentOrder.count,
-        totalCents: state.currentOrder.totalCents,
-        more: state.currentOrder.more,
-        method,
-        createdAt: new Date().toISOString()
-      };
-
-      state.orders.unshift(order);
-      state.orders = state.orders.slice(0, 30);
-      state.lastOrder = order;
-      saveOrders();
-
-      els.paymentModal.classList.remove("show");
-      els.paymentModal.setAttribute("aria-hidden", "true");
-      els.successAmount.textContent = formatMoney(order.totalCents);
-      els.successMethod.textContent = t("methodLabel") + "：" + method;
-      els.successNote.textContent = t("successDetail").replace("{count}", order.count).replace("{more}", order.more);
-      els.successCardArea.innerHTML = buildMemberCardHTML(order, "success");
-      els.successModal.classList.add("show");
-      els.successModal.setAttribute("aria-hidden", "false");
-
-      state.cart = [];
-      saveCart();
-      renderCart();
-      renderDashboard();
-      launchFireworks();
-      showToast(t("cardGenerated"));
-    }
-
-    function closeSuccess() {
-      els.successModal.classList.remove("show");
-      els.successModal.setAttribute("aria-hidden", "true");
-    }
-
-    function getMemberStats() {
-      const totalPaidCents = state.orders.reduce((sum, order) => sum + order.totalCents, 0);
-      const orderCount = state.orders.length;
-      const totalItems = state.orders.reduce((sum, order) => sum + order.count, 0);
-      const totalMore = state.orders.reduce((sum, order) => sum + order.more, 0);
-      const xp = totalItems * 12 + totalMore + orderCount * 8;
-      let levelIndex = 0;
-      for (let i = 0; i < XP_THRESHOLDS.length; i++) {
-        if (xp >= XP_THRESHOLDS[i]) levelIndex = i;
-      }
-      const levels = t("levels");
-      const currentThreshold = XP_THRESHOLDS[levelIndex];
-      const nextThreshold = XP_THRESHOLDS[levelIndex + 1] ?? XP_THRESHOLDS[levelIndex];
-      const progress = levelIndex === XP_THRESHOLDS.length - 1 ? 100 : Math.max(5, Math.min(100, ((xp - currentThreshold) / (nextThreshold - currentThreshold)) * 100));
-      return { totalPaidCents, orderCount, totalItems, totalMore, xp, levelIndex, levelName: levels[levelIndex], nextThreshold, progress };
-    }
-
-    function buildMemberCardHTML(order, context) {
-      const stats = getMemberStats();
-      const latest = order || state.orders[0] || null;
-      const created = latest ? formatDate(latest.createdAt) : formatDate(new Date().toISOString());
-      const latestId = latest ? latest.id : t("noOrders");
-      const totalPaid = formatMoney(stats.totalPaidCents);
-      return '<div class="member-card" data-card-context="' + context + '">' +
-        '<div class="card-head"><div><div class="card-title">67VIP</div><div class="card-sub">' + t("cardGenerated") + '</div></div><div class="card-logo">🌟</div></div>' +
-        '<div class="card-id">' + state.memberId + '</div>' +
-        '<div class="card-meta">' +
-          '<div><span>' + t("level") + '</span><b>' + stats.levelName + '</b></div>' +
-          '<div><span>' + t("orders") + '</span><b>' + stats.orderCount + '</b></div>' +
-          '<div><span>' + t("totalPaid") + '</span><b>' + totalPaid + '</b></div>' +
-          '<div><span>' + t("latestOrder") + '</span><b>' + latestId + '</b></div>' +
-          '<div><span>XP</span><b>' + stats.xp + '</b></div>' +
-          '<div><span>' + t("createdAt") + '</span><b>' + created + '</b></div>' +
-        '</div>' +
-      '</div>';
-    }
-
-    function renderDashboard() {
-      const stats = getMemberStats();
-      els.levelName.textContent = stats.levelName;
-      els.levelXp.textContent = stats.xp + " XP";
-      els.levelNext.textContent = stats.levelIndex === XP_THRESHOLDS.length - 1 ? t("maxLevel") : t("next") + " " + stats.nextThreshold + " XP";
-      requestAnimationFrame(() => { els.levelBar.style.width = stats.progress + "%"; });
-      const levels = t("levels");
-      els.levelBubbles.innerHTML = levels.map((level, index) => '<div class="level-dot ' + (index <= stats.levelIndex ? "active" : "") + '">' + level + '</div>').join("");
-      els.dashboardMemberCard.innerHTML = buildMemberCardHTML(state.orders[0] || null, "dashboard");
-      renderOrdersList();
-      els.heroPreview.textContent = state.memberId + " · " + stats.levelName;
-    }
-
-    function renderOrdersList() {
-      if (state.orders.length === 0) {
-        els.ordersList.innerHTML = '<div class="order-empty">' + t("orderEmpty").replace(/\n/g, "<br>") + '</div>';
-        return;
-      }
-      els.ordersList.innerHTML = state.orders.map(order => {
-        const itemsText = order.items.map(item => planData[item.plan].icon + " " + item.plan + " × " + item.qty).join(" · ");
-        return '<div class="order-item">' +
-          '<div class="order-top"><div><div class="order-id">#' + order.id + '</div><div class="order-date">' + formatDate(order.createdAt) + ' · ' + order.method + '</div></div><div class="order-amount">' + formatMoney(order.totalCents) + '</div></div>' +
-          '<div class="order-detail">' + itemsText + '<br>' + t("totalMore") + '：' + order.more + '</div>' +
-        '</div>';
-      }).join("");
-    }
-
-    function formatDate(iso) {
-      const d = new Date(iso);
-      if (Number.isNaN(d.getTime())) return "--";
-      return d.toLocaleString(state.lang === "zh" ? "zh-CN" : state.lang === "ja" ? "ja-JP" : "en-US", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
-    }
-
-    async function copyText(text) {
-      try {
-        await navigator.clipboard.writeText(text);
-        return true;
-      } catch {
-        const textarea = document.createElement("textarea");
-        textarea.value = text;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        textarea.remove();
-        return true;
-      }
-    }
-
-    function exportOrdersSummary() {
-      if (state.orders.length === 0) { showToast(t("orderEmpty").split("\n")[0]); return; }
-      const lines = state.orders.map(order => {
-        const items = order.items.map(item => item.plan + " x " + item.qty).join(", ");
-        return "#" + order.id + " | " + formatMoney(order.totalCents) + " | " + order.method + " | " + items;
-      });
-      copyText(lines.join("\n"));
-      showToast(t("ordersCopied"));
-    }
-
-    function showToast(text) {
-      els.toast.textContent = text;
-      els.toast.classList.add("show");
-      clearTimeout(showToast.timer);
-      showToast.timer = setTimeout(() => els.toast.classList.remove("show"), 1800);
-    }
-
-    function handleReveal() {
-      $$(".reveal").forEach(el => {
-        const top = el.getBoundingClientRect().top;
-        if (top < window.innerHeight - 80) el.classList.add("show");
-      });
-    }
-
-    function launchFireworks() {
-      const canvas = els.fireworksCanvas;
-      const ctx = canvas.getContext("2d");
-      let width = canvas.width = window.innerWidth * window.devicePixelRatio;
-      let height = canvas.height = window.innerHeight * window.devicePixelRatio;
-      canvas.style.width = window.innerWidth + "px";
-      canvas.style.height = window.innerHeight + "px";
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-      canvas.classList.add("show");
-
-      const colors = ["#007aff", "#7c3aed", "#12b76a", "#ff9f0a", "#ef4444", "#ffffff"];
-      const particles = [];
-      const start = performance.now();
-
-      function burst(x, y) {
-        for (let i = 0; i < 54; i++) {
-          const angle = Math.random() * Math.PI * 2;
-          const speed = 2 + Math.random() * 5;
-          particles.push({
-            x, y,
-            vx: Math.cos(angle) * speed,
-            vy: Math.sin(angle) * speed,
-            life: 70 + Math.random() * 40,
-            age: 0,
-            size: 2 + Math.random() * 3,
-            color: colors[Math.floor(Math.random() * colors.length)]
-          });
-        }
-      }
-
-      for (let i = 0; i < 7; i++) {
-        setTimeout(() => burst(Math.random() * window.innerWidth, 90 + Math.random() * window.innerHeight * .55), i * 170);
-      }
-
-      function draw(now) {
-        ctx.clearRect(0, 0, width, height);
-        ctx.globalCompositeOperation = "lighter";
-        for (let i = particles.length - 1; i >= 0; i--) {
-          const p = particles[i];
-          p.age++;
-          p.x += p.vx;
-          p.y += p.vy;
-          p.vy += .045;
-          p.vx *= .988;
-          p.vy *= .988;
-          const alpha = Math.max(0, 1 - p.age / p.life);
-          ctx.globalAlpha = alpha;
-          ctx.fillStyle = p.color;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          ctx.fill();
-          if (p.age >= p.life) particles.splice(i, 1);
-        }
-        ctx.globalAlpha = 1;
-        if (now - start < 3300 || particles.length) requestAnimationFrame(draw);
-        else {
-          ctx.clearRect(0, 0, width, height);
-          canvas.classList.remove("show");
-        }
-      }
-      requestAnimationFrame(draw);
-    }
-
-    $$(".plan-card").forEach(card => {
-      const input = card.querySelector(".qty-input");
-      card.querySelector("[data-qty-minus]").addEventListener("click", () => { input.value = clampQuantity(Number(input.value) - 1); updatePlanCard(card); });
-      card.querySelector("[data-qty-plus]").addEventListener("click", () => { input.value = clampQuantity(Number(input.value) + 1); updatePlanCard(card); });
-      input.addEventListener("input", () => updatePlanCard(card));
-      input.addEventListener("blur", () => updatePlanCard(card));
-      card.querySelector(".add-cart-btn").addEventListener("click", () => { const order = readCardOrder(card); addToCart(order.plan, order.qty, false); });
-      card.querySelector(".buy-now-btn").addEventListener("click", () => { const order = readCardOrder(card); addToCart(order.plan, order.qty, true); });
-    });
-
-    els.languageSelect.addEventListener("change", () => { state.lang = els.languageSelect.value; applyLanguage(); });
-    els.themeToggle.addEventListener("click", () => { state.theme = state.theme === "light" ? "dark" : "light"; applyTheme(); });
-    els.openCart.addEventListener("click", openCart);
-    els.heroCartBtn.addEventListener("click", openCart);
-    els.closeCart.addEventListener("click", closeCart);
-    els.cartMask.addEventListener("click", e => { if (e.target === els.cartMask) closeCart(); });
-    els.checkoutBtn.addEventListener("click", startCheckout);
-    els.heroCheckoutBtn.addEventListener("click", startCheckout);
-    els.clearCartBtn.addEventListener("click", () => { state.cart = []; saveCart(); renderCart(); showToast(t("cartCleared")); });
-
-    els.closeConfirm.addEventListener("click", () => closeConfirm(true));
-    els.cancelConfirm.addEventListener("click", () => closeConfirm(true));
-    els.confirmBtn.addEventListener("click", () => { state.confirmCount += 1; updateConfirm(); if (state.confirmCount >= 10) setTimeout(openPayment, 260); });
-    els.confirmModal.addEventListener("click", e => { if (e.target === els.confirmModal) closeConfirm(true); });
-
-    els.closePayment.addEventListener("click", () => closePayment(true));
-    $$('[data-pay-method-key]').forEach(button => button.addEventListener("click", () => startPayment(button.dataset.payMethodKey)));
-    els.paymentModal.addEventListener("click", e => { if (e.target === els.paymentModal && !els.paymentLoading.classList.contains("show")) closePayment(true); });
-
-    els.closeSuccess.addEventListener("click", closeSuccess);
-    els.successDashboard.addEventListener("click", () => { closeSuccess(); document.querySelector("#dashboard").scrollIntoView({ behavior: "smooth" }); });
-    els.successModal.addEventListener("click", e => { if (e.target === els.successModal) closeSuccess(); });
-
-    els.copyMemberId.addEventListener("click", () => { copyText(state.memberId); showToast(t("copied")); });
-    els.refreshCard.addEventListener("click", () => { renderDashboard(); showToast(t("refreshed")); });
-    els.exportOrders.addEventListener("click", exportOrdersSummary);
-    els.clearOrders.addEventListener("click", () => { state.orders = []; saveOrders(); renderDashboard(); showToast(t("ordersCleared")); });
-
-    window.addEventListener("scroll", handleReveal);
-    window.addEventListener("load", () => { applyLanguage(); handleReveal(); });
-    window.addEventListener("resize", () => { if (els.fireworksCanvas.classList.contains("show")) launchFireworks(); });
-
-    state.lang = translations[state.lang] ? state.lang : "zh";
-    state.theme = state.theme === "dark" ? "dark" : "light";
-    applyLanguage();
-    renderCart();
-    renderDashboard();
-    handleReveal();
-  </script>
+  }
+  discount=Math.min(discount,subtotal);
+  return {subtotal,discount,total:subtotal-discount,code:rule?label:""};
+}
+function renderCart(){
+  document.getElementById("cartBtn").textContent="购物车 "+state.cart.reduce((s,i)=>s+i.qty,0);
+  const list=document.getElementById("cartList");list.innerHTML="";
+  if(!state.cart.length)list.innerHTML='<p class="muted">购物车为空。</p>';
+  state.cart.forEach((i,idx)=>{
+    const div=document.createElement("div");div.className="item cart-line";
+    div.innerHTML=`<div><b>${i.name} × ${i.qty}</b><p class="muted">${money(i.price)} / 个</p></div><b>${money(i.price*i.qty)}</b><button class="btn">删除</button>`;
+    div.querySelector("button").onclick=()=>{state.cart.splice(idx,1);save()};
+    list.appendChild(div);
+  });
+  const sel=document.getElementById("couponSelect");sel.innerHTML='<option value="">不使用优惠券</option>'+state.coupons.map(c=>`<option value="${c}">${c} · ${couponRules[c]?.desc||""}</option>`).join("");
+  const c=calcCart();document.getElementById("cartSubtotal").textContent=money(c.subtotal);document.getElementById("cartDiscount").textContent="-"+money(c.discount);document.getElementById("cartTotal").textContent=money(c.total);
+}
+function saveCoupon(code){
+  code=code.toUpperCase();if(!couponRules[code])return toast("优惠券不存在");
+  if(!state.coupons.includes(code))state.coupons.push(code);save();toast("已领取优惠券 "+code);
+}
+function renderCoupons(){
+  const box=document.getElementById("myCoupons");box.innerHTML="";
+  Object.values(couponRules).forEach(c=>{
+    const owned=state.coupons.includes(c.title);
+    const div=document.createElement("div");div.className="item";
+    div.innerHTML=`<div><b>${c.title}</b><p class="muted">${c.desc}</p></div><button class="btn">${owned?"已领取":"领取"}</button>`;
+    div.querySelector("button").onclick=()=>saveCoupon(c.title);
+    box.appendChild(div);
+  })
+}
+function renderUser(){
+  const [lv,prog]=level();
+  document.getElementById("memberLevel").textContent=lv;document.getElementById("memberXp").textContent="XP："+state.xp;document.getElementById("xpBar").style.width=prog+"%";
+  document.getElementById("memberNo").textContent=state.user?("会员编号：VIP-"+state.user.id):"会员编号：未生成";
+  document.getElementById("userStatus").textContent=state.user?`已登录：${state.user.name}，欢迎回来。`:"未登录，登录后可查看个人仓库和订单。";
+  document.getElementById("loginBtn").textContent=state.user?state.user.name:"登录";
+  const spent=state.orders.reduce((s,o)=>s+o.total,0);
+  document.getElementById("repoOrders").textContent=state.orders.length;document.getElementById("repoSpent").textContent=money(spent);document.getElementById("repoCoupons").textContent=state.coupons.length;document.getElementById("repoLevel").textContent=lv;
+}
+function renderRepo(){
+  const [lv]=level();const spent=state.orders.reduce((s,o)=>s+o.total,0);
+  document.getElementById("repoUser").textContent=state.user?`${state.user.name} · VIP-${state.user.id}`:"未登录";
+  document.getElementById("repoModalOrders").textContent=state.orders.length;document.getElementById("repoModalSpent").textContent=money(spent);
+  const box=document.getElementById("orderHistory");box.innerHTML="";
+  if(!state.orders.length)box.innerHTML='<p class="muted">暂无订单。</p>';
+  state.orders.slice().reverse().forEach(o=>{
+    const div=document.createElement("div");div.className="item";div.innerHTML=`<div><b>${o.id}</b><p class="muted">${o.items} · ${o.pay} · ${o.time}</p></div><b>${money(o.total)}</b>`;
+    box.appendChild(div);
+  })
+}
+function renderAll(){renderCart();renderUser();renderRepo();renderCoupons()}
+function startCheckout(){
+  if(!state.user)return openModal("loginModal"),toast("请先登录");
+  if(!state.cart.length)return toast("购物车为空");
+  pendingOrder=calcCart();pendingOrder.items=state.cart.map(i=>`${i.name}×${i.qty}`).join("，");pendingOrder.more=state.cart.reduce((s,i)=>s+i.more*i.qty,0);
+  confirmCount=0;document.getElementById("confirmBar").style.width="0%";document.getElementById("confirmBtn").textContent="确认第 1 次";document.getElementById("confirmText").textContent=`订单：${pendingOrder.items}，应付 ${money(pendingOrder.total)}`;
+  closeModal("cartModal");openModal("confirmModal");
+}
+function fireworks(){
+  for(let i=0;i<55;i++){const f=document.createElement("div");f.className="firework";f.style.left=(50+Math.random()*20-10)+"vw";f.style.top=(45+Math.random()*16-8)+"vh";f.style.background=["#007aff","#7c3aed","#12b76a","#ff9f0a","#ff375f"][i%5];f.style.setProperty("--x",(Math.random()*520-260)+"px");f.style.setProperty("--y",(Math.random()*420-210)+"px");document.body.appendChild(f);setTimeout(()=>f.remove(),950)}
+}
+function completePayment(pay){
+  const id="ORD-"+Date.now().toString().slice(-8);
+  state.orders.push({id,total:pendingOrder.total,discount:pendingOrder.discount,coupon:pendingOrder.code||"无",items:pendingOrder.items,pay,time:new Date().toLocaleString()});
+  state.xp+=Math.max(30,Math.floor(pendingOrder.total/50));state.cart=[];save();
+  const [lv]=level();document.getElementById("successLevel").textContent=lv;document.getElementById("successAmount").textContent="付款金额："+money(pendingOrder.total);
+  document.getElementById("successCoupon").textContent="优惠券："+(pendingOrder.code||"未使用");document.getElementById("successOrder").textContent="订单号："+id;
+  closeModal("payModal");openModal("successModal");fireworks();
+}
+document.getElementById("themeBtn").onclick=()=>{state.theme=state.theme==="light"?"dark":"light";document.documentElement.dataset.theme=state.theme;save();document.getElementById("themeBtn").textContent=state.theme==="light"?"黑色主题":"白色主题"};
+document.getElementById("langBtn").onclick=()=>{state.lang=state.lang==="zh"?"en":state.lang==="en"?"ja":"zh";document.getElementById("langBtn").textContent=state.lang==="zh"?"中文":state.lang==="en"?"English":"日本語";save();toast("语言已切换")};
+document.getElementById("loginBtn").onclick=()=>openModal("loginModal");document.getElementById("openLoginHero").onclick=()=>openModal("loginModal");
+document.getElementById("repoBtn").onclick=()=>{renderRepo();openModal("repoModal")};document.getElementById("couponBtn").onclick=()=>{renderCoupons();openModal("couponModal")};
+document.getElementById("cartBtn").onclick=()=>{renderCart();openModal("cartModal")};
+document.getElementById("couponInput").oninput=renderCart;document.getElementById("couponSelect").onchange=()=>{document.getElementById("couponInput").value=document.getElementById("couponSelect").value;renderCart()};
+document.getElementById("checkoutBtn").onclick=startCheckout;
+document.getElementById("doLogin").onclick=()=>{const name=document.getElementById("loginName").value.trim()||"67VIP用户";state.user={name,email:document.getElementById("loginEmail").value.trim(),id:Math.random().toString(36).slice(2,8).toUpperCase()};save();closeModal("loginModal");toast("登录成功")};
+document.getElementById("logoutBtn").onclick=()=>{state.user=null;save();closeModal("loginModal");toast("已退出登录")};
+document.getElementById("confirmBtn").onclick=()=>{confirmCount++;document.getElementById("confirmBar").style.width=confirmCount*10+"%";document.getElementById("confirmBtn").textContent=confirmCount>=10?"进入支付":"确认第 "+(confirmCount+1)+" 次";if(confirmCount>=10){closeModal("confirmModal");openModal("payModal")}};
+document.querySelectorAll("[data-pay]").forEach(b=>b.onclick=()=>{document.querySelector(".paygrid").style.display="none";document.getElementById("loadingBox").style.display="block";setTimeout(()=>{document.querySelector(".paygrid").style.display="grid";document.getElementById("loadingBox").style.display="none";completePayment(b.dataset.pay)},1500)});
+document.getElementById("clearOrders").onclick=()=>{state.orders=[];state.xp=0;save();toast("已清空订单")};
+renderPlans();renderAll();
+document.getElementById("themeBtn").textContent=state.theme==="light"?"黑色主题":"白色主题";
+</script>
 </body>
 </html>
